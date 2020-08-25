@@ -5,6 +5,7 @@ import minegame159.thebestplugin.utils.Uptime;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -58,5 +59,13 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
     @EventHandler
     private void onPlayerKick(PlayerKickEvent event) {
         TabList.update();
+    }
+
+    @EventHandler
+    private void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        if (event.getMessage().equalsIgnoreCase("/help")) {
+            event.setCancelled(true);
+            event.getPlayer().performCommand("help thebestplugin");
+        }
     }
 }
