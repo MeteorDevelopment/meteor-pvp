@@ -23,3 +23,19 @@ commands:
     description: Heals you.
     usage: /heal
     permission: thebestplugin.heal
+
+  kits:
+    description: Opens a list of kits.
+    usage: /kits
+
+  createkit:
+    description: Creates a new kit.
+    usage: /createkit <name>
+
+  kit:
+    description: Gives you a kit.
+    usage: /kit <name>
+
+  deletekit:
+    description: Deletes kit.
+    usage: /kit <name>
