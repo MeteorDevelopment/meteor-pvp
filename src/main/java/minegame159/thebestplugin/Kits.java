@@ -2,13 +2,17 @@ package minegame159.thebestplugin;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import minegame159.thebestplugin.json.ItemStackSerializer;
 import minegame159.thebestplugin.json.KitSerializer;
 import minegame159.thebestplugin.json.KitsSerializer;
+import minegame159.thebestplugin.json.NamespacedKeySerializer;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
 import java.util.*;
@@ -22,6 +26,8 @@ public class Kits implements Listener {
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Kits.class, new KitsSerializer())
             .registerTypeAdapter(Kit.class, new KitSerializer())
+            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
+            .registerTypeAdapter(NamespacedKey.class, new NamespacedKeySerializer())
             .create();
 
     private static final List<String> LIST = new ArrayList<>();

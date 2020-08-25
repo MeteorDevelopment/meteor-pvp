@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java'
 
 group = 'minegame159'
-version = '0.1.1'
+version = '0.1.2'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'

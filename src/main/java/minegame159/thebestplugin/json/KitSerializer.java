@@ -2,7 +2,6 @@ package minegame159.thebestplugin.json;
 
 import com.google.gson.*;
 import minegame159.thebestplugin.Kit;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Type;
@@ -21,10 +20,8 @@ public class KitSerializer implements JsonSerializer<Kit>, JsonDeserializer<Kit>
             ItemStack itemStack = src.items[i];
             if (itemStack == null) continue;
 
-            JsonObject item = new JsonObject();
+            JsonObject item = context.serialize(itemStack, ItemStack.class).getAsJsonObject();
             item.addProperty("slot", i);
-            item.addProperty("id", itemStack.getType().toString());
-            item.addProperty("count", itemStack.getAmount());
             items.add(item);
         }
         object.add("items", items);
@@ -41,13 +38,12 @@ public class KitSerializer implements JsonSerializer<Kit>, JsonDeserializer<Kit>
         ItemStack[] items = new ItemStack[41];
 
         for (JsonElement e : object.get("items").getAsJsonArray()) {
-            JsonObject item = e.getAsJsonObject();
+            JsonObject o = e.getAsJsonObject();
 
-            int slot = item.get("slot").getAsInt();
-            String id = item.get("id").getAsString();
-            int count = item.get("count").getAsInt();
+            ItemStack itemStack = context.deserialize(o, ItemStack.class);
+            int slot = o.get("slot").getAsInt();
 
-            items[slot] = new ItemStack(Material.getMaterial(id), count);
+            items[slot] = itemStack;
         }
 
         return new Kit(name, author, items);

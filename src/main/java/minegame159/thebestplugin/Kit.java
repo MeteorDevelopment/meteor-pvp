@@ -15,7 +15,10 @@ public class Kit {
         this.author = player.getUniqueId();
         this.items = new ItemStack[41];
 
-        System.arraycopy(player.getInventory().getContents(), 0, this.items, 0, 41);
+        for (int i = 0; i < items.length; i++) {
+            ItemStack itemStack = player.getInventory().getContents()[i];
+            if (itemStack != null) items[i] = new ItemStack(itemStack);
+        }
     }
 
     public Kit(String name, UUID author, ItemStack[] items) {
@@ -28,7 +31,7 @@ public class Kit {
         player.getInventory().clear();
 
         for (int i = 0; i < items.length; i++) {
-            player.getInventory().setItem(i, items[i]);
+            if (items[i] != null) player.getInventory().setItem(i, new ItemStack(items[i]));
         }
     }
 }
