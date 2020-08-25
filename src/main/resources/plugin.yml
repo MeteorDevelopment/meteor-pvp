@@ -3,9 +3,6 @@ version: @version@
 main: minegame159.thebestplugin.TheBestPlugin
 api-version: 1.14
 
-depend:
-  - ProtocolLib
-
 commands:
   gmc:
     description: Sets your gamemode to creative.
