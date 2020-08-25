@@ -5,3 +5,24 @@ api-version: 1.14
 
 depend:
   - ProtocolLib
+
+commands:
+  gmc:
+    description: Sets your gamemode to creative.
+    usage: /gmc
+    permission: thebestplugin.change-gamemode
+
+  gms:
+    description: Sets your gamemode to survival.
+    usage: /gms
+    permission: thebestplugin.change-gamemode
+
+  feed:
+    description: Fills your hunger bar.
+    usage: /feed
+    permission: thebestplugin.feed
+
+  heal:
+    description: Heals you.
+    usage: /heal
+    permission: thebestplugin.heal
