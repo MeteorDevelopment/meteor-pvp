@@ -9,13 +9,18 @@ public class Uptime {
         startTime = System.currentTimeMillis();
     }
 
+    public static int getDays() {
+        long uptime = System.currentTimeMillis() - startTime;
+        return (int) TimeUnit.MILLISECONDS.toDays(uptime);
+    }
+
     public static int getHours() {
         long uptime = System.currentTimeMillis() - startTime;
         return (int) TimeUnit.MILLISECONDS.toHours(uptime);
     }
 
-    public static int getDays() {
+    public static int getMinutes() {
         long uptime = System.currentTimeMillis() - startTime;
-        return (int) TimeUnit.MILLISECONDS.toDays(uptime);
+        return (int) TimeUnit.MILLISECONDS.toMinutes(uptime);
     }
 }
