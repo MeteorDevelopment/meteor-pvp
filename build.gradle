@@ -18,10 +18,15 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven {
+        name = "ProtolLib"
+        url "https://repo.dmulloy2.net/nexus/repository/public/"
+    }
 }
 
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT'
+    compileOnly "com.comphenix.protocol:ProtocolLib:4.5.0"
 }
 
 processResources {
