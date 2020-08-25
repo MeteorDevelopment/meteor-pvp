@@ -37,5 +37,17 @@ commands:
     usage: /kit <name>
 
   deletekit:
-    description: Deletes kit.
+    description: Deletes a kit.
     usage: /kit <name>
+
+  spawn:
+    description: Teleports you to spawn.
+    usage: /spawn
+
+  kitcreator:
+    description: Teleports you to kit creator.
+    usage: /kitcreator
+
+  suicide:
+    description: Kill yourself, don't be shy.
+    usage: /sucide

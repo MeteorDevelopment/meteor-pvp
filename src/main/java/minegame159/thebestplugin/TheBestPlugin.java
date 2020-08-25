@@ -37,6 +37,9 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         getCommand("createkit").setExecutor(new CreateKitCommand());
         getCommand("kit").setExecutor(new KitCommand());
         getCommand("deletekit").setExecutor(new DeleteKitCommand());
+        getCommand("spawn").setExecutor(new SpawnCommand());
+        getCommand("kitcreator").setExecutor(new KitCreatorCommand());
+        getCommand("suicide").setExecutor(new SuicideCommand());
 
         Uptime.onEnable();
     }
