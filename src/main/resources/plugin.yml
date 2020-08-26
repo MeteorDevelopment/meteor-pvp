@@ -51,3 +51,8 @@ commands:
   suicide:
     description: Kill yourself, don't be shy.
     usage: /sucide
+
+  togglekitcreator:
+    description: Toggles kit creator.
+    usage: /togglekitcreator
+    permission: thebestplugin.toggle-kitcreator
