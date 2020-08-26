@@ -5,6 +5,7 @@ api-version: 1.14
 
 depend:
   - WorldGuard
+  - WorldEdit
 
 commands:
   gmc:
@@ -63,3 +64,8 @@ commands:
   stats:
     description: Shows server wide stats.
     usage: /stats
+
+  clearcpvp:
+    description: Clears main crystal pvp area.
+    usage: /clearcpv
+    permission: thebestplugin.clear-cpvp

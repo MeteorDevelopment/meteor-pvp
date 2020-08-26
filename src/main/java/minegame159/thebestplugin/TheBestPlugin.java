@@ -1,9 +1,14 @@
 package minegame159.thebestplugin;
 
+import com.boydti.fawe.wrappers.WorldWrapper;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -47,6 +52,7 @@ import java.util.regex.Pattern;
 public final class TheBestPlugin extends JavaPlugin implements Listener {
     public static Location SPAWN_LOCATION;
     public static Location KIT_CREATOR_LOCATION;
+    public static Region CPVP_REGION;
 
     public static File CONFIG_FOLDER;
 
@@ -72,6 +78,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
         SPAWN_LOCATION = new Location((Bukkit.getWorld("world")), 0, 100, 0);
         KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
+        CPVP_REGION = new CuboidRegion(BukkitAdapter.adapt(Bukkit.getWorld("world")), BlockVector3.at(255, 255, 255), BlockVector3.at(-255, 0, -255));
 
         STATS_FILE = new File(CONFIG_FOLDER, "stats.json");
         if (STATS_FILE.exists()) {
@@ -106,6 +113,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         getCommand("suicide").setExecutor(new SuicideCommand());
         getCommand("togglekitcreator").setExecutor(new ToggleKitCreatorCommand());
         getCommand("stats").setExecutor(new StatsCommand());
+        getCommand("clearcpvp").setExecutor(new ClearCpvpCommand());
 
         Uptime.onEnable();
     }
