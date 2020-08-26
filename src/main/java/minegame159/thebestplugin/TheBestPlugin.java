@@ -1,17 +1,25 @@
 package minegame159.thebestplugin;
 
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import minegame159.thebestplugin.commands.*;
+import minegame159.thebestplugin.json.ItemStackSerializer;
+import minegame159.thebestplugin.json.KitSerializer;
+import minegame159.thebestplugin.json.KitsSerializer;
+import minegame159.thebestplugin.json.NamespacedKeySerializer;
+import minegame159.thebestplugin.listeners.StatsListener;
 import minegame159.thebestplugin.utils.EntityTimer;
 import minegame159.thebestplugin.utils.Uptime;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
@@ -28,7 +36,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +47,16 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
     public static File CONFIG_FOLDER;
 
+    public static File STATS_FILE;
+    public static Stats STATS;
+
+    public static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(Kits.class, new KitsSerializer())
+            .registerTypeAdapter(Kit.class, new KitSerializer())
+            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
+            .registerTypeAdapter(NamespacedKey.class, new NamespacedKeySerializer())
+            .create();
+
     public static boolean KIT_CREATOR_ENABLED = true;
 
     private final List<EntityTimer> entitiesToRemove = new ArrayList<>();
@@ -48,8 +66,20 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         CONFIG_FOLDER = getDataFolder();
         CONFIG_FOLDER.mkdirs();
 
+        STATS_FILE = new File(CONFIG_FOLDER, "stats.json");
+        if (STATS_FILE.exists()) {
+            try {
+                STATS = GSON.fromJson(new FileReader(STATS_FILE), Stats.class);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            STATS = new Stats();
+        }
+
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new Kits(), this);
+        Bukkit.getPluginManager().registerEvents(new StatsListener(), this);
 
         Bukkit.getScheduler().runTaskTimer(this, TabList::update, 0, 80);
 
@@ -68,6 +98,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         getCommand("kitcreator").setExecutor(new KitCreatorCommand());
         getCommand("suicide").setExecutor(new SuicideCommand());
         getCommand("togglekitcreator").setExecutor(new ToggleKitCreatorCommand());
+        getCommand("stats").setExecutor(new StatsCommand());
 
         Uptime.onEnable();
     }
@@ -77,6 +108,19 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         Bukkit.getScheduler().cancelTasks(this);
 
         entitiesToRemove.clear();
+        saveStats();
+    }
+
+    private void saveStats() {
+        try {
+            FileWriter writer = new FileWriter(STATS_FILE);
+            GSON.toJson(STATS, writer);
+            writer.close();
+
+            STATS.dirty = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -91,6 +135,14 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
                 } else {
                     entityTimer.timer--;
                 }
+            }
+        }
+
+        if (STATS.dirty) {
+            if (STATS.saveTimer <= 0) {
+                saveStats();
+            } else {
+                STATS.saveTimer--;
             }
         }
     }

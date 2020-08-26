@@ -1,18 +1,10 @@
 package minegame159.thebestplugin;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import minegame159.thebestplugin.json.ItemStackSerializer;
-import minegame159.thebestplugin.json.KitSerializer;
-import minegame159.thebestplugin.json.KitsSerializer;
-import minegame159.thebestplugin.json.NamespacedKeySerializer;
 import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
 import java.util.*;
@@ -23,12 +15,6 @@ public class Kits implements Listener {
     public static final String MSG_PREFIX = ChatColor.BLUE + "[Kits]" + ChatColor.GRAY + ": " + ChatColor.WHITE;
 
     private static File FILE;
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Kits.class, new KitsSerializer())
-            .registerTypeAdapter(Kit.class, new KitSerializer())
-            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
-            .registerTypeAdapter(NamespacedKey.class, new NamespacedKeySerializer())
-            .create();
 
     private static final List<String> LIST = new ArrayList<>();
 
@@ -40,7 +26,7 @@ public class Kits implements Listener {
 
         if (FILE.exists()) {
             try {
-                GSON.fromJson(new FileReader(FILE), getClass());
+                TheBestPlugin.GSON.fromJson(new FileReader(FILE), getClass());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -50,7 +36,7 @@ public class Kits implements Listener {
     private void save() {
         try {
             FileWriter writer = new FileWriter(FILE);
-            GSON.toJson(this, writer);
+            TheBestPlugin.GSON.toJson(this, writer);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

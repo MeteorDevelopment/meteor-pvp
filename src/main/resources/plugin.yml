@@ -59,3 +59,7 @@ commands:
     description: Toggles kit creator.
     usage: /togglekitcreator
     permission: thebestplugin.toggle-kitcreator
+
+  stats:
+    description: Shows server wide stats.
+    usage: /stats
