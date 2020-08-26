@@ -42,8 +42,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public final class TheBestPlugin extends JavaPlugin implements Listener {
-    public static final Location SPAWN_LOCATION = new Location((Bukkit.getWorld("world")), 0, 100, 0);
-    public static final Location KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
+    public static Location SPAWN_LOCATION;
+    public static Location KIT_CREATOR_LOCATION;
 
     public static File CONFIG_FOLDER;
 
@@ -65,6 +65,9 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         CONFIG_FOLDER = getDataFolder();
         CONFIG_FOLDER.mkdirs();
+
+        SPAWN_LOCATION = new Location((Bukkit.getWorld("world")), 0, 100, 0);
+        KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
 
         STATS_FILE = new File(CONFIG_FOLDER, "stats.json");
         if (STATS_FILE.exists()) {
