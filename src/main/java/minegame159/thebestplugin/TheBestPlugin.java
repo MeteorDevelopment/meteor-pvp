@@ -32,6 +32,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,6 +41,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class TheBestPlugin extends JavaPlugin implements Listener {
     public static Location SPAWN_LOCATION;
@@ -59,6 +62,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
     public static boolean KIT_CREATOR_ENABLED = true;
 
+    private final Pattern HELP_PATTERN = Pattern.compile("/help( \\d+)?", Pattern.CASE_INSENSITIVE);
     private final List<EntityTimer> entitiesToRemove = new ArrayList<>();
 
     @Override
@@ -198,9 +202,24 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     private void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (event.getMessage().equalsIgnoreCase("/help")) {
+        if (event.getMessage().startsWith("/help")) {
             event.setCancelled(true);
-            event.getPlayer().performCommand("help thebestplugin");
+            Matcher matcher = HELP_PATTERN.matcher(event.getMessage());
+
+            if (matcher.matches()) {
+                String cmd = "help thebestplugin";
+                if (matcher.group(1) != null) cmd += matcher.group(1);
+                event.getPlayer().performCommand(cmd);
+            }
+        }
+    }
+
+    @EventHandler
+    private void onTabComplete(TabCompleteEvent event) {
+        if (event.getBuffer().startsWith("/help")) {
+            event.getCompletions().clear();
+            event.getCompletions().add("1");
+            event.getCompletions().add("2");
         }
     }
 
