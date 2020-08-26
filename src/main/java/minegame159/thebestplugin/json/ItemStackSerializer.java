@@ -12,7 +12,6 @@ import java.util.Map;
 public class ItemStackSerializer implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
     @Override
     public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
-        System.out.println("hi4");
         JsonObject object = new JsonObject();
 
         object.addProperty("id", src.getType().toString());

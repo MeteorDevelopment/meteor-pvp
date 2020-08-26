@@ -1,7 +1,13 @@
 package minegame159.thebestplugin;
 
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import minegame159.thebestplugin.commands.*;
+import minegame159.thebestplugin.utils.EntityTimer;
 import minegame159.thebestplugin.utils.Uptime;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,6 +20,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.*;
@@ -22,8 +29,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public final class TheBestPlugin extends JavaPlugin implements Listener {
     public static final Location SPAWN_LOCATION = new Location((Bukkit.getWorld("world")), 0, 100, 0);
@@ -33,7 +41,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
     public static boolean KIT_CREATOR_ENABLED = true;
 
-    private Map<Entity, Integer> entitiesToRemove = new HashMap<>();
+    private final List<EntityTimer> entitiesToRemove = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -73,29 +81,49 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onTick(ServerTickStartEvent event) {
-        for (Entity entity : entitiesToRemove.keySet()) {
-            int ticks = entitiesToRemove.get(entity);
+        synchronized (entitiesToRemove) {
+            for (Iterator<EntityTimer> it = entitiesToRemove.iterator(); it.hasNext(); ) {
+                EntityTimer entityTimer = it.next();
 
-            if (ticks <= 0) {
-                entity.remove();
-                entitiesToRemove.remove(entity);
-            } else {
-                ticks--;
-                entitiesToRemove.put(entity, ticks);
+                if (entityTimer.timer <= 0) {
+                    entityTimer.entity.remove();
+                    it.remove();
+                } else {
+                    entityTimer.timer--;
+                }
             }
         }
     }
 
     @EventHandler
-    public void onPlayerDropItem(PlayerDropItemEvent event) {
-        if (event.getItemDrop().getWorld() == Bukkit.getWorld("world") && event.getItemDrop().getLocation().distance(KIT_CREATOR_LOCATION) <= 20) {
-            entitiesToRemove.put(event.getItemDrop(), 20 * 5);
+    public void onEntitySpawn(EntitySpawnEvent event) {
+        if (event.getEntity() instanceof Item) {
+            event.getEntity().setPersistent(false);
+
+            if (event.getEntity().getWorld() == Bukkit.getWorld("world")) {
+                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getWorld("world")));
+                ProtectedRegion kitCreatorRegion = regions.getRegion("kitcreator");
+
+                if (kitCreatorRegion.contains(BukkitAdapter.asBlockVector(event.getEntity().getLocation()))) {
+                    synchronized (entitiesToRemove) {
+                        entitiesToRemove.add(new EntityTimer(event.getEntity(), 20 * 5));
+                    }
+                }
+            }
         }
     }
 
     @EventHandler
     public void onPlayerPickupItem(EntityPickupItemEvent event) {
-        entitiesToRemove.remove(event.getEntity());
+        synchronized (entitiesToRemove) {
+            entitiesToRemove.removeIf(entityTimer -> entityTimer.entity == event.getEntity());
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) event.setCancelled(true);
     }
 
     @EventHandler
