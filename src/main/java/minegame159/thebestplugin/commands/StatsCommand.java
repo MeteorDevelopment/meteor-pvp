@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class StatsCommand implements CommandExecutor {
-    public static final String GUI_TITLE = "Stats";
+    public static final String GUI_TITLE = "Global Stats";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -21,7 +21,7 @@ public class StatsCommand implements CommandExecutor {
         Player player = (Player) sender;
         Inventory gui = Bukkit.createInventory(player, 9, GUI_TITLE);
 
-        setItem(gui, 1, Material.DIAMOND_SWORD, "Kills: ", TheBestPlugin.STATS.kills);
+        setItem(gui, 1, Material.DIAMOND_SWORD, "Deaths: ", TheBestPlugin.STATS.deaths);
         setItem(gui, 3, Material.END_CRYSTAL, "Blown Crystals: ", TheBestPlugin.STATS.blownCrystals);
         setItem(gui, 5, Material.TOTEM_OF_UNDYING, "Popped Totems: ", TheBestPlugin.STATS.poppedTotems);
         setItem(gui, 7, Material.ARROW, "Played Duels: ", TheBestPlugin.STATS.playedDuels);

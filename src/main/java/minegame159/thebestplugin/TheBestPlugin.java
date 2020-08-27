@@ -1,6 +1,5 @@
 package minegame159.thebestplugin;
 
-import com.boydti.fawe.wrappers.WorldWrapper;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,12 +7,12 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import minegame159.thebestplugin.commands.*;
+import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.json.ItemStackSerializer;
 import minegame159.thebestplugin.json.KitSerializer;
 import minegame159.thebestplugin.json.KitsSerializer;
@@ -50,14 +49,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class TheBestPlugin extends JavaPlugin implements Listener {
+    public static TheBestPlugin INSTANCE;
+
     public static Location SPAWN_LOCATION;
     public static Location KIT_CREATOR_LOCATION;
+    public static Location NETHER_LOCATION;
     public static Region CPVP_REGION;
 
     public static File CONFIG_FOLDER;
 
     public static File STATS_FILE;
     public static Stats STATS;
+    public static Duels DUELS;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Kits.class, new KitsSerializer())
@@ -73,11 +76,14 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        INSTANCE = this;
+
         CONFIG_FOLDER = getDataFolder();
         CONFIG_FOLDER.mkdirs();
 
         SPAWN_LOCATION = new Location((Bukkit.getWorld("world")), 0, 100, 0);
         KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
+        NETHER_LOCATION = new Location((Bukkit.getWorld("world_nether")), 0, 117, 0);
         CPVP_REGION = new CuboidRegion(BukkitAdapter.adapt(Bukkit.getWorld("world")), BlockVector3.at(255, 255, 255), BlockVector3.at(-255, 0, -255));
 
         STATS_FILE = new File(CONFIG_FOLDER, "stats.json");
@@ -91,9 +97,12 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
             STATS = new Stats();
         }
 
+        DUELS = new Duels();
+
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new Kits(), this);
         Bukkit.getPluginManager().registerEvents(new StatsListener(), this);
+        Bukkit.getPluginManager().registerEvents(DUELS, this);
 
         Bukkit.getScheduler().runTaskTimer(this, TabList::update, 0, 80);
 
@@ -114,6 +123,12 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         getCommand("togglekitcreator").setExecutor(new ToggleKitCreatorCommand());
         getCommand("stats").setExecutor(new StatsCommand());
         getCommand("clearcpvp").setExecutor(new ClearCpvpCommand());
+        getCommand("duel").setExecutor(new DuelCommand());
+        getCommand("nether").setExecutor(new NetherCommand());
+        getCommand("trashcan").setExecutor(new TrashCanCommand());
+        getCommand("cancelduel").setExecutor(new CancelDuelCommand());
+        getCommand("accept").setExecutor(new AcceptCommand());
+        getCommand("decline").setExecutor(new DeclineCommand());
 
         Uptime.onEnable();
     }
@@ -199,12 +214,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event) {
-        TabList.update();
-    }
-
-    @EventHandler
-    private void onPlayerKick(PlayerKickEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
         TabList.update();
     }
 

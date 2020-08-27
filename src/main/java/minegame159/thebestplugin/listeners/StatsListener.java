@@ -14,8 +14,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class StatsListener implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Player && event.getEntity().getKiller() != null) {
-            TheBestPlugin.STATS.kills++;
+        if (event.getEntity() instanceof Player) {
+            TheBestPlugin.STATS.deaths++;
             TheBestPlugin.STATS.changed();
         }
     }

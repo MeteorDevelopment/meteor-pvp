@@ -1,0 +1,25 @@
+package minegame159.thebestplugin.commands;
+
+import minegame159.thebestplugin.TheBestPlugin;
+import minegame159.thebestplugin.duels.Duels;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+public class CancelDuelCommand implements CommandExecutor {
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!(sender instanceof Player)) return false;
+        Player player = (Player) sender;
+
+        if (TheBestPlugin.DUELS.cancelRequest(player)) {
+            player.sendMessage(Duels.MSG_PREFIX + "Cancelled duel request.");
+        } else {
+            player.sendMessage(Duels.MSG_PREFIX + "You don't have any active sent duel request.");
+        }
+
+        return true;
+    }
+}

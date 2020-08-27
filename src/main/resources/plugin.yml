@@ -69,3 +69,27 @@ commands:
     description: Clears main crystal pvp area.
     usage: /clearcpv
     permission: thebestplugin.clear-cpvp
+
+  duel:
+    description: Sends duel request to a player.
+    usage: /duel <username>
+
+  nether:
+    description: Teleports you to the nether.
+    usage: /nether
+
+  trashcan:
+    description: Opens a trash can.
+    usage: /trashcan
+
+  cancelduel:
+    description: Cancels your active duel request.
+    usage: /cancelduel
+
+  accept:
+    description: Accepts a duel.
+    usage: /accept <username>
+
+  decline:
+    description: Declines a duel.
+    usage: /decline <username>

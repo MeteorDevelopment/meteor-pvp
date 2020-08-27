@@ -1,7 +1,7 @@
 package minegame159.thebestplugin;
 
 public class Stats {
-    public int kills = 0;
+    public int deaths = 0;
     public int blownCrystals = 0;
     public int poppedTotems = 0;
     public int playedDuels = 0;
