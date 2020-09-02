@@ -27,6 +27,7 @@ public class DuelArena implements Listener {
 
     private final Region region;
     private final Region wall1, wall2, wall3, wall4;
+    private final Region roof;
 
     private boolean wallsGenerated = false;
     private boolean preparing = false;
@@ -41,10 +42,11 @@ public class DuelArena implements Listener {
     public DuelArena(int x, int z) {
         World world = FaweAPI.getWorld("world");
         region = new CuboidRegion(world, BlockVector3.at(x, 0, z), BlockVector3.at(x + SIZE - 1, 255, z + SIZE - 1));
-        wall1 = new CuboidRegion(world, BlockVector3.at(x, 0, z - 1), BlockVector3.at(x + SIZE - 1, 100, z - 1));
-        wall2 = new CuboidRegion(world, BlockVector3.at(x + SIZE, 0, z), BlockVector3.at(x + SIZE, 100, z + SIZE - 1));
-        wall3 = new CuboidRegion(world, BlockVector3.at(x + SIZE - 1, 0, z + SIZE), BlockVector3.at(x, 100, z + SIZE));
-        wall4 = new CuboidRegion(world, BlockVector3.at(x - 1, 0, z), BlockVector3.at(x - 1, 100, z + SIZE - 1));
+        wall1 = new CuboidRegion(world, BlockVector3.at(x - 8, 0, z - 1), BlockVector3.at(x + SIZE - 1 + 7, 100, z - 8));
+        wall2 = new CuboidRegion(world, BlockVector3.at(x + SIZE, 0, z), BlockVector3.at(x + SIZE + 8, 100, z + SIZE - 1));
+        wall3 = new CuboidRegion(world, BlockVector3.at(x + SIZE - 1 + 8, 0, z + SIZE), BlockVector3.at(x - 8, 100, z + SIZE + 8));
+        wall4 = new CuboidRegion(world, BlockVector3.at(x - 1, 0, z), BlockVector3.at(x - 8, 100, z + SIZE - 1));
+        roof = new CuboidRegion(world, BlockVector3.at(x, 92, z), BlockVector3.at(x + SIZE - 1, 100, z + SIZE - 1));
 
         player1Location = new Location(Bukkit.getWorld("world"), x + 15.5, 5, z + 15.5, -45, 0);
         player2Location = new Location(Bukkit.getWorld("world"), x + SIZE - 15.5, 5, z + SIZE - 15.5, 130, 0);
@@ -55,6 +57,9 @@ public class DuelArena implements Listener {
     public void start(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
+
+        player1.sendMessage(Duels.MSG_PREFIX + "Preparing arena.");
+        player2.sendMessage(Duels.MSG_PREFIX + "Preparing arena.");
 
         TaskManager.IMP.async(() -> {
             try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld("world")).fastmode(true).build()) {
@@ -69,6 +74,8 @@ public class DuelArena implements Listener {
                     editSession.setBlocks(wall2, BlockTypes.BEDROCK);
                     editSession.setBlocks(wall3, BlockTypes.BEDROCK);
                     editSession.setBlocks(wall4, BlockTypes.BEDROCK);
+
+                    editSession.setBlocks(roof, BlockTypes.BARRIER);
 
                     wallsGenerated = true;
                 }

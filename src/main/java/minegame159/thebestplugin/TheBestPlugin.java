@@ -19,7 +19,7 @@ import minegame159.thebestplugin.json.KitsSerializer;
 import minegame159.thebestplugin.json.NamespacedKeySerializer;
 import minegame159.thebestplugin.listeners.StatsListener;
 import minegame159.thebestplugin.utils.EntityTimer;
-import minegame159.thebestplugin.utils.Uptime;
+import minegame159.thebestplugin.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +35,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -130,7 +133,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         getCommand("accept").setExecutor(new AcceptCommand());
         getCommand("decline").setExecutor(new DeclineCommand());
 
-        Uptime.onEnable();
+        Utils.onEnable();
     }
 
     @Override

@@ -58,7 +58,7 @@ public class Duels implements Listener {
             accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, acceptCmd));
 
             TextComponent decline = new TextComponent(ChatColor.RED + "[Decline]");
-            String declineCmd = "/decline" + sender.getName();
+            String declineCmd = "/decline " + sender.getName();
             decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{ new TextComponent(declineCmd) }));
             decline.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, declineCmd));
 
