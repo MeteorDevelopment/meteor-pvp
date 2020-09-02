@@ -1,4 +1,4 @@
-package minegame159.thebestplugin;
+package minegame159.thebestplugin.listeners;
 
 import minegame159.thebestplugin.utils.Utils;
 import org.bukkit.Bukkit;
@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShulkerBoxOpen implements Listener {
+public class KitCreatorShulkerListener implements Listener {
     private Map<Player, EquipmentSlot> in = new HashMap<>();
 
     @EventHandler

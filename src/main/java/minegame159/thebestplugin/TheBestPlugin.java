@@ -9,7 +9,10 @@ import minegame159.thebestplugin.json.ItemStackSerializer;
 import minegame159.thebestplugin.json.KitSerializer;
 import minegame159.thebestplugin.json.KitsSerializer;
 import minegame159.thebestplugin.json.NamespacedKeySerializer;
+import minegame159.thebestplugin.listeners.AntiLogListener;
+import minegame159.thebestplugin.listeners.KitCreatorShulkerListener;
 import minegame159.thebestplugin.listeners.StatsListener;
+import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.EntityTimer;
 import minegame159.thebestplugin.utils.Utils;
 import org.bukkit.Bukkit;
@@ -94,7 +97,8 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new Kits(), this);
         Bukkit.getPluginManager().registerEvents(new StatsListener(), this);
         Bukkit.getPluginManager().registerEvents(DUELS, this);
-        Bukkit.getPluginManager().registerEvents(new ShulkerBoxOpen(), this);
+        Bukkit.getPluginManager().registerEvents(new KitCreatorShulkerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new AntiLogListener(), this);
 
         Bukkit.getScheduler().runTaskTimer(this, TabList::update, 0, 80);
 
@@ -124,6 +128,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
         Utils.onEnable();
         Kits.INSTANCE.onEnable();
+        Arenas.onEnable();
         ArenaClearer.onEnable();
     }
 
