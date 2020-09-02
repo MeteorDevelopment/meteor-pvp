@@ -1,5 +1,11 @@
 package minegame159.thebestplugin.utils;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
 import java.util.concurrent.TimeUnit;
@@ -27,5 +33,14 @@ public class Utils {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(uptime - TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours));
 
         return String.format("%dd %dh %dm", days, hours, minutes);
+    }
+
+    public static boolean isInKitCreator(Entity entity) {
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getWorld("world")));
+        if (regions == null) return false;
+        ProtectedRegion kitCreatorRegion = regions.getRegion("kitcreator");
+
+        return kitCreatorRegion != null && kitCreatorRegion.contains(BukkitAdapter.asBlockVector(entity.getLocation()));
     }
 }

@@ -106,8 +106,8 @@ public class DuelArena implements Listener {
     private void win(Player player) {
         player.getInventory().clear();
 
-        player1.teleport(TheBestPlugin.SPAWN_LOCATION);
-        player2.teleport(TheBestPlugin.SPAWN_LOCATION);
+        player1.teleport(Bukkit.getWorld("world").getSpawnLocation());
+        player2.teleport(Bukkit.getWorld("world").getSpawnLocation());
 
         if (starting) player.resetTitle();
 

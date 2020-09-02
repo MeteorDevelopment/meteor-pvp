@@ -7,10 +7,6 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import minegame159.thebestplugin.commands.*;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.json.ItemStackSerializer;
@@ -54,7 +50,6 @@ import java.util.regex.Pattern;
 public final class TheBestPlugin extends JavaPlugin implements Listener {
     public static TheBestPlugin INSTANCE;
 
-    public static Location SPAWN_LOCATION;
     public static Location KIT_CREATOR_LOCATION;
     public static Location NETHER_LOCATION;
     public static Region CPVP_REGION;
@@ -84,7 +79,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         CONFIG_FOLDER = getDataFolder();
         CONFIG_FOLDER.mkdirs();
 
-        SPAWN_LOCATION = new Location((Bukkit.getWorld("world")), 0, 100, 0);
         KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
         NETHER_LOCATION = new Location((Bukkit.getWorld("world_nether")), 0, 117, 0);
         CPVP_REGION = new CuboidRegion(BukkitAdapter.adapt(Bukkit.getWorld("world")), BlockVector3.at(255, 255, 255), BlockVector3.at(-255, 0, -255));
@@ -106,6 +100,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new Kits(), this);
         Bukkit.getPluginManager().registerEvents(new StatsListener(), this);
         Bukkit.getPluginManager().registerEvents(DUELS, this);
+        Bukkit.getPluginManager().registerEvents(new ShulkerBoxOpen(), this);
 
         Bukkit.getScheduler().runTaskTimer(this, TabList::update, 0, 80);
 
@@ -186,11 +181,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
             event.getEntity().setPersistent(false);
 
             if (event.getEntity().getWorld() == Bukkit.getWorld("world")) {
-                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getWorld("world")));
-                ProtectedRegion kitCreatorRegion = regions.getRegion("kitcreator");
-
-                if (kitCreatorRegion.contains(BukkitAdapter.asBlockVector(event.getEntity().getLocation()))) {
+                if (Utils.isInKitCreator(event.getEntity())) {
                     synchronized (entitiesToRemove) {
                         entitiesToRemove.add(new EntityTimer(event.getEntity(), 20 * 5));
                     }
