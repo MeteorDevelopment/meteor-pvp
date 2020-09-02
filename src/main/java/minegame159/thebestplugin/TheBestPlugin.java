@@ -3,10 +3,6 @@ package minegame159.thebestplugin;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldedit.regions.Region;
 import minegame159.thebestplugin.commands.*;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.json.ItemStackSerializer;
@@ -52,7 +48,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
     public static Location KIT_CREATOR_LOCATION;
     public static Location NETHER_LOCATION;
-    public static Region CPVP_REGION;
 
     public static File CONFIG_FOLDER;
 
@@ -81,7 +76,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
         KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
         NETHER_LOCATION = new Location((Bukkit.getWorld("world_nether")), 0, 117, 0);
-        CPVP_REGION = new CuboidRegion(BukkitAdapter.adapt(Bukkit.getWorld("world")), BlockVector3.at(255, 255, 255), BlockVector3.at(-255, 0, -255));
 
         STATS_FILE = new File(CONFIG_FOLDER, "stats.json");
         if (STATS_FILE.exists()) {
@@ -120,16 +114,17 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         getCommand("suicide").setExecutor(new SuicideCommand());
         getCommand("togglekitcreator").setExecutor(new ToggleKitCreatorCommand());
         getCommand("stats").setExecutor(new StatsCommand());
-        getCommand("clearcpvp").setExecutor(new ClearCpvpCommand());
         getCommand("duel").setExecutor(new DuelCommand());
         getCommand("nether").setExecutor(new NetherCommand());
         getCommand("trashcan").setExecutor(new TrashCanCommand());
         getCommand("cancelduel").setExecutor(new CancelDuelCommand());
         getCommand("accept").setExecutor(new AcceptCommand());
         getCommand("decline").setExecutor(new DeclineCommand());
+        getCommand("cleararenas").setExecutor(new ClearArenasCommand());
 
         Utils.onEnable();
         Kits.INSTANCE.onEnable();
+        ArenaClearer.onEnable();
     }
 
     @Override

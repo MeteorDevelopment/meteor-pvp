@@ -65,10 +65,10 @@ commands:
     description: Shows server wide stats.
     usage: /stats
 
-  clearcpvp:
-    description: Clears main crystal pvp area.
-    usage: /clearcpv
-    permission: thebestplugin.clear-cpvp
+  cleararenas:
+    description: Clears arenas.
+    usage: /cleararenas
+    permission: thebestplugin.clear-arenas
 
   duel:
     description: Sends duel request to a player.

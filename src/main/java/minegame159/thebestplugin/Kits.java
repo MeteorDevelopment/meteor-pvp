@@ -102,6 +102,10 @@ public class Kits implements Listener {
         return !usedKit;
     }
 
+    public void clearUsedKit(Player player) {
+        usedKit.remove(player);
+    }
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!event.getView().getTitle().equals(GUI_TITLE)) return;
