@@ -21,6 +21,11 @@ public class KitCommand implements CommandExecutor, TabCompleter {
         if (args.length != 1) return false;
         Player player = (Player) sender;
 
+        if (!Kits.INSTANCE.useKitCommand(player)) {
+            player.sendMessage(Kits.MSG_PREFIX + "Can't use this. Do /suicide");
+            return true;
+        }
+
         Kit kit = Kits.INSTANCE.getKit(args[0]);
         if (kit == null) {
             sender.sendMessage(Kits.MSG_PREFIX + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "doesn't exist.");

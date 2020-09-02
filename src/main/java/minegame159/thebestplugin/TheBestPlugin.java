@@ -129,6 +129,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         getCommand("decline").setExecutor(new DeclineCommand());
 
         Utils.onEnable();
+        Kits.INSTANCE.onEnable();
     }
 
     @Override

@@ -4,7 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.*;
 import java.util.*;
@@ -19,6 +21,7 @@ public class Kits implements Listener {
     private static final List<String> LIST = new ArrayList<>();
 
     private final Map<String, Kit> kits = new HashMap<>();
+    private final Map<Player, Boolean> usedKit = new HashMap<>();
 
     public Kits() {
         INSTANCE = this;
@@ -31,6 +34,10 @@ public class Kits implements Listener {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void onEnable() {
+        usedKit.clear();
     }
 
     private void save() {
@@ -89,6 +96,12 @@ public class Kits implements Listener {
         return count;
     }
 
+    public boolean useKitCommand(Player player) {
+        boolean usedKit = this.usedKit.getOrDefault(player, false);
+        this.usedKit.put(player, true);
+        return !usedKit;
+    }
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!event.getView().getTitle().equals(GUI_TITLE)) return;
@@ -100,5 +113,15 @@ public class Kits implements Listener {
         if (kit != null) kit.apply(player);
 
         player.closeInventory();
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        usedKit.remove(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        usedKit.remove(event.getEntity());
     }
 }

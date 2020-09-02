@@ -2,6 +2,7 @@ package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
+import minegame159.thebestplugin.TheBestPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,6 +21,12 @@ public class KitsCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
+
+        if (!Kits.INSTANCE.useKitCommand(player)) {
+            player.sendMessage(Kits.MSG_PREFIX + "Can't use this. Do /suicide");
+            return true;
+        }
+
         Inventory gui = Bukkit.createInventory(player, 9 * 6, Kits.GUI_TITLE);
 
         int i = 0;
