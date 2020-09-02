@@ -40,11 +40,11 @@ public class Utils {
         return String.format("%dd %dh %dm", days, hours, minutes);
     }
 
-    public static boolean isInKitCreator(Entity entity) {
+    public static boolean isInRegion(String region, Entity entity) {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getWorld("world")));
         if (regions == null) return false;
-        ProtectedRegion kitCreatorRegion = regions.getRegion("kitcreator");
+        ProtectedRegion kitCreatorRegion = regions.getRegion(region);
 
         return kitCreatorRegion != null && kitCreatorRegion.contains(BukkitAdapter.asBlockVector(entity.getLocation()));
     }

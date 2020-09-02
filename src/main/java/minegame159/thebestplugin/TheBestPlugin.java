@@ -182,7 +182,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
             event.getEntity().setPersistent(false);
 
             if (event.getEntity().getWorld() == Bukkit.getWorld("world")) {
-                if (Utils.isInKitCreator(event.getEntity())) {
+                if (Utils.isInRegion("kitcreator", event.getEntity()) || Utils.isInRegion("ow_spawn", event.getEntity())) {
                     synchronized (entitiesToRemove) {
                         entitiesToRemove.add(new EntityTimer(event.getEntity(), 20 * 5));
                     }
