@@ -2,7 +2,7 @@ package minegame159.thebestplugin;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import minegame159.thebestplugin.commands.MyCommand;
+import minegame159.thebestplugin.commands.Commands;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.json.ItemStackSerializer;
 import minegame159.thebestplugin.json.KitSerializer;
@@ -68,7 +68,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         new Kits();
 
         Perms.register();
-        MyCommand.register();
+        Commands.register();
         Listeners.register();
         TabList.register();
 

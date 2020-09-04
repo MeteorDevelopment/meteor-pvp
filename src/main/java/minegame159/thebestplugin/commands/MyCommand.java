@@ -2,7 +2,6 @@ package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.TheBestPlugin;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
@@ -10,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.reflections.Reflections;
 
 import java.util.Arrays;
 import java.util.List;
@@ -77,16 +75,5 @@ public abstract class MyCommand extends Command {
     protected List<String> onTabComplete(CommandSender sender, String alias, String[] args) {
         if (!sender.getServer().suggestPlayerNamesWhenNullTabCompletions()) return com.google.common.collect.ImmutableList.of();
         return tabComplete(sender, alias, args);
-    }
-
-    public static void register() {
-        for (Class<? extends MyCommand> klass : new Reflections("minegame159.thebestplugin.commands").getSubTypesOf(MyCommand.class)) {
-            try {
-                MyCommand command = klass.newInstance();
-                Bukkit.getCommandMap().register("thebestplugin", command);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
