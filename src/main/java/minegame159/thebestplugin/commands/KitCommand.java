@@ -23,7 +23,7 @@ public class KitCommand extends MyCommand {
         Player player = (Player) sender;
 
         if (!Kits.INSTANCE.useKitCommand(player)) {
-            player.sendMessage(Kits.MSG_PREFIX + "Can't use this. Do /suicide");
+            player.sendMessage(Kits.MSG_PREFIX + "You can only get one kit per respawn. Do /suicide.");
             return true;
         }
 

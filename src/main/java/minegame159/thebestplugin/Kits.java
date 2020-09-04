@@ -9,7 +9,7 @@ import java.util.*;
 public class Kits {
     public static Kits INSTANCE;
     public static final String GUI_TITLE = "Kits";
-    public static final String MSG_PREFIX = ChatColor.BLUE + "[Kits]" + ChatColor.GRAY + ": " + ChatColor.WHITE;
+    public static final String MSG_PREFIX = ChatColor.GRAY + "[" + ChatColor.BLUE + "Kits" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
     private static File FILE;
 

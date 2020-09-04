@@ -14,13 +14,18 @@ public class KitsListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         if (!event.getView().getTitle().equals(Kits.INSTANCE.GUI_TITLE)) return;
         if (event.getCurrentItem() == null) return;
-        event.setCancelled(true);
 
         Player player = (Player) event.getWhoClicked();
+        event.setCancelled(true);
+        player.closeInventory();
+
+        if (!Kits.INSTANCE.useKitCommand(player)) {
+            player.sendMessage(Kits.MSG_PREFIX + "You can only get one kit per respawn. Do /suicide.");
+            return;
+        }
+
         Kit kit = Kits.INSTANCE.getKit(event.getCurrentItem().getItemMeta().getDisplayName());
         if (kit != null) kit.apply(player);
-
-        player.closeInventory();
     }
 
     @EventHandler

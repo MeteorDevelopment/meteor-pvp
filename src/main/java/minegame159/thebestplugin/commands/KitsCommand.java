@@ -23,11 +23,6 @@ public class KitsCommand extends MyCommand {
         if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
 
-        if (!Kits.INSTANCE.useKitCommand(player)) {
-            player.sendMessage(Kits.MSG_PREFIX + "Can't use this. Do /suicide");
-            return true;
-        }
-
         Inventory gui = Bukkit.createInventory(player, 9 * 6, Kits.GUI_TITLE);
 
         int i = 0;

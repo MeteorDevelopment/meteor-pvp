@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class Duels {
-    public static final String MSG_PREFIX = ChatColor.BLUE + "[Duels]: " + ChatColor.WHITE;
+    public static final String MSG_PREFIX = ChatColor.GRAY + "[" + ChatColor.LIGHT_PURPLE + "Duels" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
     private final Stack<DuelArena> emptyArenas = new Stack<>();
     private final List<DuelArena> usedArenas = new ArrayList<>();
