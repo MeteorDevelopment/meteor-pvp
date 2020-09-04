@@ -3,15 +3,16 @@ package minegame159.thebestplugin.commands;
 import minegame159.thebestplugin.TheBestPlugin;
 import minegame159.thebestplugin.duels.Duels;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-public class DeclineCommand implements CommandExecutor {
+public class DeclineCommand extends MyCommand {
+    public DeclineCommand() {
+        super("decline", "Declines a duel.", null, null);
+    }
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    protected boolean onCommand(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) return false;
         if (args.length != 1) return false;
         Player player = (Player) sender;

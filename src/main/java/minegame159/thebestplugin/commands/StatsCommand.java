@@ -4,19 +4,21 @@ import minegame159.thebestplugin.TheBestPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class StatsCommand implements CommandExecutor {
+public class StatsCommand extends MyCommand {
     public static final String GUI_TITLE = "Global Stats";
 
+    public StatsCommand() {
+        super("stats", "Shows global stats.", null, null);
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    protected boolean onCommand(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
         Inventory gui = Bukkit.createInventory(player, 9, GUI_TITLE);

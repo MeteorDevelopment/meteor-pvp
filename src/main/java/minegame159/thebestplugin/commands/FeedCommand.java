@@ -1,13 +1,16 @@
 package minegame159.thebestplugin.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import minegame159.thebestplugin.Perms;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class FeedCommand implements CommandExecutor {
+public class FeedCommand extends MyCommand {
+    public FeedCommand() {
+        super("feed", "Fills your hunger bar.", null, Perms.FEED);
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    protected boolean onCommand(CommandSender sender, String label, String[] args) {
         if (sender instanceof Player) {
             ((Player) sender).setFoodLevel(20);
             ((Player) sender).setSaturation(5);

@@ -26,6 +26,8 @@ dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.3'
     compileOnly 'com.intellectualsites.fawe:FAWE-Bukkit:1.16-313'
+
+    compile 'org.reflections:reflections:0.9.12'
 }
 
 processResources {

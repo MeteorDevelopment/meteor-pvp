@@ -3,7 +3,7 @@ package minegame159.thebestplugin;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import minegame159.thebestplugin.commands.*;
+import minegame159.thebestplugin.commands.MyCommand;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.json.ItemStackSerializer;
 import minegame159.thebestplugin.json.KitSerializer;
@@ -102,29 +102,8 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
         Bukkit.getScheduler().runTaskTimer(this, TabList::update, 0, 80);
 
-        Bukkit.getPluginManager().addPermission(CreateKitCommand.UNLIMITED_KITS_PERM);
-        Bukkit.getPluginManager().addPermission(DeleteKitCommand.DELETE_KIT_PERM);
-
-        getCommand("gmc").setExecutor(new GmcCommand());
-        getCommand("gms").setExecutor(new GmsCommand());
-        getCommand("heal").setExecutor(new HealCommand());
-        getCommand("feed").setExecutor(new FeedCommand());
-        getCommand("kits").setExecutor(new KitsCommand());
-        getCommand("createkit").setExecutor(new CreateKitCommand());
-        getCommand("kit").setExecutor(new KitCommand());
-        getCommand("deletekit").setExecutor(new DeleteKitCommand());
-        getCommand("spawn").setExecutor(new SpawnCommand());
-        getCommand("kitcreator").setExecutor(new KitCreatorCommand());
-        getCommand("suicide").setExecutor(new SuicideCommand());
-        getCommand("togglekitcreator").setExecutor(new ToggleKitCreatorCommand());
-        getCommand("stats").setExecutor(new StatsCommand());
-        getCommand("duel").setExecutor(new DuelCommand());
-        getCommand("nether").setExecutor(new NetherCommand());
-        getCommand("trashcan").setExecutor(new TrashCanCommand());
-        getCommand("cancelduel").setExecutor(new CancelDuelCommand());
-        getCommand("accept").setExecutor(new AcceptCommand());
-        getCommand("decline").setExecutor(new DeclineCommand());
-        getCommand("cleararenas").setExecutor(new ClearArenasCommand());
+        Perms.register();
+        MyCommand.register();
 
         Utils.onEnable();
         Kits.INSTANCE.onEnable();

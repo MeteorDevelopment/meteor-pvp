@@ -2,15 +2,16 @@ package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.TheBestPlugin;
 import minegame159.thebestplugin.duels.Duels;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-public class CancelDuelCommand implements CommandExecutor {
+public class CancelDuelCommand extends MyCommand {
+    public CancelDuelCommand() {
+        super("cancelduel", "Cancels your duel request.", null, null);
+    }
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    protected boolean onCommand(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
 
