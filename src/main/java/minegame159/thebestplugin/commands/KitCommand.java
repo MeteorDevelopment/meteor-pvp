@@ -1,7 +1,8 @@
 package minegame159.thebestplugin.commands;
 
+import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
-import org.bukkit.attribute.Attribute;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,7 +18,22 @@ public class KitCommand extends MyCommand {
 
     @Override
     protected boolean onCommand(CommandSender sender, String label, String[] args) {
-        if (sender instanceof Player) ((Player) sender).setHealth(((Player) sender).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        if (!(sender instanceof Player)) return false;
+        if (args.length != 1) return false;
+        Player player = (Player) sender;
+
+        if (!Kits.INSTANCE.useKitCommand(player)) {
+            player.sendMessage(Kits.MSG_PREFIX + "Can't use this. Do /suicide");
+            return true;
+        }
+
+        Kit kit = Kits.INSTANCE.getKit(args[0]);
+        if (kit == null) {
+            sender.sendMessage(Kits.MSG_PREFIX + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "doesn't exist.");
+        } else {
+            kit.apply(player);
+        }
+
         return true;
     }
 

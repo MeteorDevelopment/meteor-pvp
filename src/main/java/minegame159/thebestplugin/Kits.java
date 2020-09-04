@@ -2,16 +2,11 @@ package minegame159.thebestplugin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.*;
 import java.util.*;
 
-public class Kits implements Listener {
+public class Kits {
     public static Kits INSTANCE;
     public static final String GUI_TITLE = "Kits";
     public static final String MSG_PREFIX = ChatColor.BLUE + "[Kits]" + ChatColor.GRAY + ": " + ChatColor.WHITE;
@@ -104,28 +99,5 @@ public class Kits implements Listener {
 
     public void clearUsedKit(Player player) {
         usedKit.remove(player);
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (!event.getView().getTitle().equals(GUI_TITLE)) return;
-        if (event.getCurrentItem() == null) return;
-        event.setCancelled(true);
-
-        Player player = (Player) event.getWhoClicked();
-        Kit kit = getKit(event.getCurrentItem().getItemMeta().getDisplayName());
-        if (kit != null) kit.apply(player);
-
-        player.closeInventory();
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        usedKit.remove(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        usedKit.remove(event.getEntity());
     }
 }

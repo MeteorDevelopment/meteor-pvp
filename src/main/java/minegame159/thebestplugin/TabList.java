@@ -6,6 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TabList {
+    public static void register() {
+        Bukkit.getScheduler().runTaskTimer(TheBestPlugin.INSTANCE, TabList::update, 0, 80);
+    }
+
     public static void update() {
         if (Bukkit.getOnlinePlayers().size() > 0) {
             String header = String.format("%s%sMeteor Pvp\n\n%sPlayers: %s%d", ChatColor.GRAY, ChatColor.BOLD, ChatColor.AQUA, ChatColor.WHITE, Bukkit.getServer().getOnlinePlayers().size());

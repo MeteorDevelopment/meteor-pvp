@@ -40,3 +40,7 @@ task copyJar(type: Copy) {
     from "build/libs/thebestplugin-" + version + ".jar"
     into "run/plugins"
 }
+
+jar {
+    from configurations.runtimeClasspath.collect { zipTree(it) }
+}

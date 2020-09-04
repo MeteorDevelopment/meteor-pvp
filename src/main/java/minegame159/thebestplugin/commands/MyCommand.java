@@ -80,8 +80,7 @@ public abstract class MyCommand extends Command {
     }
 
     public static void register() {
-        Reflections reflections = new Reflections("minegame159.thebestplugin.commands");
-        for (Class<? extends MyCommand> klass : reflections.getSubTypesOf(MyCommand.class)) {
+        for (Class<? extends MyCommand> klass : new Reflections("minegame159.thebestplugin.commands").getSubTypesOf(MyCommand.class)) {
             try {
                 MyCommand command = klass.newInstance();
                 Bukkit.getCommandMap().register("thebestplugin", command);

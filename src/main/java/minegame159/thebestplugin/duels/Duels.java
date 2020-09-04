@@ -1,19 +1,15 @@
 package minegame159.thebestplugin.duels;
 
-import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
 
-public class Duels implements Listener {
+public class Duels {
     public static final String MSG_PREFIX = ChatColor.BLUE + "[Duels]: " + ChatColor.WHITE;
 
     private final Stack<DuelArena> emptyArenas = new Stack<>();
@@ -44,6 +40,9 @@ public class Duels implements Listener {
     }
 
     // Requests
+
+    public Iterator<DuelRequest> sentRequestsIterator() { return sentRequests.values().iterator(); }
+    public Iterable<List<DuelRequest>> pendingRequestsIterable() { return pendingRequests.values(); }
 
     public boolean sendRequest(Player sender, Player receiver) {
         DuelRequest request = new DuelRequest(sender, receiver);
@@ -99,6 +98,10 @@ public class Duels implements Listener {
         return true;
     }
 
+    public void removeSentRequest(Player sender) {
+        sentRequests.remove(sender);
+    }
+
     private List<DuelRequest> getPendingRequests(Player receiver) {
         return pendingRequests.computeIfAbsent(receiver, player1 -> new ArrayList<>(1));
     }
@@ -115,41 +118,5 @@ public class Duels implements Listener {
 
     private void removePendingRequest(Player sender, Player receiver) {
         getPendingRequests(receiver).removeIf(duelRequest -> duelRequest.sender == sender);
-    }
-
-    // Listeners
-
-    @EventHandler
-    public void onTick(ServerTickStartEvent event) {
-        for (Iterator<DuelRequest> it = sentRequests.values().iterator(); it.hasNext(); ) {
-            DuelRequest request = it.next();
-
-            if (request.timer <= 0) {
-                request.sender.sendMessage(MSG_PREFIX + "Your duel request expired.");
-                request.receiver.sendMessage(MSG_PREFIX + "Duel request from " + request.sender.getName() + " expired.");
-
-                it.remove();
-                for (List<DuelRequest> requests : pendingRequests.values()) {
-                    for (Iterator<DuelRequest> it2 = requests.iterator(); it.hasNext(); ) {
-                        DuelRequest r = it2.next();
-
-                        if (r == request) {
-                            it2.remove();
-                        }
-                    }
-                }
-            } else {
-                request.timer--;
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        sentRequests.remove(event.getPlayer());
-
-        for (List<DuelRequest> requests : pendingRequests.values()) {
-            requests.removeIf(request -> request.sender == event.getPlayer() || request.receiver == event.getPlayer());
-        }
     }
 }
