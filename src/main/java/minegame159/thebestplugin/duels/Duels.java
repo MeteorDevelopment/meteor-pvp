@@ -1,5 +1,6 @@
 package minegame159.thebestplugin.duels;
 
+import minegame159.thebestplugin.utils.Prefixes;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -11,7 +12,6 @@ import java.util.*;
 
 public class Duels {
     public static final Duels INSTANCE = new Duels();
-    public static final String MSG_PREFIX = ChatColor.GRAY + "[" + ChatColor.LIGHT_PURPLE + "Duels" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
     private final Stack<DuelArena> emptyArenas = new Stack<>();
     private final List<DuelArena> usedArenas = new ArrayList<>();
@@ -57,7 +57,7 @@ public class Duels {
         boolean sent = sentRequests.putIfAbsent(sender, request) == null;
 
         if (sent) {
-            receiver.sendMessage(String.format("%s%s%s%s %swants to duel you.", MSG_PREFIX, ChatColor.YELLOW, ChatColor.BOLD, sender.getName(), ChatColor.GRAY));
+            receiver.sendMessage(String.format("%s%s%s%s %swants to duel you.", Prefixes.DUELS, ChatColor.YELLOW, ChatColor.BOLD, sender.getName(), ChatColor.GRAY));
 
             TextComponent accept = new TextComponent(ChatColor.GREEN + "[Accept]");
             String acceptCmd = "/accept " + sender.getName();
@@ -69,7 +69,7 @@ public class Duels {
             decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{ new TextComponent(declineCmd) }));
             decline.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, declineCmd));
 
-            receiver.sendMessage(new TextComponent(MSG_PREFIX), accept, new TextComponent(" "), decline);
+            receiver.sendMessage(new TextComponent(Prefixes.DUELS), accept, new TextComponent(" "), decline);
 
             getPendingRequests(receiver).add(request);
         }
@@ -98,8 +98,8 @@ public class Duels {
         DuelRequest request = getPendingRequest(sender, receiver);
         if (request == null) return false;
 
-        sender.sendMessage(MSG_PREFIX + receiver.getName() + " declined your duel.");
-        receiver.sendMessage(MSG_PREFIX + "Declined duel from " + sender.getName() + ".");
+        sender.sendMessage(Prefixes.DUELS + receiver.getName() + " declined your duel.");
+        receiver.sendMessage(Prefixes.DUELS + "Declined duel from " + sender.getName() + ".");
 
         sentRequests.remove(sender);
         removePendingRequest(sender, receiver);

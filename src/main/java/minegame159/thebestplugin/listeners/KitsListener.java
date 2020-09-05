@@ -2,6 +2,7 @@ package minegame159.thebestplugin.listeners;
 
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
+import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +25,7 @@ public class KitsListener implements Listener {
             player.closeInventory();
 
             if (!Kits.INSTANCE.useKitCommand(player)) {
-                player.sendMessage(Kits.MSG_PREFIX + "You can only get one kit per respawn. Do /suicide.");
+                player.sendMessage(Prefixes.KITS + "You can only get one kit per respawn. Do /suicide.");
                 return;
             }
 

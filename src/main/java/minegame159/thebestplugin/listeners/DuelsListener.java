@@ -3,6 +3,7 @@ package minegame159.thebestplugin.listeners;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import minegame159.thebestplugin.duels.DuelRequest;
 import minegame159.thebestplugin.duels.Duels;
+import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -17,8 +18,8 @@ public class DuelsListener implements Listener {
             DuelRequest request = it.next();
 
             if (request.timer <= 0) {
-                request.sender.sendMessage(Duels.MSG_PREFIX + "Your duel request expired.");
-                request.receiver.sendMessage(Duels.MSG_PREFIX + "Duel request from " + request.sender.getName() + " expired.");
+                request.sender.sendMessage(Prefixes.DUELS + "Your duel request expired.");
+                request.receiver.sendMessage(Prefixes.DUELS + "Duel request from " + request.sender.getName() + " expired.");
 
                 it.remove();
                 for (List<DuelRequest> requests : Duels.INSTANCE.pendingRequestsIterable()) {

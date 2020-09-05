@@ -3,6 +3,7 @@ package minegame159.thebestplugin.commands;
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
 import minegame159.thebestplugin.Perms;
+import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,12 +28,12 @@ public class DeleteKitCommand extends MyCommand {
         if (kit != null) {
             if (kit.author.equals(player.getUniqueId()) || player.hasPermission(Perms.DELETE_KIT)) {
                 Kits.INSTANCE.deleteKit(args[0]);
-                sender.sendMessage(Kits.MSG_PREFIX + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "has been deleted.");
+                sender.sendMessage(Prefixes.KITS + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "has been deleted.");
             } else {
-                sender.sendMessage(Kits.MSG_PREFIX + "You don't own that kit.");
+                sender.sendMessage(Prefixes.KITS + "You don't own that kit.");
             }
         } else {
-            sender.sendMessage(Kits.MSG_PREFIX + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "doesn't exist.");
+            sender.sendMessage(Prefixes.KITS + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "doesn't exist.");
         }
 
         return true;

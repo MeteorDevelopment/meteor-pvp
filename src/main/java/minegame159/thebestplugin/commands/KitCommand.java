@@ -2,6 +2,7 @@ package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
+import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,13 +24,13 @@ public class KitCommand extends MyCommand {
         Player player = (Player) sender;
 
         if (!Kits.INSTANCE.useKitCommand(player)) {
-            player.sendMessage(Kits.MSG_PREFIX + "You can only get one kit per respawn. Do /suicide.");
+            player.sendMessage(Prefixes.KITS + "You can only get one kit per respawn. Do /suicide.");
             return true;
         }
 
         Kit kit = Kits.INSTANCE.getKit(args[0]);
         if (kit == null) {
-            sender.sendMessage(Kits.MSG_PREFIX + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "doesn't exist.");
+            sender.sendMessage(Prefixes.KITS + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "doesn't exist.");
         } else {
             kit.apply(player);
         }

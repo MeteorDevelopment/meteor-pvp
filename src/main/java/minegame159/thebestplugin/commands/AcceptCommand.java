@@ -1,6 +1,7 @@
 package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.duels.Duels;
+import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,12 +19,12 @@ public class AcceptCommand extends MyCommand {
 
         Player player2 = Bukkit.getPlayer(args[0]);
         if (player2 == null) {
-            player.sendMessage(Duels.MSG_PREFIX + "Player not online.");
+            player.sendMessage(Prefixes.DUELS + "Player not online.");
             return true;
         }
 
         if (!Duels.INSTANCE.accept(player2, player)) {
-            player.sendMessage(Duels.MSG_PREFIX + "You don't have pending request from that player.");
+            player.sendMessage(Prefixes.DUELS + "You don't have pending request from that player.");
         }
 
         return true;

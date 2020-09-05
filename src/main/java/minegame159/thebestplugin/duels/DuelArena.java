@@ -14,6 +14,7 @@ import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import minegame159.thebestplugin.Stats;
 import minegame159.thebestplugin.TheBestPlugin;
+import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -59,8 +60,8 @@ public class DuelArena implements Listener {
         this.player1 = player1;
         this.player2 = player2;
 
-        player1.sendMessage(Duels.MSG_PREFIX + "Preparing arena.");
-        player2.sendMessage(Duels.MSG_PREFIX + "Preparing arena.");
+        player1.sendMessage(Prefixes.DUELS + "Preparing arena.");
+        player2.sendMessage(Prefixes.DUELS + "Preparing arena.");
 
         TaskManager.IMP.async(() -> {
             try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld("world")).fastmode(true).build()) {
