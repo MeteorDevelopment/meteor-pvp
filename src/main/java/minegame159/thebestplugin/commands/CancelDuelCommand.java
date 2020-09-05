@@ -15,7 +15,7 @@ public class CancelDuelCommand extends MyCommand {
         if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
 
-        if (TheBestPlugin.DUELS.cancelRequest(player)) {
+        if (Duels.INSTANCE.cancelRequest(player)) {
             player.sendMessage(Duels.MSG_PREFIX + "Cancelled duel request.");
         } else {
             player.sendMessage(Duels.MSG_PREFIX + "You don't have any active sent duel request.");

@@ -1,6 +1,5 @@
 package minegame159.thebestplugin.commands;
 
-import minegame159.thebestplugin.TheBestPlugin;
 import minegame159.thebestplugin.duels.DuelArena;
 import minegame159.thebestplugin.duels.Duels;
 import org.bukkit.Bukkit;
@@ -29,13 +28,13 @@ public class DuelCommand extends MyCommand {
             return true;
         }
 
-        DuelArena duel = TheBestPlugin.DUELS.getDuel(player);
+        DuelArena duel = Duels.INSTANCE.getDuel(player);
         if (duel != null) {
             player.sendMessage(Duels.MSG_PREFIX + "Player is in duel with " + duel.getOther(player).getName() + ".");
             return true;
         }
 
-        if (TheBestPlugin.DUELS.sendRequest(player, receiver)) {
+        if (Duels.INSTANCE.sendRequest(player, receiver)) {
             player.sendMessage(Duels.MSG_PREFIX + "Duel request sent.");
         } else {
             player.sendMessage(Duels.MSG_PREFIX + "You already have active duel request.");

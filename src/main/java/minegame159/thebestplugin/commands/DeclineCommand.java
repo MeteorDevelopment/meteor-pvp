@@ -1,6 +1,5 @@
 package minegame159.thebestplugin.commands;
 
-import minegame159.thebestplugin.TheBestPlugin;
 import minegame159.thebestplugin.duels.Duels;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -23,7 +22,7 @@ public class DeclineCommand extends MyCommand {
             return true;
         }
 
-        if (!TheBestPlugin.DUELS.decline(player2, player)) {
+        if (!Duels.INSTANCE.decline(player2, player)) {
             player.sendMessage(Duels.MSG_PREFIX + "You don't have pending request from that player.");
         }
 

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class Duels {
+    public static final Duels INSTANCE = new Duels();
     public static final String MSG_PREFIX = ChatColor.GRAY + "[" + ChatColor.LIGHT_PURPLE + "Duels" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
     private final Stack<DuelArena> emptyArenas = new Stack<>();
@@ -18,7 +19,14 @@ public class Duels {
     private final Map<Player, DuelRequest> sentRequests = new HashMap<>();
     private final Map<Player, List<DuelRequest>> pendingRequests = new HashMap<>();
 
-    public Duels() {
+    private Duels() {}
+
+    public void init() {
+        emptyArenas.clear();
+        usedArenas.clear();
+        sentRequests.clear();
+        pendingRequests.clear();
+
         int startX = 10000;
         int startZ = 10000;
 

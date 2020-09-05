@@ -1,6 +1,6 @@
 package minegame159.thebestplugin.commands;
 
-import minegame159.thebestplugin.TheBestPlugin;
+import minegame159.thebestplugin.Stats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,10 +23,10 @@ public class StatsCommand extends MyCommand {
         Player player = (Player) sender;
         Inventory gui = Bukkit.createInventory(player, 9, GUI_TITLE);
 
-        setItem(gui, 1, Material.DIAMOND_SWORD, "Deaths: ", TheBestPlugin.STATS.deaths);
-        setItem(gui, 3, Material.END_CRYSTAL, "Blown Crystals: ", TheBestPlugin.STATS.blownCrystals);
-        setItem(gui, 5, Material.TOTEM_OF_UNDYING, "Popped Totems: ", TheBestPlugin.STATS.poppedTotems);
-        setItem(gui, 7, Material.ARROW, "Played Duels: ", TheBestPlugin.STATS.playedDuels);
+        setItem(gui, 1, Material.DIAMOND_SWORD, "Deaths: ", Stats.INSTANCE.deaths);
+        setItem(gui, 3, Material.END_CRYSTAL, "Blown Crystals: ", Stats.INSTANCE.blownCrystals);
+        setItem(gui, 5, Material.TOTEM_OF_UNDYING, "Popped Totems: ", Stats.INSTANCE.poppedTotems);
+        setItem(gui, 7, Material.ARROW, "Played Duels: ", Stats.INSTANCE.playedDuels);
 
         player.openInventory(gui);
         return true;

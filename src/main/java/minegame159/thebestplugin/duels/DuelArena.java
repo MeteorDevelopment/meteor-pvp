@@ -12,6 +12,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockTypes;
+import minegame159.thebestplugin.Stats;
 import minegame159.thebestplugin.TheBestPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -89,8 +90,8 @@ public class DuelArena implements Listener {
                     starting = true;
                     startTimer = 20 * 5;
 
-                    TheBestPlugin.STATS.playedDuels++;
-                    TheBestPlugin.STATS.changed();
+                    Stats.INSTANCE.playedDuels++;
+                    Stats.INSTANCE.changed();
 
                     return null;
                 });
@@ -115,7 +116,7 @@ public class DuelArena implements Listener {
         player2 = null;
         started = false;
 
-        TheBestPlugin.DUELS.addEmptyArena(this);
+        Duels.INSTANCE.addEmptyArena(this);
     }
 
     private void setTitle(String text) {

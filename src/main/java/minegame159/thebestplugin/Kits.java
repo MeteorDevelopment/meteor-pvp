@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 public class Kits {
-    public static Kits INSTANCE;
+    public static final Kits INSTANCE = new Kits();
     public static final String GUI_TITLE = "Kits";
     public static final String MSG_PREFIX = ChatColor.GRAY + "[" + ChatColor.BLUE + "Kits" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
@@ -18,9 +18,13 @@ public class Kits {
     private final Map<String, Kit> kits = new HashMap<>();
     private final Map<Player, Boolean> usedKit = new HashMap<>();
 
-    public Kits() {
-        INSTANCE = this;
+    private Kits() {}
+
+    public void init() {
         FILE = new File(TheBestPlugin.CONFIG_FOLDER, "kits.json");
+
+        kits.clear();
+        usedKit.clear();
 
         if (FILE.exists()) {
             try {
@@ -29,10 +33,6 @@ public class Kits {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void onEnable() {
-        usedKit.clear();
     }
 
     private void save() {
