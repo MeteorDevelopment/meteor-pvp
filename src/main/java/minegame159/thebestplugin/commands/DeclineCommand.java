@@ -1,6 +1,7 @@
 package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.duels.Duels;
+import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -19,12 +20,12 @@ public class DeclineCommand extends MyCommand {
 
         Player player2 = Bukkit.getPlayer(args[0]);
         if (player2 == null) {
-            player.sendMessage(Prefixes.DUELS + "Player not online.");
+            player.sendMessage(Prefixes.DUELS + Msgs.playerNotOnline());
             return true;
         }
 
         if (!Duels.INSTANCE.decline(player2, player)) {
-            player.sendMessage(Prefixes.DUELS + "You don't have pending request from that player.");
+            player.sendMessage(Prefixes.DUELS + Msgs.dontHaveRequest());
         }
 
         return true;

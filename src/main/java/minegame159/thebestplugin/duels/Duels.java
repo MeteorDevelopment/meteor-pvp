@@ -1,5 +1,6 @@
 package minegame159.thebestplugin.duels;
 
+import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -57,7 +58,7 @@ public class Duels {
         boolean sent = sentRequests.putIfAbsent(sender, request) == null;
 
         if (sent) {
-            receiver.sendMessage(String.format("%s%s%s%s %swants to duel you.", Prefixes.DUELS, ChatColor.YELLOW, ChatColor.BOLD, sender.getName(), ChatColor.GRAY));
+            receiver.sendMessage(Prefixes.DUELS + Msgs.duelRequest(sender.getName()));
 
             TextComponent accept = new TextComponent(ChatColor.GREEN + "[Accept]");
             String acceptCmd = "/accept " + sender.getName();
@@ -98,8 +99,8 @@ public class Duels {
         DuelRequest request = getPendingRequest(sender, receiver);
         if (request == null) return false;
 
-        sender.sendMessage(Prefixes.DUELS + receiver.getName() + " declined your duel.");
-        receiver.sendMessage(Prefixes.DUELS + "Declined duel from " + sender.getName() + ".");
+        sender.sendMessage(Prefixes.DUELS + Msgs.playerDeclinedDuel(receiver.getName()));
+        receiver.sendMessage(Prefixes.DUELS + Msgs.youDeclinedDuel(sender.getName()));
 
         sentRequests.remove(sender);
         removePendingRequest(sender, receiver);

@@ -3,6 +3,7 @@ package minegame159.thebestplugin.listeners;
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
 import minegame159.thebestplugin.utils.Arenas;
+import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class KitsListener implements Listener {
             player.closeInventory();
 
             if (Arenas.isInAnyPvp(player)) {
-                player.sendMessage(Prefixes.KITS + "You can't use this command here.");
+                player.sendMessage(Prefixes.KITS + Msgs.cantUseThisInPvp());
                 return;
             }
 

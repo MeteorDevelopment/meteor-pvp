@@ -3,8 +3,8 @@ package minegame159.thebestplugin.commands;
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
 import minegame159.thebestplugin.Perms;
+import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,12 +29,12 @@ public class CreateKitCommand extends MyCommand {
 
             if (player.hasPermission(Perms.UNLIMITED_KITS) || kitCount < 3) {
                 Kits.INSTANCE.addKit(new Kit(args[0], player));
-                sender.sendMessage(Prefixes.KITS + "Created kit with name " + ChatColor.GRAY + "'" + args[0] + "'" + ChatColor.WHITE + ".");
+                sender.sendMessage(Prefixes.KITS + Msgs.createdKit(args[0]));
             } else {
-                sender.sendMessage(Prefixes.KITS + "You can only have 3 kits.");
+                sender.sendMessage(Prefixes.KITS + Msgs.maxKits());
             }
         } else {
-            sender.sendMessage(Prefixes.KITS + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "already exists.");
+            sender.sendMessage(Prefixes.KITS + Msgs.kitAlreadyExists(args[0]));
         }
 
         return true;

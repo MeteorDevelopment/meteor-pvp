@@ -1,6 +1,7 @@
 package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.duels.Duels;
+import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,9 +17,9 @@ public class CancelDuelCommand extends MyCommand {
         Player player = (Player) sender;
 
         if (Duels.INSTANCE.cancelRequest(player)) {
-            player.sendMessage(Prefixes.DUELS + "Cancelled duel request.");
+            player.sendMessage(Prefixes.DUELS + Msgs.cancelledRequest());
         } else {
-            player.sendMessage(Prefixes.DUELS + "You don't have any active sent duel request.");
+            player.sendMessage(Prefixes.DUELS + Msgs.didntSendRequest());
         }
 
         return true;

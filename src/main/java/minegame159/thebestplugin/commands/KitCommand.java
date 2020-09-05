@@ -3,8 +3,8 @@ package minegame159.thebestplugin.commands;
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
 import minegame159.thebestplugin.utils.Arenas;
+import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,13 +25,13 @@ public class KitCommand extends MyCommand {
         Player player = (Player) sender;
 
         if (Arenas.isInAnyPvp(player)) {
-            player.sendMessage(Prefixes.KITS + "You can't use this command here.");
+            player.sendMessage(Prefixes.KITS + Msgs.cantUseThisInPvp());
             return true;
         }
 
         Kit kit = Kits.INSTANCE.getKit(args[0]);
         if (kit == null) {
-            sender.sendMessage(Prefixes.KITS + "Kit with name " + ChatColor.GRAY + "'" + args[0] + "' " + ChatColor.WHITE + "doesn't exist.");
+            sender.sendMessage(Prefixes.KITS + Msgs.kitDoesntExist(args[0]));
         } else {
             kit.apply(player);
         }

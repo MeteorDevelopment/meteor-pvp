@@ -2,6 +2,7 @@ package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.duels.DuelArena;
 import minegame159.thebestplugin.duels.Duels;
+import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -20,26 +21,26 @@ public class DuelCommand extends MyCommand {
 
         Player receiver = Bukkit.getPlayer(args[0]);
         if (receiver == null) {
-            player.sendMessage(Prefixes.DUELS + "Player not online.");
+            player.sendMessage(Prefixes.DUELS + Msgs.playerNotOnline());
             return true;
         }
 
         if (receiver == player) {
-            player.sendMessage(Prefixes.DUELS + "You can't duel yourself.");
+            player.sendMessage(Prefixes.DUELS + Msgs.cantDuelYourself());
             return true;
         }
 
         DuelArena duel = Duels.INSTANCE.getDuel(player);
         if (duel != null) {
-            player.sendMessage(Prefixes.DUELS + "Player is in duel with " + duel.getOther(player).getName() + ".");
+            player.sendMessage(Prefixes.DUELS + Msgs.playerIsInDuel(duel.getOther(player).getName()));
             return true;
         }
 
         if (Duels.INSTANCE.sendRequest(player, receiver)) {
-            player.sendMessage(Prefixes.DUELS + "Duel request sent.");
+            player.sendMessage(Prefixes.DUELS + Msgs.duelRequestSent());
         } else {
-            player.sendMessage(Prefixes.DUELS + "You already have active duel request.");
-            player.sendMessage(Prefixes.DUELS + "Do /cancelduel to cancel it.");
+            player.sendMessage(Prefixes.DUELS + Msgs.alreadySentRequest());
+            player.sendMessage(Prefixes.DUELS + Msgs.cancelDuelHelp());
         }
 
         return true;
