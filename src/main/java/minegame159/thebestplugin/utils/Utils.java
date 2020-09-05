@@ -8,10 +8,9 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import minegame159.thebestplugin.Kits;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.concurrent.TimeUnit;
 
@@ -55,15 +54,15 @@ public class Utils {
 
     public static void resetToSpawn(Player player) {
         player.teleport(Bukkit.getWorld("world").getSpawnLocation());
+
         Kits.INSTANCE.clearUsedKit(player);
+
         player.getInventory().clear();
         player.setHealth(20);
         player.setFoodLevel(20);
-    }
 
-    public static void dropItems(Player player) {
-        World world = Bukkit.getWorld("world");
-        for (ItemStack itemStack : player.getInventory()) world.dropItemNaturally(player.getLocation(), itemStack);
-        player.getInventory().clear();
+        for (PotionEffect effect : player.getActivePotionEffects()){
+            player.removePotionEffect(effect.getType());
+        }
     }
 }
