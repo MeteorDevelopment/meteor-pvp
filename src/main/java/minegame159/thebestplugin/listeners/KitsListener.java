@@ -2,14 +2,13 @@ package minegame159.thebestplugin.listeners;
 
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
+import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.meta.SkullMeta;
 
 public class KitsListener implements Listener {
@@ -24,8 +23,8 @@ public class KitsListener implements Listener {
         if (event.getCurrentItem().getType() == Material.DIAMOND_SWORD) {
             player.closeInventory();
 
-            if (!Kits.INSTANCE.useKitCommand(player)) {
-                player.sendMessage(Prefixes.KITS + "You can only get one kit per respawn. Do /suicide.");
+            if (Arenas.isInAnyPvp(player)) {
+                player.sendMessage(Prefixes.KITS + "You can't use this command here.");
                 return;
             }
 
@@ -42,15 +41,5 @@ public class KitsListener implements Listener {
                 Kits.INSTANCE.fillGui(event.getInventory(), page);
             }
         }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Kits.INSTANCE.clearUsedKit(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        Kits.INSTANCE.clearUsedKit(event.getEntity());
     }
 }

@@ -6,7 +6,6 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import minegame159.thebestplugin.Kits;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -54,8 +53,6 @@ public class Utils {
 
     public static void resetToSpawn(Player player) {
         player.teleport(Bukkit.getWorld("world").getSpawnLocation());
-
-        Kits.INSTANCE.clearUsedKit(player);
 
         player.getInventory().clear();
         player.setHealth(20);

@@ -23,7 +23,6 @@ public class Kits {
 
     private final Map<String, Kit> kits = new HashMap<>();
     private final List<Kit> kitsSorted = new ArrayList<>();
-    private final Map<Player, Boolean> usedKit = new HashMap<>();
 
     private Kits() {}
 
@@ -32,7 +31,6 @@ public class Kits {
 
         kits.clear();
         kitsSorted.clear();
-        usedKit.clear();
 
         if (FILE.exists()) {
             try {
@@ -112,16 +110,6 @@ public class Kits {
         }
 
         return count;
-    }
-
-    public boolean useKitCommand(Player player) {
-        boolean usedKit = this.usedKit.getOrDefault(player, false);
-        this.usedKit.put(player, true);
-        return !usedKit;
-    }
-
-    public void clearUsedKit(Player player) {
-        usedKit.remove(player);
     }
 
     // GUI

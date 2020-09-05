@@ -2,6 +2,7 @@ package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
+import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -23,8 +24,8 @@ public class KitCommand extends MyCommand {
         if (args.length != 1) return false;
         Player player = (Player) sender;
 
-        if (!Kits.INSTANCE.useKitCommand(player)) {
-            player.sendMessage(Prefixes.KITS + "You can only get one kit per respawn. Do /suicide.");
+        if (Arenas.isInAnyPvp(player)) {
+            player.sendMessage(Prefixes.KITS + "You can't use this command here.");
             return true;
         }
 
