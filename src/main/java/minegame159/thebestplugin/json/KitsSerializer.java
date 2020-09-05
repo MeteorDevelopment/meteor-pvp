@@ -3,6 +3,7 @@ package minegame159.thebestplugin.json;
 import com.google.gson.*;
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
+import org.bukkit.Bukkit;
 
 import java.lang.reflect.Type;
 
@@ -22,7 +23,7 @@ public class KitsSerializer implements JsonSerializer<Kits>, JsonDeserializer<Ki
     public Kits deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         for (JsonElement e : json.getAsJsonArray()) {
             Kit kit = context.deserialize(e, Kit.class);
-            Kits.INSTANCE.addKit(kit);
+            Kits.INSTANCE.addKit(kit, false);
         }
 
         return null;

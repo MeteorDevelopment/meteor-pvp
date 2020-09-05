@@ -2,13 +2,16 @@ package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
+import net.royawesome.jlibnoise.MathHelper;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,25 +26,19 @@ public class KitsCommand extends MyCommand {
         if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
 
-        Inventory gui = Bukkit.createInventory(player, 9 * 6, Kits.GUI_TITLE);
+        int page = 1;
 
-        int i = 0;
-        for (Kit kit : Kits.INSTANCE.getKits()) {
-            if (i >= 9 * 6) break;
-
-            ItemStack itemStack = new ItemStack(Material.DIAMOND_SWORD);
-            ItemMeta meta = itemStack.getItemMeta();
-
-            meta.setDisplayName(kit.name);
-            List<String> lore = new ArrayList<>(1);
-            lore.add(Bukkit.getOfflinePlayer(kit.author).getName());
-            meta.setLore(lore);
-
-            itemStack.setItemMeta(meta);
-            gui.setItem(i, itemStack);
-
-            i++;
+        if (args.length > 0) {
+            try {
+                page = Integer.parseInt(args[0]);
+                page = MathHelper.clamp(page, 1, Kits.INSTANCE.getMaxPage());
+            } catch (NumberFormatException ignored) {
+                page = 1;
+            }
         }
+
+        Inventory gui = Bukkit.createInventory(player, 9 * 6, Kits.GUI_TITLE);
+        Kits.INSTANCE.fillGui(gui, page);
 
         player.openInventory(gui);
         return true;
