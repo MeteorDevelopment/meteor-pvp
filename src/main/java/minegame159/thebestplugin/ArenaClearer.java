@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import java.util.function.Consumer;
 
 public class ArenaClearer {
-    private static final String PREFIX = ChatColor.GRAY + "[" + ChatColor.GREEN + "ARENA" + ChatColor.GRAY + "] " + ChatColor.WHITE;
+    public static final String PREFIX = ChatColor.GRAY + "[" + ChatColor.GREEN + "ARENA" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
     public static void onEnable() {
         Bukkit.getScheduler().runTaskTimer(TheBestPlugin.INSTANCE, ArenaClearer::clear, 20 * 60 * 60 * 6, 20 * 60 * 60 * 6);
