@@ -13,6 +13,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.util.NumberConversions;
 
 import java.util.HashMap;
@@ -22,19 +23,29 @@ public class AntiCheatListener implements Listener {
     private final Map<Player, Location> lastValidPositions = new HashMap<>();
     private final Map<Player, Location> lastValidPositionsOnGround = new HashMap<>();
     private final Map<Player, Integer> inAirTicks = new HashMap<>();
+    private final Map<Player, Integer> inactiveTicks = new HashMap<>();
+
+    private boolean skipTeleportEvent = false;
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         lastValidPositions.remove(event.getPlayer());
         lastValidPositionsOnGround.remove(event.getPlayer());
         inAirTicks.remove(event.getPlayer());
+        inactiveTicks.put(event.getPlayer(), 5);
     }
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (skipTeleportEvent) {
+            skipTeleportEvent = false;
+            return;
+        }
+
         lastValidPositions.remove(event.getPlayer());
         lastValidPositionsOnGround.remove(event.getPlayer());
         inAirTicks.remove(event.getPlayer());
+        inactiveTicks.put(event.getPlayer(), 5);
     }
 
     @EventHandler
@@ -42,6 +53,7 @@ public class AntiCheatListener implements Listener {
         lastValidPositions.remove(event.getEntity());
         lastValidPositionsOnGround.remove(event.getEntity());
         inAirTicks.remove(event.getEntity());
+        inactiveTicks.put(event.getEntity(), 5);
     }
 
     @EventHandler
@@ -49,12 +61,33 @@ public class AntiCheatListener implements Listener {
         lastValidPositions.remove(event.getPlayer());
         lastValidPositionsOnGround.remove(event.getPlayer());
         inAirTicks.remove(event.getPlayer());
+        inactiveTicks.put(event.getPlayer(), 5);
+    }
+
+    @EventHandler
+    public void onPlayerVelocity(PlayerVelocityEvent event) {
+        event.getPlayer().sendMessage("PlayerVelocityEvent");
+        lastValidPositions.remove(event.getPlayer());
+        lastValidPositionsOnGround.remove(event.getPlayer());
+        inAirTicks.remove(event.getPlayer());
+        inactiveTicks.put(event.getPlayer(), 10);
     }
 
     @EventHandler
     public void onTick(ServerTickEndEvent event) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.isDead() || player.getGameMode() != GameMode.SURVIVAL) continue;
+            
+            if (inactiveTicks.containsKey(player)) {
+                int ticks = inactiveTicks.get(player);
+                if (ticks <= 0) {
+                    inactiveTicks.remove(player);
+                } else {
+                    ticks--;
+                    inactiveTicks.put(player, ticks);
+                    continue;
+                }
+            }
 
             Location pos = player.getLocation();
             Location lastPos = lastValidPositions.get(player);
@@ -65,7 +98,7 @@ public class AntiCheatListener implements Listener {
             double horizontalDistance = NumberConversions.square(pos.getX() - lastPos.getX()) + NumberConversions.square(pos.getZ() - lastPos.getZ());
 
             // Speed check
-            if (horizontalDistance > 1) {
+            if (horizontalDistance > 1.25) {
                 // Moving too fast
                 teleportPos = lastPos;
                 sendDebug(player, "Speed, value %.3f", horizontalDistance);
@@ -92,7 +125,7 @@ public class AntiCheatListener implements Listener {
                     }
 
                     // Flight - Fast vertical acceleration check
-                    if (verticalDistance > 0.754) {
+                    if (verticalDistance > 1) {
                         teleportPos = lastValidPositionsOnGround.getOrDefault(player, lastPos);
                         sendDebug(player, "Flight - Fast Acceleration, value %.3f", verticalDistance);
                     }
@@ -107,6 +140,7 @@ public class AntiCheatListener implements Listener {
                 }
             } else {
                 // Didn't pass some checks
+                skipTeleportEvent = true;
                 player.teleport(teleportPos);
             }
         }
