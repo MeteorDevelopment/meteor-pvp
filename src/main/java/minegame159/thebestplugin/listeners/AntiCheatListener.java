@@ -66,7 +66,6 @@ public class AntiCheatListener implements Listener {
 
     @EventHandler
     public void onPlayerVelocity(PlayerVelocityEvent event) {
-        event.getPlayer().sendMessage("PlayerVelocityEvent");
         lastValidPositions.remove(event.getPlayer());
         lastValidPositionsOnGround.remove(event.getPlayer());
         inAirTicks.remove(event.getPlayer());

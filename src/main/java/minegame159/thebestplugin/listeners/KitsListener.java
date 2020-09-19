@@ -5,6 +5,7 @@ import minegame159.thebestplugin.Kits;
 import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +30,7 @@ public class KitsListener implements Listener {
                 return;
             }
 
-            Kit kit = Kits.INSTANCE.getKit(event.getCurrentItem().getItemMeta().getDisplayName());
+            Kit kit = Kits.INSTANCE.getKit(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
             if (kit != null) kit.apply(player);
         } else if (event.getCurrentItem().getType() == Material.PLAYER_HEAD) {
             int page = Integer.parseInt(event.getInventory().getItem(9 * 5 + 4).getItemMeta().getDisplayName().split(" ")[1]);
