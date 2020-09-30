@@ -1,6 +1,5 @@
 package minegame159.thebestplugin;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,27 +33,5 @@ public class Kit {
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) player.getInventory().setItem(i, new ItemStack(items[i]));
         }
-    }
-
-    public int count(Material item) {
-        int count = 0;
-
-        for (ItemStack itemStack : items) {
-            if (itemStack != null && itemStack.getType() == item) count += itemStack.getAmount();
-        }
-
-        return count;
-    }
-
-    public int countBeds() {
-        int count = 0;
-
-        for (ItemStack itemStack : items) {
-            if (itemStack != null && itemStack.getType().getKey().getKey().endsWith("_bed")) {
-                count += itemStack.getAmount();
-            }
-        }
-
-        return count;
     }
 }

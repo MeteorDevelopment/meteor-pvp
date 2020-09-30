@@ -1,5 +1,6 @@
 package minegame159.thebestplugin;
 
+import minegame159.thebestplugin.utils.KitStats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -128,15 +129,17 @@ public class Kits {
             ItemStack itemStack = new ItemStack(Material.DIAMOND_SWORD);
             ItemMeta meta = itemStack.getItemMeta();
 
+            KitStats.count(kit);
+
             meta.setDisplayName(ChatColor.AQUA + kit.name);
             List<String> lore = new ArrayList<>(1);
             lore.add("");
-            lore.add(ChatColor.WHITE + "Totems: " + ChatColor.GRAY + kit.count(Material.TOTEM_OF_UNDYING));
-            lore.add(ChatColor.WHITE + "Egaps: " + ChatColor.GRAY + kit.count(Material.ENCHANTED_GOLDEN_APPLE));
-            lore.add(ChatColor.WHITE + "Xp Bottles: " + ChatColor.GRAY + kit.count(Material.EXPERIENCE_BOTTLE));
-            lore.add(ChatColor.WHITE + "Obsidian: " + ChatColor.GRAY + kit.count(Material.OBSIDIAN));
-            lore.add(ChatColor.WHITE + "Crystals: " + ChatColor.GRAY + kit.count(Material.END_CRYSTAL));
-            lore.add(ChatColor.WHITE + "Beds: " + ChatColor.GRAY + kit.countBeds());
+            lore.add(ChatColor.WHITE + "Totems: " + ChatColor.GRAY + KitStats.totems);
+            lore.add(ChatColor.WHITE + "Egaps: " + ChatColor.GRAY + KitStats.egaps);
+            lore.add(ChatColor.WHITE + "Xp Bottles: " + ChatColor.GRAY + KitStats.xpBottles);
+            lore.add(ChatColor.WHITE + "Obsidian: " + ChatColor.GRAY + KitStats.obsidian);
+            lore.add(ChatColor.WHITE + "Crystals: " + ChatColor.GRAY + KitStats.crystals);
+            lore.add(ChatColor.WHITE + "Beds: " + ChatColor.GRAY + KitStats.beds);
             lore.add("");
             lore.add(ChatColor.GRAY + Bukkit.getOfflinePlayer(kit.author).getName());
             meta.setLore(lore);
