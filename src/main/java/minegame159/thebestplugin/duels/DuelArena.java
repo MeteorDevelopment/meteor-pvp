@@ -56,6 +56,11 @@ public class DuelArena implements Listener {
         Bukkit.getPluginManager().registerEvents(this, TheBestPlugin.INSTANCE);
     }
 
+    public boolean isIn(Player player) {
+        Location pos = player.getLocation();
+        return region.contains(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
+    }
+
     public void start(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;

@@ -1,15 +1,21 @@
 package minegame159.thebestplugin.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
+    public static World OVERWORLD, NETHER;
+
     private static long startTime;
 
     public static void onEnable() {
+        OVERWORLD = Bukkit.getWorld("world");
+        NETHER = Bukkit.getWorld("world_nether");
+
         startTime = System.currentTimeMillis();
     }
 

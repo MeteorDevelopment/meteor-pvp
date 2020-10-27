@@ -8,7 +8,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import minegame159.thebestplugin.duels.Duels;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,8 +20,8 @@ public class Regions {
 
     public static void onEnable() {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager OW = container.get(BukkitAdapter.adapt(Bukkit.getWorld("world")));
-        RegionManager NETHER = container.get(BukkitAdapter.adapt(Bukkit.getWorld("world_nether")));
+        RegionManager OW = container.get(BukkitAdapter.adapt(Utils.OVERWORLD));
+        RegionManager NETHER = container.get(BukkitAdapter.adapt(Utils.NETHER));
 
         KITCREATOR = OW.getRegion("kitcreator");
 
@@ -39,6 +38,14 @@ public class Regions {
         if (isIn(Regions.OW_PVP, player)) return true;
 
         return Duels.INSTANCE.getDuel(player) != null;
+    }
+
+    public static boolean isInAnyOW(Player player) {
+        return isIn(OW_SPAWN, player) || isIn(OW_PVP, player) || isIn(KITCREATOR, player);
+    }
+
+    public static boolean isInAnyNether(Player player) {
+        return true;
     }
 
     public static Region toWERegion(ProtectedRegion region) {

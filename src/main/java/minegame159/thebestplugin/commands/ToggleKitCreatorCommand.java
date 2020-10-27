@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 
 public class ToggleKitCreatorCommand extends MyCommand {
     public ToggleKitCreatorCommand() {
-        super("togglekitcreator", "Toggles kit creator.", null, Perms.TOGGLE_KIT_CREATOR);
+        super("togglekitcreator", "Toggles kit creator.", null, Perms.ADMIN);
     }
 
     @Override

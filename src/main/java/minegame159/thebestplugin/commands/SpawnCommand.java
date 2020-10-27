@@ -20,7 +20,7 @@ public class SpawnCommand extends MyCommand {
                 return true;
             }
 
-            ((Player) sender).teleport(Bukkit.getWorld("world").getSpawnLocation());
+            ((Player) sender).teleport(Bukkit.getWorld("world").getSpawnLocation().add(0.5, 0, 0.5));
         }
 
         return true;
