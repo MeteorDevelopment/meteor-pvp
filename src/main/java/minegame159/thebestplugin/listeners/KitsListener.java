@@ -2,9 +2,9 @@ package minegame159.thebestplugin.listeners;
 
 import minegame159.thebestplugin.Kit;
 import minegame159.thebestplugin.Kits;
-import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
+import minegame159.thebestplugin.utils.Regions;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class KitsListener implements Listener {
         if (event.getCurrentItem().getType() == Material.DIAMOND_SWORD) {
             player.closeInventory();
 
-            if (Arenas.isInAnyPvp(player)) {
+            if (Regions.isInAnyPvp(player)) {
                 player.sendMessage(Prefixes.KITS + Msgs.cantUseThisInPvp());
                 return;
             }

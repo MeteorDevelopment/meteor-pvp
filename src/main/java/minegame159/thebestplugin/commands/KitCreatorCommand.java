@@ -1,9 +1,9 @@
 package minegame159.thebestplugin.commands;
 
 import minegame159.thebestplugin.TheBestPlugin;
-import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
+import minegame159.thebestplugin.utils.Regions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,7 +15,7 @@ public class KitCreatorCommand extends MyCommand {
     @Override
     protected boolean onCommand(CommandSender sender, String label, String[] args) {
         if (sender instanceof Player) {
-            if (Arenas.isInAnyPvp((Player) sender)) {
+            if (Regions.isInAnyPvp((Player) sender)) {
                 sender.sendMessage(Prefixes.ARENA + Msgs.cantUseThisInPvp());
                 return true;
             }

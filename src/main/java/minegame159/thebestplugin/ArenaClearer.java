@@ -5,8 +5,8 @@ import com.boydti.fawe.util.TaskManager;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.function.mask.InverseSingleBlockTypeMask;
 import com.sk89q.worldedit.world.block.BlockTypes;
-import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.Prefixes;
+import minegame159.thebestplugin.utils.Regions;
 import minegame159.thebestplugin.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -32,7 +32,11 @@ public class ArenaClearer {
 
                 TaskManager.IMP.async(() -> {
                     try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld("world")).fastmode(true).build()) {
-                        editSession.replaceBlocks(Arenas.OVERWORLD, new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK), BlockTypes.AIR);
+                        editSession.replaceBlocks(
+                                Regions.toWERegion(Regions.OW_PVP),
+                                new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK),
+                                BlockTypes.AIR
+                        );
                     }
 
                     forEachPlayer(world, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));

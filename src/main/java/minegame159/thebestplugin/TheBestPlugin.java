@@ -6,8 +6,8 @@ import minegame159.thebestplugin.commands.Commands;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.json.*;
 import minegame159.thebestplugin.listeners.Listeners;
-import minegame159.thebestplugin.utils.Arenas;
 import minegame159.thebestplugin.utils.Utils;
+import minegame159.thebestplugin.utils.Regions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -55,7 +55,7 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         Stats.INSTANCE.init();
 
         Utils.onEnable();
-        Arenas.onEnable();
+        Regions.onEnable();
         ArenaClearer.onEnable();
     }
 
