@@ -4,7 +4,9 @@ import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.util.TaskManager;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.function.mask.InverseSingleBlockTypeMask;
+import com.sk89q.worldedit.function.mask.SingleBlockTypeMask;
 import com.sk89q.worldedit.world.block.BlockTypes;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import minegame159.thebestplugin.utils.Prefixes;
 import minegame159.thebestplugin.utils.Regions;
 import minegame159.thebestplugin.utils.Utils;
@@ -20,41 +22,37 @@ public class ArenaClearer {
     }
 
     public static void clear() {
-        forEachPlayer(player -> player.sendMessage(Prefixes.ARENA + "Clearing arena in 30 seconds."));
+        forEachPlayer(player -> player.sendMessage(Prefixes.ARENA + "Clearing arenas in 30 seconds."));
 
         Bukkit.getScheduler().runTaskLater(TheBestPlugin.INSTANCE, () -> {
-            forEachPlayer(player -> player.sendMessage(Prefixes.ARENA + "Clearing arena in 5 seconds."));
+            forEachPlayer(player -> player.sendMessage(Prefixes.ARENA + "Clearing arenas in 5 seconds."));
 
             Bukkit.getScheduler().runTaskLater(TheBestPlugin.INSTANCE, () -> {
-                forEachPlayer(Utils::resetToSpawn);
-
-                // Overworld
-                TaskManager.IMP.async(() -> {
-                    try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld("world")).fastmode(true).build()) {
-                        editSession.replaceBlocks(
-                                Regions.toWERegion(Regions.OW_PVP),
-                                new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK),
-                                BlockTypes.AIR
-                        );
-                    }
-
-                    forEachPlayer(Utils.OVERWORLD, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));
-                });
-
-                // Nether
-                TaskManager.IMP.async(() -> {
-                    try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld("world_nether")).fastmode(true).build()) {
-                        editSession.replaceBlocks(
-                                Regions.toWERegion(Regions.NETHER_PVP),
-                                new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK),
-                                BlockTypes.AIR
-                        );
-                    }
-
-                    forEachPlayer(Utils.NETHER, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));
-                });
+                clean("world", Regions.OW_PVP, Regions.OW_AC_BARRIER);
+                clean("world_nether", Regions.NETHER_PVP, Regions.NETHER_AC_BARRIER);
             }, 20 * 5);
         }, 20 * 30);
+    }
+
+    private static void clean(String worldName, ProtectedRegion clearRegion, ProtectedRegion barrierRegion) {
+        World world = Bukkit.getWorld(worldName);
+        forEachPlayer(world, Utils::resetToSpawn);
+
+        TaskManager.IMP.async(() -> {
+            try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld(worldName)).fastmode(true).build()) {
+                barrierEnable(editSession, barrierRegion);
+
+                editSession.replaceBlocks(
+                        Regions.toWERegion(clearRegion),
+                        new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK),
+                        BlockTypes.AIR
+                );
+
+                barrierDisable(editSession, barrierRegion);
+            }
+
+            forEachPlayer(world, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));
+        });
     }
 
     private static void forEachPlayer(Consumer<Player> consumer) {
@@ -67,5 +65,21 @@ public class ArenaClearer {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getWorld() == world) consumer.accept(player);
         }
+    }
+
+    private static void barrierEnable(EditSession editSession, ProtectedRegion region) {
+        editSession.replaceBlocks(
+                Regions.toWERegion(region),
+                new SingleBlockTypeMask(editSession, BlockTypes.AIR),
+                BlockTypes.BARRIER
+        );
+    }
+
+    private static void barrierDisable(EditSession editSession, ProtectedRegion region) {
+        editSession.replaceBlocks(
+                Regions.toWERegion(region),
+                new SingleBlockTypeMask(editSession, BlockTypes.BARRIER),
+                BlockTypes.AIR
+        );
     }
 }
