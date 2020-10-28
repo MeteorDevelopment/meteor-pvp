@@ -3,7 +3,7 @@ package minegame159.thebestplugin.commands;
 import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
 import minegame159.thebestplugin.utils.Regions;
-import org.bukkit.Bukkit;
+import minegame159.thebestplugin.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,7 +20,7 @@ public class SpawnCommand extends MyCommand {
                 return true;
             }
 
-            ((Player) sender).teleport(Bukkit.getWorld("world").getSpawnLocation().add(0.5, 0, 0.5));
+            ((Player) sender).teleport(Utils.OVERWORLD.getSpawnLocation().add(0.5, 0, 0.5));
         }
 
         return true;

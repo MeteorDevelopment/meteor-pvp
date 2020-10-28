@@ -6,8 +6,8 @@ import minegame159.thebestplugin.commands.Commands;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.json.*;
 import minegame159.thebestplugin.listeners.Listeners;
-import minegame159.thebestplugin.utils.Utils;
 import minegame159.thebestplugin.utils.Regions;
+import minegame159.thebestplugin.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -21,7 +21,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
     public static TheBestPlugin INSTANCE;
 
     public static Location KIT_CREATOR_LOCATION;
-    public static Location NETHER_LOCATION;
 
     public static File CONFIG_FOLDER;
 
@@ -43,7 +42,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         CONFIG_FOLDER.mkdirs();
 
         KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
-        NETHER_LOCATION = new Location((Bukkit.getWorld("world_nether")), 0, 117, 0);
 
         Perms.register();
         Commands.register();
