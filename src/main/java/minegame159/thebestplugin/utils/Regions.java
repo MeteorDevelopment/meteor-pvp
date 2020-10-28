@@ -18,6 +18,9 @@ public class Regions {
     public static ProtectedRegion OW_SPAWN;
     public static ProtectedRegion OW_PVP;
 
+    public static ProtectedRegion NETHER_SPAWN;
+    public static ProtectedRegion NETHER_PVP;
+
     public static void onEnable() {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager OW = container.get(BukkitAdapter.adapt(Utils.OVERWORLD));
@@ -27,6 +30,9 @@ public class Regions {
 
         OW_SPAWN = OW.getRegion("spawn");
         OW_PVP = OW.getRegion("pvp");
+
+        NETHER_SPAWN = NETHER.getRegion("spawn");
+        NETHER_PVP = NETHER.getRegion("pvp");
     }
 
     public static boolean isIn(ProtectedRegion region, Entity entity) {
@@ -36,12 +42,10 @@ public class Regions {
 
     public static boolean isInAnyPvp(Player player) {
         if (player.getWorld() == Utils.OVERWORLD) {
-            if (isIn(Regions.OW_PVP, player)) return true;
-
-            return Duels.INSTANCE.getDuel(player) != null;
+            return isIn(OW_PVP, player) || Duels.INSTANCE.getDuel(player) != null;
         }
 
-        return false;
+        return isIn(NETHER_PVP, player);
     }
 
     public static boolean isInAnyOW(Player player) {
@@ -49,7 +53,7 @@ public class Regions {
     }
 
     public static boolean isInAnyNether(Player player) {
-        return true;
+        return isIn(NETHER_SPAWN, player) || isIn(NETHER_PVP, player);
     }
 
     public static Region toWERegion(ProtectedRegion region) {

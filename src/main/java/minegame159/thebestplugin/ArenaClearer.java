@@ -20,16 +20,15 @@ public class ArenaClearer {
     }
 
     public static void clear() {
-        World world = Bukkit.getWorld("world");
-        
-        forEachPlayer(world, player -> player.sendMessage(Prefixes.ARENA + "Clearing arena in 30 seconds."));
+        forEachPlayer(player -> player.sendMessage(Prefixes.ARENA + "Clearing arena in 30 seconds."));
 
         Bukkit.getScheduler().runTaskLater(TheBestPlugin.INSTANCE, () -> {
-            forEachPlayer(world, player -> player.sendMessage(Prefixes.ARENA + "Clearing arena in 5 seconds."));
+            forEachPlayer(player -> player.sendMessage(Prefixes.ARENA + "Clearing arena in 5 seconds."));
 
             Bukkit.getScheduler().runTaskLater(TheBestPlugin.INSTANCE, () -> {
-                forEachPlayer(world, Utils::resetToSpawn);
+                forEachPlayer(Utils::resetToSpawn);
 
+                // Overworld
                 TaskManager.IMP.async(() -> {
                     try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld("world")).fastmode(true).build()) {
                         editSession.replaceBlocks(
@@ -39,17 +38,34 @@ public class ArenaClearer {
                         );
                     }
 
-                    forEachPlayer(world, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));
+                    forEachPlayer(Utils.OVERWORLD, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));
+                });
+
+                // Nether
+                TaskManager.IMP.async(() -> {
+                    try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld("world_nether")).fastmode(true).build()) {
+                        editSession.replaceBlocks(
+                                Regions.toWERegion(Regions.NETHER_PVP),
+                                new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK),
+                                BlockTypes.AIR
+                        );
+                    }
+
+                    forEachPlayer(Utils.NETHER, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));
                 });
             }, 20 * 5);
         }, 20 * 30);
     }
 
+    private static void forEachPlayer(Consumer<Player> consumer) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            consumer.accept(player);
+        }
+    }
+
     private static void forEachPlayer(World world, Consumer<Player> consumer) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getWorld() == world) {
-                consumer.accept(player);
-            }
+            if (player.getWorld() == world) consumer.accept(player);
         }
     }
 }

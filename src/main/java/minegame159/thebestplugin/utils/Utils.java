@@ -38,11 +38,13 @@ public class Utils {
     }
 
     public static void resetToSpawn(Player player) {
-        player.teleport(Bukkit.getWorld("world").getSpawnLocation());
+        player.teleport(player.getWorld().getSpawnLocation());
 
         player.getInventory().clear();
         player.setHealth(20);
         player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0);
 
         for (PotionEffect effect : player.getActivePotionEffects()){
             player.removePotionEffect(effect.getType());
