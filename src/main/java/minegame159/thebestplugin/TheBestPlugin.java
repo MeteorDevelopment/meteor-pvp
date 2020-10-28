@@ -46,7 +46,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         Perms.register();
         Commands.register();
         Listeners.register();
-        TabList.register();
 
         Kits.INSTANCE.init();
         Duels.INSTANCE.init();
