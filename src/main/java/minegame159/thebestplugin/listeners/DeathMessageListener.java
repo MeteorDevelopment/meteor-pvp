@@ -71,7 +71,7 @@ public class DeathMessageListener implements Listener {
                 with = ChatColor.GREEN + "End Crystal";
             }
 
-            if (exploder != null) event.setDeathMessage(String.format("%s%s %swas nuked by %s%s %swith %s", ChatColor.DARK_GREEN, player.getName(), ChatColor.RED, ChatColor.DARK_GREEN, exploder.getName(), ChatColor.RED, with));
+            if (exploder != null) event.setDeathMessage(String.format("%s%s %swas nuked by %s%s %swith %s", ChatColor.GREEN, player.getName(), ChatColor.RED, ChatColor.GREEN, exploder.getName(), ChatColor.RED, with));
         }
     }
 
