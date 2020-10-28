@@ -20,7 +20,7 @@ public class NetherCommand extends MyCommand {
                 return true;
             }
 
-            ((Player) sender).teleport(Utils.NETHER.getSpawnLocation());
+            ((Player) sender).teleport(Utils.NETHER.getSpawnLocation().add(0.5, 0, 0.5));
         }
 
         return true;

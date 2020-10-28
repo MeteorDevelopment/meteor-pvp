@@ -38,7 +38,7 @@ public class Utils {
     }
 
     public static void resetToSpawn(Player player) {
-        player.teleport(player.getWorld().getSpawnLocation());
+        player.teleport(player.getWorld().getSpawnLocation().add(0.5, 0, 0.5));
 
         player.getInventory().clear();
         player.setHealth(20);
