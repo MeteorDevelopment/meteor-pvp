@@ -54,10 +54,14 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         Utils.onEnable();
         Regions.onEnable();
         ArenaClearer.onEnable();
+
+        WebServer.enable();
     }
 
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
+
+        WebServer.disable();
     }
 }
