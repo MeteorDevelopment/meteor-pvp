@@ -4,7 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import minegame159.thebestplugin.commands.Commands;
 import minegame159.thebestplugin.duels.Duels;
-import minegame159.thebestplugin.json.*;
+import minegame159.thebestplugin.json.ItemStackSerializer;
+import minegame159.thebestplugin.json.KitSerializer;
+import minegame159.thebestplugin.json.KitsSerializer;
+import minegame159.thebestplugin.json.NamespacedKeySerializer;
 import minegame159.thebestplugin.listeners.Listeners;
 import minegame159.thebestplugin.utils.Regions;
 import minegame159.thebestplugin.utils.Utils;
@@ -29,7 +32,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
             .registerTypeAdapter(Kit.class, new KitSerializer())
             .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
             .registerTypeAdapter(NamespacedKey.class, new NamespacedKeySerializer())
-            .registerTypeAdapter(Stats.class, new StatsSerializer())
             .create();
 
     public static boolean KIT_CREATOR_ENABLED = true;
@@ -49,7 +51,6 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
 
         Kits.INSTANCE.init();
         Duels.INSTANCE.init();
-        Stats.INSTANCE.init();
 
         Utils.onEnable();
         Regions.onEnable();

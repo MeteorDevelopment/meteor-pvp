@@ -12,7 +12,6 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockTypes;
-import minegame159.thebestplugin.Stats;
 import minegame159.thebestplugin.TheBestPlugin;
 import minegame159.thebestplugin.utils.Prefixes;
 import org.bukkit.Bukkit;
@@ -95,9 +94,6 @@ public class DuelArena implements Listener {
                     started = true;
                     starting = true;
                     startTimer = 20 * 5;
-
-                    Stats.INSTANCE.playedDuels++;
-                    Stats.INSTANCE.changed();
 
                     return null;
                 });
