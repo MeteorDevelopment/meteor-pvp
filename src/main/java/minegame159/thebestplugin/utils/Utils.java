@@ -1,8 +1,12 @@
 package minegame159.thebestplugin.utils;
 
+import minegame159.thebestplugin.Perms;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 
 public class Utils {
@@ -25,5 +29,15 @@ public class Utils {
         for (PotionEffect effect : player.getActivePotionEffects()){
             player.removePotionEffect(effect.getType());
         }
+    }
+
+    public static boolean isDonator(HumanEntity player) {
+        return player.hasPermission(Perms.DONATOR);
+    }
+
+    public static void setName(ItemStack itemStack, String name) {
+        ItemMeta pageItemMeta = itemStack.getItemMeta();
+        pageItemMeta.setDisplayName(name);
+        itemStack.setItemMeta(pageItemMeta);
     }
 }

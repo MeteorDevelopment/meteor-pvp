@@ -1,7 +1,7 @@
 name: TheBestPlugin
 version: @version@
 main: minegame159.thebestplugin.TheBestPlugin
-api-version: 1.14
+api-version: 1.16
 
 depend:
   - WorldGuard

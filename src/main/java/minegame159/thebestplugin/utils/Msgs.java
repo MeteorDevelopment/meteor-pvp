@@ -1,5 +1,6 @@
 package minegame159.thebestplugin.utils;
 
+import minegame159.thebestplugin.kits.MaxKits;
 import org.bukkit.ChatColor;
 
 public class Msgs {
@@ -24,10 +25,9 @@ public class Msgs {
 
     // KITS
     public static String createdKit(String name) { return "Created kit with name " + ChatColor.GRAY + "'" + name + "'" + ChatColor.WHITE + "."; }
-    public static String maxKits() { return "You can only have 3 kits."; }
+    public static String maxKits(MaxKits maxKits) { return "You can only have " + maxKits.count + " kits."; }
     public static String kitAlreadyExists(String name) { return "Kit with name " + ChatColor.GRAY + "'" + name + "' " + ChatColor.WHITE + "already exists."; }
     public static String deletedKit(String name) { return "Kit with name " + ChatColor.GRAY + "'" + name + "' " + ChatColor.WHITE + "has been deleted."; }
-    public static String doesntOwnKit() { return "You don't own that kit."; }
     public static String kitDoesntExist(String name) { return "Kit with name " + ChatColor.GRAY + "'" + name + "' " + ChatColor.WHITE + "doesn't exist."; }
     public static String kitCreatorToggled(boolean on) { return "Kit creator is now " + ChatColor.GRAY + (on ? "on" : "off") + ChatColor.WHITE + "."; }
 }
