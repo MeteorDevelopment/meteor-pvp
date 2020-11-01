@@ -45,15 +45,21 @@ public class Regions {
         return region.contains(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
     }
 
-    public static boolean isInAnyPvp(Player player) {
+    public static boolean isInAnyPvp(Player player, boolean duels) {
         if (player.getWorld() == Utils.OVERWORLD) {
             return isIn(OW_PVP, player) || Duels.INSTANCE.get(player) != null;
         }
 
-        Duel duel = Duels.INSTANCE.get(player);
-        if (duel != null) return true;
+        if (duels) {
+            Duel duel = Duels.INSTANCE.get(player);
+            if (duel != null) return true;
+        }
 
         return isIn(NETHER_PVP, player);
+    }
+
+    public static boolean isInAnyPvp(Player player) {
+        return isInAnyPvp(player, true);
     }
 
     public static boolean isInAnyOW(Player player) {
