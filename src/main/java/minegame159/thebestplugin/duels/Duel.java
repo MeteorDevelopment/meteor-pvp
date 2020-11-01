@@ -49,8 +49,8 @@ public class Duel implements Listener {
         this.world = world;
         this.region = new CuboidRegion(BukkitAdapter.adapt(world), BlockVector3.at(x, 0, z), BlockVector3.at(x + SIZE, 119, z + SIZE));
 
-        this.player1Location = new Location(world, x + 15, 6, z + 15);
-        this.player2Location = new Location(world, x + SIZE - 15, 6, z + SIZE - 15);
+        this.player1Location = new Location(world, x + 15, 5, z + 15);
+        this.player2Location = new Location(world, x + SIZE - 15, 5, z + SIZE - 15);
 
         Bukkit.getPluginManager().registerEvents(this, TheBestPlugin.INSTANCE);
     }
@@ -66,6 +66,9 @@ public class Duel implements Listener {
         preparing = true;
         wonBeforePrepare = false;
 
+        player1.sendMessage(Prefixes.DUELS + "Preparing arena.");
+        player2.sendMessage(Prefixes.DUELS + "Preparing arena.");
+
         TaskManager.IMP.async(() -> {
             try (EditSession editSession = FaweAPI.getEditSessionBuilder(BukkitAdapter.adapt(world)).fastmode(true).build()) {
                 editSession.replaceBlocks(region, new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK), BlockTypes.AIR);
@@ -80,6 +83,8 @@ public class Duel implements Listener {
             TaskManager.IMP.sync(() -> {
                 player1.teleport(player1Location);
                 player2.teleport(player2Location);
+
+                System.out.println(region.getMinimumPoint() + " - " + region.getMaximumPoint());
 
                 started = true;
                 starting = true;
@@ -118,23 +123,27 @@ public class Duel implements Listener {
         starting = false;
     }
 
+    private boolean is(Entity entity) {
+        return player1 == entity || player2 == entity;
+    }
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (event.getEntity() == player1 || event.getEntity() == player2) {
+        if (is(event.getEntity())) {
             win(getOther(event.getEntity()));
         }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        if (event.getPlayer() == player1 || event.getPlayer() == player2) {
+        if (is(event.getPlayer())) {
             win(getOther(event.getPlayer()));
         }
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (starting && (event.getPlayer() == player1 || event.getPlayer() == player2)) {
+        if (starting && is(event.getPlayer())) {
             Location from = event.getFrom();
             event.getTo().set(from.getX(), from.getY(), from.getZ());
         }
@@ -150,12 +159,15 @@ public class Duel implements Listener {
     }
 
     private void win(Player player) {
-        Utils.resetToSpawn(player1);
-        Utils.resetToSpawn(player2);
+        Player p1 = player1;
+        Player p2 = player2;
+
+        Utils.resetToSpawn(p1);
+        Utils.resetToSpawn(p2);
 
         if (starting) {
-            player1.resetTitle();
-            player2.resetTitle();
+            p1.resetTitle();
+            p2.resetTitle();
         }
 
         if (preparing) wonBeforePrepare = true;

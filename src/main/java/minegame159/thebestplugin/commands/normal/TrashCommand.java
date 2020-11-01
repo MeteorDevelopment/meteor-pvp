@@ -5,9 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TrashCanCommand extends MyCommand {
-    public TrashCanCommand() {
-        super("trasncan", "Opens a trash can.", null, null);
+public class TrashCommand extends MyCommand {
+    public TrashCommand() {
+        super("trash", "Opens a trash can.", null, null);
     }
 
     @Override

@@ -3,10 +3,10 @@ package minegame159.thebestplugin.duels;
 import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
 import minegame159.thebestplugin.utils.Utils;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -22,10 +22,10 @@ public enum Duels {
     public DuelsMode netherNormal;
     public DuelsMode netherFlat;
 
-    final Map<Player, Duel> duels = new HashMap<>();
+    final Map<HumanEntity, Duel> duels = new HashMap<>();
 
     private final Map<HumanEntity, DuelRequest> sentRequests = new HashMap<>();
-    private final Map<Player, List<DuelRequest>> pendingRequests = new HashMap<>();
+    private final Map<HumanEntity, List<DuelRequest>> pendingRequests = new HashMap<>();
 
     public void init() {
         overworldNormal = new DuelsMode(Utils.OVERWORLD, "overworld", 1000000, 1000000, 1000192, 1000000, 1000384, 1000000, 1000576, 1000000, 1000768, 1000000);
@@ -63,12 +63,12 @@ public enum Duels {
 
         TextComponent accept = new TextComponent(ChatColor.GREEN + "[Accept]");
         String acceptCmd = "/accept " + sender.getName();
-        accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{ new TextComponent(acceptCmd) }));
+        accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(acceptCmd)));
         accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, acceptCmd));
 
         TextComponent decline = new TextComponent(ChatColor.RED + "[Decline]");
         String declineCmd = "/decline " + sender.getName();
-        decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{ new TextComponent(declineCmd) }));
+        decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(declineCmd)));
         decline.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, declineCmd));
 
         receiver.sendMessage(new TextComponent(Prefixes.DUELS), accept, new TextComponent(" "), decline);

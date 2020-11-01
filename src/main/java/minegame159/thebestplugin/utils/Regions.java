@@ -7,6 +7,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import minegame159.thebestplugin.duels.Duel;
 import minegame159.thebestplugin.duels.Duels;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -48,6 +49,9 @@ public class Regions {
         if (player.getWorld() == Utils.OVERWORLD) {
             return isIn(OW_PVP, player) || Duels.INSTANCE.get(player) != null;
         }
+
+        Duel duel = Duels.INSTANCE.get(player);
+        if (duel != null) return true;
 
         return isIn(NETHER_PVP, player);
     }

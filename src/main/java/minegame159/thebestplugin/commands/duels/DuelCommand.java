@@ -40,7 +40,7 @@ public class DuelCommand extends MyCommand {
 
         Duel duel = Duels.INSTANCE.get(receiver);
         if (duel != null) {
-            player.sendMessage(Prefixes.DUELS + Msgs.playerIsInDuel(receiver.getName()));
+            player.sendMessage(Prefixes.DUELS + Msgs.playerIsInDuel(duel.getOther(receiver).getName()));
             return true;
         }
 

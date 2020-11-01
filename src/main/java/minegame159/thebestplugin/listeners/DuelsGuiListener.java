@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class DuelsGuiListener implements Listener {
     @EventHandler
     private void onInventoryClick(InventoryClickEvent event) {
-        if (!event.getView().getTitle().equals(DuelsGui.TITLE)) return;
+        if (!event.getView().getTitle().startsWith(DuelsGui.TITLE)) return;
         event.setCancelled(true);
 
         Player receiver = Bukkit.getPlayer(event.getView().getTitle().replace(DuelsGui.TITLE, ""));
@@ -26,22 +26,23 @@ public class DuelsGuiListener implements Listener {
 
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
         if (name.equals(DuelsGui.OVERWORLD)) {
-            onClick(Duels.INSTANCE.overworldNormal, event.getWhoClicked(), receiver);
+            onClick(event, Duels.INSTANCE.overworldNormal, event.getWhoClicked(), receiver);
         } else if (name.equals(DuelsGui.OVERWORLD_FLAT)) {
-            onClick(Duels.INSTANCE.overworldFlat, event.getWhoClicked(), receiver);
+            onClick(event, Duels.INSTANCE.overworldFlat, event.getWhoClicked(), receiver);
         } else if (name.equals(DuelsGui.NETHER)) {
-            onClick(Duels.INSTANCE.netherNormal, event.getWhoClicked(), receiver);
+            onClick(event, Duels.INSTANCE.netherNormal, event.getWhoClicked(), receiver);
         } else if (name.equals(DuelsGui.NETHER_FLAT)) {
-            onClick(Duels.INSTANCE.netherFlat, event.getWhoClicked(), receiver);
+            onClick(event, Duels.INSTANCE.netherFlat, event.getWhoClicked(), receiver);
         }
     }
 
-    private void onClick(DuelsMode mode, HumanEntity player, Player receiver) {
+    private void onClick(InventoryClickEvent event, DuelsMode mode, HumanEntity player, Player receiver) {
         if (!mode.isAvailable()) {
             player.sendMessage(Prefixes.DUELS + Msgs.noAvailableArenas());
             return;
         }
 
         Duels.INSTANCE.sendRequest(mode, player, receiver);
+        event.getWhoClicked().closeInventory();
     }
 }

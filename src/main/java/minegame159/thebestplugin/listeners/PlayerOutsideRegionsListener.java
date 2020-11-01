@@ -17,13 +17,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PlayerOutsideRegionsListener implements Listener {
-    private final Map<Player, Location> lastValidPositions = new HashMap<>();
+    private final Map<UUID, Location> lastValidPositions = new HashMap<>();
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        lastValidPositions.remove(event.getPlayer());
+        lastValidPositions.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -34,12 +35,20 @@ public class PlayerOutsideRegionsListener implements Listener {
             World world = player.getWorld();
             Duel duel = Duels.INSTANCE.get(player);
 
-            if ((duel != null && !duel.isIn(player)) || (world == Utils.OVERWORLD && !Regions.isInAnyOW(player)) || (world == Utils.NETHER && !Regions.isInAnyNether(player))) {
-                Location pos = lastValidPositions.get(player);
+            boolean outside = false;
+            if (duel != null) {
+                if (!duel.isIn(player)) outside = true;
+            } else {
+                if (world == Utils.OVERWORLD && !Regions.isInAnyOW(player)) outside = true;
+                else if (world == Utils.NETHER && !Regions.isInAnyNether(player)) outside = true;
+            }
+
+            if (outside) {
+                Location pos = lastValidPositions.get(player.getUniqueId());
                 if (pos == null) pos = (world == Utils.OVERWORLD ? Utils.OVERWORLD : Utils.NETHER).getSpawnLocation().add(0.5, 0, 0.5);
                 player.teleport(pos);
             } else {
-                lastValidPositions.put(player, player.getLocation());
+                lastValidPositions.put(player.getUniqueId(), player.getLocation());
             }
         }
     }
