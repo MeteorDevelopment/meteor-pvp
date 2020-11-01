@@ -120,12 +120,16 @@ public class Duel implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        win(getOther(event.getEntity()));
+        if (event.getEntity() == player1 || event.getEntity() == player2) {
+            win(getOther(event.getEntity()));
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        win(getOther(event.getPlayer()));
+        if (event.getPlayer() == player1 || event.getPlayer() == player2) {
+            win(getOther(event.getPlayer()));
+        }
     }
 
     @EventHandler
