@@ -17,11 +17,12 @@ public class Msgs {
     public static String duelRequestSent() { return "Duel request sent."; }
     public static String alreadySentRequest() { return "You have already sent a duel request."; }
     public static String cancelDuelHelp() { return "Do /cancelduel to cancel it."; }
-    public static String duelRequest(String player) { return ChatColor.YELLOW + "" + ChatColor.BOLD + player + ChatColor.GRAY + " wants to duel you."; }
+    public static String duelRequest(String player, String arena) { return ChatColor.YELLOW + "" + ChatColor.BOLD + player + ChatColor.GRAY + " wants to duel you in " + arena + " arena."; }
     public static String playerDeclinedDuel(String player) { return ChatColor.GRAY + player + ChatColor.WHITE + " declined your duel."; }
     public static String youDeclinedDuel(String player) { return "Declined duel from " + ChatColor.GRAY + player + ChatColor.WHITE + "."; }
     public static String yourDuelExpired() { return "Your duel request expired."; }
     public static String duelExpired(String player) { return "Duel request from " + ChatColor.GRAY + player + ChatColor.WHITE + " expired."; }
+    public static String noAvailableArenas() { return "There are currently no available arenas for this mode."; }
 
     // KITS
     public static String createdKit(String name) { return "Created kit with name " + ChatColor.GRAY + "'" + name + "'" + ChatColor.WHITE + "."; }

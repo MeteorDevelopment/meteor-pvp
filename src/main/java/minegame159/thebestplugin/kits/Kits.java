@@ -22,7 +22,7 @@ import java.text.Collator;
 import java.util.*;
 
 public enum Kits implements ISerializable<CompoundTag> {
-    INSTANCE();
+    INSTANCE;
 
     public static final String GUI_TITLE = "Kits";
     public static final String GUI_PRIVATE_KITS_TITLE = "Private Kits";
@@ -190,7 +190,7 @@ public enum Kits implements ISerializable<CompoundTag> {
         KitStats.count(kit);
 
         meta.setDisplayName(ChatColor.AQUA + kit.name);
-        List<String> lore = new ArrayList<>(1);
+        List<String> lore = new ArrayList<>(11);
         lore.add("");
         lore.add(ChatColor.WHITE + "Totems: " + ChatColor.GRAY + KitStats.totems);
         lore.add(ChatColor.WHITE + "Egaps: " + ChatColor.GRAY + KitStats.egaps);

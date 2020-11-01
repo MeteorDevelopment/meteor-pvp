@@ -42,7 +42,6 @@ public class DuelsListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Duels.INSTANCE.removeSentRequest(event.getPlayer());
 
-
         for (List<DuelRequest> requests : Duels.INSTANCE.pendingRequestsIterable()) {
             requests.removeIf(request -> request.sender == event.getPlayer() || request.receiver == event.getPlayer());
         }

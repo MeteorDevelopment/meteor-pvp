@@ -35,12 +35,12 @@ public final class TheBestPlugin extends JavaPlugin implements Listener {
         Commands.register();
         Listeners.register();
 
-        Kits.INSTANCE.init();
-        Duels.INSTANCE.init();
-
         Utils.onEnable();
         Regions.onEnable();
         ArenaClearer.onEnable();
+
+        Kits.INSTANCE.init();
+        Duels.INSTANCE.init();
 
         WebServer.enable();
     }

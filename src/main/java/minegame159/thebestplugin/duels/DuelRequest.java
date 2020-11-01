@@ -1,12 +1,14 @@
 package minegame159.thebestplugin.duels;
 
-import org.bukkit.entity.Player;
+import org.bukkit.entity.HumanEntity;
 
 public class DuelRequest {
-    public Player sender, receiver;
+    public DuelsMode mode;
+    public HumanEntity sender, receiver;
     public int timer;
 
-    public DuelRequest(Player sender, Player receiver) {
+    public DuelRequest(DuelsMode mode, HumanEntity sender, HumanEntity receiver) {
+        this.mode = mode;
         this.sender = sender;
         this.receiver = receiver;
         this.timer = 20 * 30;

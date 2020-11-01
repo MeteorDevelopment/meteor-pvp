@@ -4,6 +4,7 @@ import minegame159.thebestplugin.commands.MyCommand;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.utils.Msgs;
 import minegame159.thebestplugin.utils.Prefixes;
+import minegame159.thebestplugin.utils.Regions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,6 +19,11 @@ public class DeclineCommand extends MyCommand {
         if (!(sender instanceof Player)) return false;
         if (args.length != 1) return false;
         Player player = (Player) sender;
+
+        if (Regions.isInAnyPvp(player)) {
+            player.sendMessage(Prefixes.DUELS + Msgs.cantUseThisInPvp());
+            return true;
+        }
 
         Player player2 = Bukkit.getPlayer(args[0]);
         if (player2 == null) {

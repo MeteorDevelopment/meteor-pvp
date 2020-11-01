@@ -46,7 +46,7 @@ public class Regions {
 
     public static boolean isInAnyPvp(Player player) {
         if (player.getWorld() == Utils.OVERWORLD) {
-            return isIn(OW_PVP, player) || Duels.INSTANCE.getDuel(player) != null;
+            return isIn(OW_PVP, player) || Duels.INSTANCE.get(player) != null;
         }
 
         return isIn(NETHER_PVP, player);

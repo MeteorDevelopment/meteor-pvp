@@ -18,6 +18,8 @@ public class Utils {
     }
 
     public static void resetToSpawn(Player player) {
+        if (!player.isValid() || player.isDead()) return;
+
         player.teleport(player.getWorld().getSpawnLocation().add(0.5, 0, 0.5));
 
         player.getInventory().clear();

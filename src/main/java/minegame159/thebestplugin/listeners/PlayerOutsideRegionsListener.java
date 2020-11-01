@@ -2,7 +2,7 @@ package minegame159.thebestplugin.listeners;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import minegame159.thebestplugin.Perms;
-import minegame159.thebestplugin.duels.DuelArena;
+import minegame159.thebestplugin.duels.Duel;
 import minegame159.thebestplugin.duels.Duels;
 import minegame159.thebestplugin.utils.Regions;
 import minegame159.thebestplugin.utils.Utils;
@@ -32,7 +32,7 @@ public class PlayerOutsideRegionsListener implements Listener {
             if (player.isDead() || player.getGameMode() != GameMode.SURVIVAL || player.hasPermission(Perms.ALLOW_OUTSIDE)) continue;
 
             World world = player.getWorld();
-            DuelArena duel = Duels.INSTANCE.getDuel(player);
+            Duel duel = Duels.INSTANCE.get(player);
 
             if ((duel != null && !duel.isIn(player)) || (world == Utils.OVERWORLD && !Regions.isInAnyOW(player)) || (world == Utils.NETHER && !Regions.isInAnyNether(player))) {
                 Location pos = lastValidPositions.get(player);
