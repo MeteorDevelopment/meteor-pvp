@@ -47,7 +47,17 @@ public class HelpCommand extends MyCommand {
             pageWidth = ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH;
         }
 
-        ChatPaginator.ChatPage page = ChatPaginator.paginate(Commands.HELP_TEXT, pageNumber, pageWidth, pageHeight);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < Commands.COMMANDS.size(); i++) {
+            MyCommand command = Commands.COMMANDS.get(i);
+
+            if (command.testPermissionSilent(sender)) {
+                if (i > 0) sb.append("\n");
+                sb.append(ChatColor.GOLD).append(command.getName()).append(": ").append(ChatColor.WHITE).append(command.getDescription());
+            }
+        }
+
+        ChatPaginator.ChatPage page = ChatPaginator.paginate(sb.toString(), pageNumber, pageWidth, pageHeight);
 
         StringBuilder header = new StringBuilder();
         header.append(ChatColor.YELLOW).append("--------- ").append(ChatColor.WHITE).append("Help");
