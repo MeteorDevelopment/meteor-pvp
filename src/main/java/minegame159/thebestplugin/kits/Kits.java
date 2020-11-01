@@ -26,7 +26,7 @@ public enum Kits implements ISerializable<CompoundTag> {
 
     public static final String GUI_TITLE = "Kits";
     public static final String GUI_PRIVATE_KITS_TITLE = "Private Kits";
-    public static final String GUI_PUBLIC_KITS_TITLE = "Public Kits";
+    public static final String GUI_PUBLIC_KITS_TITLE = ChatColor.GOLD + "Public Kits";
 
     private static final List<Kit> EMPTY_LIST = new ArrayList<>(0);
 
@@ -130,14 +130,15 @@ public enum Kits implements ISerializable<CompoundTag> {
     public Inventory guiMain(HumanEntity player) {
         Inventory gui = Bukkit.createInventory(player, 9, GUI_TITLE);
 
-        ItemStack privateKits = new ItemStack(Material.PAPER);
+        ItemStack privateKits = new ItemStack(Material.IRON_SWORD);
         Utils.setName(privateKits, GUI_PRIVATE_KITS_TITLE);
         gui.setItem(3, privateKits);
 
-        ItemStack publicKits = new ItemStack(Material.PAPER);
+        ItemStack publicKits = new ItemStack(Material.GOLDEN_SWORD);
         Utils.setName(publicKits, GUI_PUBLIC_KITS_TITLE);
         gui.setItem(5, publicKits);
 
+        Utils.fillPanes(gui);
         return gui;
     }
 

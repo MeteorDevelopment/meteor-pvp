@@ -30,7 +30,7 @@ public class DuelsGui {
         item(gui, 6, Material.NETHERRACK, NETHER, Duels.INSTANCE.netherNormal);
         item(gui, 7, Material.NETHERRACK, NETHER_FLAT, Duels.INSTANCE.netherFlat);
 
-        fillPanes(gui);
+        Utils.fillPanes(gui);
         return gui;
     }
 
@@ -45,16 +45,5 @@ public class DuelsGui {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         gui.setItem(slot, itemStack);
-    }
-
-    private static void fillPanes(Inventory gui) {
-        for (int i = 0; i < 9; i++) {
-            ItemStack itemStack = gui.getItem(i);
-            if (itemStack != null || itemStack.getType() != Material.AIR) continue;
-
-            itemStack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-            Utils.setName(itemStack, "");
-            gui.setItem(i, itemStack);
-        }
     }
 }

@@ -2,9 +2,11 @@ package minegame159.thebestplugin.utils;
 
 import minegame159.thebestplugin.Perms;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -41,5 +43,16 @@ public class Utils {
         ItemMeta pageItemMeta = itemStack.getItemMeta();
         pageItemMeta.setDisplayName(name);
         itemStack.setItemMeta(pageItemMeta);
+    }
+
+    public  static void fillPanes(Inventory gui) {
+        for (int i = 0; i < 9; i++) {
+            ItemStack itemStack = gui.getItem(i);
+            if (itemStack != null || itemStack.getType() != Material.AIR) continue;
+
+            itemStack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+            Utils.setName(itemStack, "");
+            gui.setItem(i, itemStack);
+        }
     }
 }
