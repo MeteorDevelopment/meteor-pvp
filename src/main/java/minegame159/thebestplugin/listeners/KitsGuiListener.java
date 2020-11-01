@@ -17,11 +17,9 @@ public class KitsGuiListener implements Listener {
     private void onInventoryClick(InventoryClickEvent event) {
         if (event.getCurrentItem() == null) return;
 
-        switch (event.getView().getTitle()) {
-            case Kits.GUI_TITLE:              onGui(event, this::onGuiMain); break;
-            case Kits.GUI_PRIVATE_KITS_TITLE:
-            case Kits.GUI_PUBLIC_KITS_TITLE:  onGui(event, null); break;
-        }
+        String name = event.getView().getTitle();
+        if (name.equals(Kits.GUI_TITLE)) onGui(event, this::onGuiMain);
+        else if (name.equals(Kits.GUI_PRIVATE_KITS_TITLE) || name.equals(Kits.GUI_PUBLIC_KITS_TITLE)) onGui(event, null);
     }
 
     private void onGui(InventoryClickEvent event, Consumer<InventoryClickEvent> handler) {

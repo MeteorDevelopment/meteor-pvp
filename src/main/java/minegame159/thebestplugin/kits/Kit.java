@@ -6,6 +6,7 @@ import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.Tag;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +27,23 @@ public class Kit implements ISerializable<CompoundTag> {
 
         for (int i = 0; i < items.length; i++) {
             ItemStack itemStack = i == 41 ? player.getInventory().getItemInOffHand() : player.getInventory().getContents()[i];
-            if (itemStack != null && itemStack.getType() != Material.AIR) items[i] = new ItemStack(itemStack);
+
+            if (itemStack != null && itemStack.getType() != Material.AIR) {
+                boolean enchantsOk = true;
+                for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
+                    if (itemStack.getEnchantments().get(enchantment) > enchantment.getMaxLevel()) {
+                        enchantsOk = false;
+                        break;
+                    }
+                }
+
+                if ((itemStack.getMaxStackSize() != -1 && itemStack.getAmount() > itemStack.getMaxStackSize()) || !enchantsOk) {
+                    if (i == 41) player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                    else player.getInventory().setItem(i, new ItemStack(Material.AIR));
+                } else {
+                    items[i] = new ItemStack(itemStack);
+                }
+            }
         }
     }
 
