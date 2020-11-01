@@ -48,7 +48,7 @@ public class Utils {
     public  static void fillPanes(Inventory gui) {
         for (int i = 0; i < 9; i++) {
             ItemStack itemStack = gui.getItem(i);
-            if (itemStack != null || itemStack.getType() != Material.AIR) continue;
+            if (itemStack != null && itemStack.getType() != Material.AIR) continue;
 
             itemStack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
             Utils.setName(itemStack, "");

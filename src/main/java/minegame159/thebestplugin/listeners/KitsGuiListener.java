@@ -58,7 +58,7 @@ public class KitsGuiListener implements Listener {
     }
 
     private void onGuiMain(InventoryClickEvent event) {
-        String name = event.getCurrentItem().getItemMeta().getDisplayName();
+        String name = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
 
         if (name.equals(Kits.GUI_PRIVATE_KITS_TITLE)) {
             event.getWhoClicked().openInventory(Kits.INSTANCE.guiPrivateKits(event.getWhoClicked()));
