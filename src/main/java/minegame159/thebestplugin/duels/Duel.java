@@ -148,7 +148,15 @@ public class Duel implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (starting && is(event.getPlayer())) {
             Location from = event.getFrom();
-            event.getTo().set(from.getX(), from.getY(), from.getZ());
+            Location to = event.getTo();
+
+            double deltaX = to.getX() - from.getX();
+            double deltaZ = to.getZ() - from.getZ();
+
+            if (deltaX != 0 || deltaZ != 0) {
+                event.getTo().setX(from.getX());
+                event.getTo().setZ(from.getZ());
+            }
         }
     }
 
