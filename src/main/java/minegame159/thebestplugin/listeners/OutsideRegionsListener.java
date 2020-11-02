@@ -13,13 +13,14 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerOutsideRegionsListener implements Listener {
+public class OutsideRegionsListener implements Listener {
     private final Map<UUID, Location> lastValidPositions = new HashMap<>();
 
     @EventHandler
@@ -53,4 +54,8 @@ public class PlayerOutsideRegionsListener implements Listener {
         }
     }
 
+    @EventHandler
+    private void onBlockPlace(BlockPlaceEvent event) {
+        if (!event.getPlayer().isOp() && event.canBuild() && !Regions.isInAnyBuildable(event.getBlock().getLocation())) event.setBuild(false);
+    }
 }

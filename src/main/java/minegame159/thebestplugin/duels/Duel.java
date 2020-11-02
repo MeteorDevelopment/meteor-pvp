@@ -95,9 +95,12 @@ public class Duel implements Listener {
         });
     }
 
-    public boolean isIn(Entity entity) {
-        Location pos = entity.getLocation();
+    public boolean isIn(Location pos) {
         return region.contains(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
+    }
+
+    public boolean isIn(Entity entity) {
+        return isIn(entity.getLocation());
     }
 
     public Player getOther(Player player) {

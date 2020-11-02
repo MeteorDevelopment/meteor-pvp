@@ -40,9 +40,12 @@ public class Regions {
         NETHER_PVP = NETHER.getRegion("pvp");
     }
 
-    public static boolean isIn(ProtectedRegion region, Entity entity) {
-        Location pos = entity.getLocation();
+    public static boolean isIn(ProtectedRegion region,Location pos) {
         return region.contains(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
+    }
+
+    public static boolean isIn(ProtectedRegion region, Entity entity) {
+        return isIn(region, entity.getLocation());
     }
 
     public static boolean isInAnyPvp(Player player, boolean duels) {
@@ -68,6 +71,14 @@ public class Regions {
 
     public static boolean isInAnyNether(Player player) {
         return isIn(NETHER_SPAWN, player) || isIn(NETHER_PVP, player);
+    }
+
+    public static boolean isInAnyBuildable(Location location) {
+        if (location.getWorld() == Utils.OVERWORLD) {
+            return isIn(OW_PVP, location) || Duels.INSTANCE.overworldNormal.isIn(location) || Duels.INSTANCE.overworldFlat.isIn(location);
+        }
+
+        return isIn(NETHER_PVP, location) || Duels.INSTANCE.netherNormal.isIn(location) || Duels.INSTANCE.netherFlat.isIn(location);
     }
 
     public static Region toWERegion(ProtectedRegion region) {
