@@ -57,7 +57,7 @@ public class AntiCheatListener implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.isDead() || player.getGameMode() != GameMode.SURVIVAL) continue;
 
-            boolean onGround = !player.getLocation().subtract(0, 1, 0).getBlock().isPassable();
+            boolean onGround = isOnGround(player);
             if (onGround) {
                 lastOnGroundPositions.put(player, player.getLocation());
             }
@@ -81,5 +81,18 @@ public class AntiCheatListener implements Listener {
                 if (pos != null) player.teleport(pos);
             }
         }
+    }
+
+    private boolean isOnGround(Player player) {
+        Location pos = player.getLocation().subtract(0, 1, 0);
+
+        for (int x = -1; x < 2; x++) {
+            for (int z = -1; z < 2; z++) {
+                if (!pos.add(x, 0, z).getBlock().isPassable()) return true;
+                pos.subtract(x, 0, z);
+            }
+        }
+
+        return false;
     }
 }
