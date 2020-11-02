@@ -2,106 +2,84 @@ package minegame159.thebestplugin.listeners;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerVelocityEvent;
-import org.bukkit.util.NumberConversions;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AntiCheatListener/* implements Listener */{
-    private final Map<Player, Location> lastValidPositions = new HashMap<>();
-    private final Map<Player, Integer> inactiveTicks = new HashMap<>();
-
-    private boolean skipTeleportEvent = false;
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        lastValidPositions.remove(event.getPlayer());
-        inactiveTicks.put(event.getPlayer(), 5);
-    }
+public class AntiCheatListener implements Listener {
+    private final Map<Player, Location> lastValidSpeedPositions = new HashMap<>();
+    private final Map<Player, Location> lastOnGroundPositions = new HashMap<>();
+    private final Map<Player, Integer> inAirTicks = new HashMap<>();
+    private final Map<Player, Double> lastVelocityY = new HashMap<>();
 
     @EventHandler
-    public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (skipTeleportEvent) {
-            skipTeleportEvent = false;
-            return;
+    private void onPlayerMove(PlayerMoveEvent event) {
+        if (event.isCancelled() || event.getPlayer().isDead() || event.getPlayer().getGameMode() != GameMode.SURVIVAL) return;
+
+        Location from = event.getFrom();
+        Location to = event.getTo();
+        double y = 0;
+        if (to.getY() - from.getY() > 0) y = Math.pow(to.getY() - from.getY(), 2);
+        double speed = Math.sqrt(Math.pow(to.getX() - from.getX(), 2) + y + Math.pow(to.getZ() - from.getZ(), 2));
+
+        if (speed > 1) {
+            Location pos = lastValidSpeedPositions.get(event.getPlayer());
+            if (pos != null) {
+                event.setTo(pos);
+                to = pos;
+            }
+        } else {
+            lastValidSpeedPositions.put(event.getPlayer(), event.getTo());
         }
 
-        lastValidPositions.remove(event.getPlayer());
-        inactiveTicks.put(event.getPlayer(), 5);
+        lastVelocityY.put(event.getPlayer(), to.getY() - from.getY());
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        lastValidPositions.remove(event.getEntity());
-        inactiveTicks.put(event.getEntity(), 5);
+    private void onPlayerQuit(PlayerQuitEvent event) {
+        lastValidSpeedPositions.remove(event.getPlayer());
+        lastOnGroundPositions.remove(event.getPlayer());
+        inAirTicks.remove(event.getPlayer());
+        lastVelocityY.remove(event.getPlayer());
     }
 
     @EventHandler
-    public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {
-        lastValidPositions.remove(event.getPlayer());
-        inactiveTicks.put(event.getPlayer(), 5);
-    }
-
-    @EventHandler
-    public void onPlayerVelocity(PlayerVelocityEvent event) {
-        lastValidPositions.remove(event.getPlayer());
-        inactiveTicks.put(event.getPlayer(), 10);
-    }
-
-    @EventHandler
-    public void onTick(ServerTickEndEvent event) {
+    private void onServerTickEnd(ServerTickEndEvent event) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.isDead() || player.getGameMode() != GameMode.SURVIVAL) continue;
-            
-            if (inactiveTicks.containsKey(player)) {
-                int ticks = inactiveTicks.get(player);
-                if (ticks <= 0) {
-                    inactiveTicks.remove(player);
-                } else {
-                    ticks--;
-                    inactiveTicks.put(player, ticks);
-                    continue;
-                }
+
+            boolean onGround = !player.getLocation().subtract(0, 1, 0).getBlock().isPassable();
+            if (onGround) {
+                lastOnGroundPositions.put(player, player.getLocation());
             }
 
-            Location pos = player.getLocation();
-            Location lastPos = lastValidPositions.get(player);
-            if (lastPos == null) lastPos = pos;
+            ItemStack chestplate = player.getInventory().getChestplate();
+            if (chestplate != null && chestplate.getType() == Material.ELYTRA) continue;
 
-            Location teleportPos = null;
+            double velY = lastVelocityY.getOrDefault(player, 0.0);
+            boolean inAir = !onGround && velY >= 0 && velY <= 0.25;
+            int ticksInAir = 0;
 
-            double horizontalDistance = NumberConversions.square(pos.getX() - lastPos.getX()) + NumberConversions.square(pos.getZ() - lastPos.getZ());
-
-            // Speed check
-            if (horizontalDistance > 6) {
-                // Moving too fast
-                teleportPos = lastPos;
-                sendDebug(player, "Moving too fast, value %.3f", horizontalDistance);
-            }
-
-            if (teleportPos == null) {
-                // Passed all checks
-                lastValidPositions.put(player, pos);
+            if (inAir) {
+                ticksInAir = inAirTicks.getOrDefault(player, 0);
+                inAirTicks.put(player, ticksInAir + 1);
             } else {
-                // Didn't pass some checks
-                skipTeleportEvent = true;
-                player.teleport(teleportPos);
+                inAirTicks.remove(player);
+            }
+
+            if (ticksInAir >= 10) {
+                Location pos = lastOnGroundPositions.get(player);
+                if (pos != null) player.teleport(pos);
             }
         }
-    }
-
-    private void sendDebug(Player player, String format, Object... args) {
-        player.sendMessage(String.format("%s[%sAC%s] %s", ChatColor.GRAY, ChatColor.RED, ChatColor.GRAY, ChatColor.WHITE) + String.format(format, args));
     }
 }

@@ -5,7 +5,9 @@ import minegame159.thebestplugin.http.MyHttpRequest;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.util.Tristate;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -42,6 +44,22 @@ public class WebServer {
             if (uuid == null) res.statusCode = 401;
 
             modifyUser(uuid, user -> user.data().remove(InheritanceNode.builder(getDonatorGroup()).build()));
+        });
+
+        server.handler("/toggledonator", (req, res) -> {
+            if (auth(req)) {
+                res.statusCode = 401;
+                return;
+            }
+
+            UUID uuid = getUUID(req);
+            if (uuid == null) res.statusCode = 401;
+
+            modifyUser(uuid, user -> {
+                InheritanceNode group = InheritanceNode.builder(getDonatorGroup()).build();
+                if (user.data().contains(group, NodeEqualityPredicate.EXACT) == Tristate.UNDEFINED) user.data().add(group);
+                else user.data().remove(group);
+            });
         });
     }
 
