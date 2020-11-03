@@ -153,8 +153,11 @@ public enum Kits implements ISerializable<CompoundTag> {
             if (kit != null) {
                 gui.setItem(i, newKitItemStack(player, kit));
             } else {
-                ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-                Utils.setName(itemStack, ChatColor.GRAY.toString() + kits.size() + " / " + MaxKits.get(player).count);
+                int max = MaxKits.get(player).count;
+
+                ItemStack itemStack = new ItemStack(i < max ? Material.LIGHT_GRAY_STAINED_GLASS_PANE : Material.GRAY_STAINED_GLASS_PANE);
+                if (i < max) Utils.setName(itemStack, ChatColor.GRAY.toString() + "Empty kit slot");
+                else Utils.setName(itemStack, ChatColor.GRAY.toString() + kits.size() + " / " + max);
                 gui.setItem(i, itemStack);
             }
         }
