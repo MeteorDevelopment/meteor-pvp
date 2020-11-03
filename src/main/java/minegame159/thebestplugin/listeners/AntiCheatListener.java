@@ -15,13 +15,19 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class AntiCheatListener implements Listener {
-    private final Object2IntMap<Player> ignoreTicks = new Object2IntOpenHashMap<>();
+    public static AntiCheatListener INSTANCE;
+
+    public final Object2IntMap<Player> ignoreTicks = new Object2IntOpenHashMap<>();
     private final Object2ObjectMap<Player, Location> lastValidSpeedPositions = new Object2ObjectOpenHashMap<>();
     private final Object2ObjectMap<Player, Location> lastOnGroundPositions = new Object2ObjectOpenHashMap<>();
     private final Object2IntMap<Player> inAirTicks = new Object2IntOpenHashMap<>();
     private final Object2DoubleMap<Player> lastVelocityY = new Object2DoubleOpenHashMap<>();
     private final Object2IntMap<Player> highYVelocityTicks = new Object2IntOpenHashMap<>();
     private final Object2IntMap<Player> highButLessYVelocityTicks = new Object2IntOpenHashMap<>();
+
+    public AntiCheatListener() {
+        INSTANCE = this;
+    }
 
     @EventHandler
     private void onPlayerMove(PlayerMoveEvent event) {
