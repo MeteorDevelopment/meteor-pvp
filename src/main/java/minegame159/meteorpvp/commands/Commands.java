@@ -12,11 +12,11 @@ public class Commands {
     public static void register() {
         COMMANDS.clear();
 
-        for (Class<? extends MyCommand> klass : new Reflections("minegame159.thebestplugin.commands").getSubTypesOf(MyCommand.class)) {
+        for (Class<? extends MyCommand> klass : new Reflections("minegame159.meteorpvp.commands").getSubTypesOf(MyCommand.class)) {
             try {
                 MyCommand command = klass.newInstance();
                 COMMANDS.add(command);
-                Bukkit.getCommandMap().register("thebestplugin", command);
+                Bukkit.getCommandMap().register("meteorpvp", command);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
