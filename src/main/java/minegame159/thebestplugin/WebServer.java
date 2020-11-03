@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class WebServer {
-    private static final String TOKEN = "M2LoLF4iZSAJt25kF84l";
+    private static final String TOKEN = "NH1DO4yukicutT9PLlBw";
 
     private static HttpServer server;
 
