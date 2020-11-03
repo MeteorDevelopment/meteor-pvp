@@ -1,6 +1,6 @@
-name: TheBestPlugin
+name: MeteorPvp
 version: @version@
-main: minegame159.thebestplugin.TheBestPlugin
+main: minegame159.meteorpvp.MeteorPvp
 api-version: 1.16
 
 depend:
