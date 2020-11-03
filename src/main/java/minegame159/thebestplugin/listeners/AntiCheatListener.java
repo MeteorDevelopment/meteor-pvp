@@ -1,6 +1,7 @@
 package minegame159.thebestplugin.listeners;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
+import it.unimi.dsi.fastutil.objects.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -13,17 +14,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AntiCheatListener implements Listener {
-    private final Map<Player, Integer> ignoreTicks = new HashMap<>();
-    private final Map<Player, Location> lastValidSpeedPositions = new HashMap<>();
-    private final Map<Player, Location> lastOnGroundPositions = new HashMap<>();
-    private final Map<Player, Integer> inAirTicks = new HashMap<>();
-    private final Map<Player, Double> lastVelocityY = new HashMap<>();
-    private final Map<Player, Integer> highYVelocityTicks = new HashMap<>();
-    private final Map<Player, Integer> highButLessYVelocityTicks = new HashMap<>();
+    private final Object2IntMap<Player> ignoreTicks = new Object2IntOpenHashMap<>();
+    private final Object2ObjectMap<Player, Location> lastValidSpeedPositions = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<Player, Location> lastOnGroundPositions = new Object2ObjectOpenHashMap<>();
+    private final Object2IntMap<Player> inAirTicks = new Object2IntOpenHashMap<>();
+    private final Object2DoubleMap<Player> lastVelocityY = new Object2DoubleOpenHashMap<>();
+    private final Object2IntMap<Player> highYVelocityTicks = new Object2IntOpenHashMap<>();
+    private final Object2IntMap<Player> highButLessYVelocityTicks = new Object2IntOpenHashMap<>();
 
     @EventHandler
     private void onPlayerMove(PlayerMoveEvent event) {
@@ -40,17 +38,17 @@ public class AntiCheatListener implements Listener {
             double speed = Math.sqrt(Math.pow(to.getX() - from.getX(), 2) + y + Math.pow(to.getZ() - from.getZ(), 2));
 
             if (velY > 0.5) {
-                int ticks = highYVelocityTicks.getOrDefault(player, 0);
+                int ticks = highYVelocityTicks.getInt(player);
                 highYVelocityTicks.put(player, ticks + 1);
             } else {
-                highYVelocityTicks.remove(player);
+                highYVelocityTicks.removeInt(player);
             }
 
             if (velY > 0.2) {
-                int ticks = highButLessYVelocityTicks.getOrDefault(player, 0);
+                int ticks = highButLessYVelocityTicks.getInt(player);
                 highButLessYVelocityTicks.put(player, ticks + 1);
             } else {
-                highButLessYVelocityTicks.remove(player);
+                highButLessYVelocityTicks.removeInt(player);
             }
 
             if (speed > 1) {
@@ -63,8 +61,8 @@ public class AntiCheatListener implements Listener {
                 lastValidSpeedPositions.put(player, event.getTo());
             }
         } else {
-            highYVelocityTicks.remove(player);
-            highButLessYVelocityTicks.remove(player);
+            highYVelocityTicks.removeInt(player);
+            highButLessYVelocityTicks.removeInt(player);
             lastValidSpeedPositions.put(player, event.getTo());
         }
 
@@ -76,12 +74,12 @@ public class AntiCheatListener implements Listener {
         Player player = event.getPlayer();
         
         lastValidSpeedPositions.remove(player);
-        ignoreTicks.remove(player);
+        ignoreTicks.removeInt(player);
         lastOnGroundPositions.remove(player);
-        inAirTicks.remove(player);
-        lastVelocityY.remove(player);
-        highYVelocityTicks.remove(player);
-        highButLessYVelocityTicks.remove(player);
+        inAirTicks.removeInt(player);
+        lastVelocityY.removeDouble(player);
+        highYVelocityTicks.removeInt(player);
+        highButLessYVelocityTicks.removeInt(player);
     }
 
     @EventHandler
@@ -105,17 +103,17 @@ public class AntiCheatListener implements Listener {
             if (chestplate != null && chestplate.getType() == Material.ELYTRA) continue;
 
             double velY = lastVelocityY.getOrDefault(player, 0.0);
-            int yVelTicks = highYVelocityTicks.getOrDefault(player, 0);
-            int lessYVelTicks = highButLessYVelocityTicks.getOrDefault(player, 0);
+            int yVelTicks = highYVelocityTicks.getInt(player);
+            int lessYVelTicks = highButLessYVelocityTicks.getInt(player);
 
             boolean inAir = !onGround && velY >= 0 && (velY <= 0.25 || yVelTicks > 4 || lessYVelTicks > 8);
             int ticksInAir = 0;
 
             if (inAir) {
-                ticksInAir = inAirTicks.getOrDefault(player, 0);
+                ticksInAir = inAirTicks.getInt(player);
                 inAirTicks.put(player, ticksInAir + 1);
             } else {
-                inAirTicks.remove(player);
+                inAirTicks.removeInt(player);
             }
 
             if (ticksInAir >= 10) {
@@ -139,10 +137,11 @@ public class AntiCheatListener implements Listener {
     }
 
     private boolean ignore(Player player) {
-        Integer ticksIgnore = ignoreTicks.get(player);
-        if (ticksIgnore != null) {
+        if (ignoreTicks.containsKey(player)) {
+            int ticksIgnore = ignoreTicks.getInt(player);
+            
             if (ticksIgnore <= 0) {
-                ignoreTicks.remove(player);
+                ignoreTicks.removeInt(player);
             } else {
                 ignoreTicks.put(player, ticksIgnore - 1);
                 return true;
