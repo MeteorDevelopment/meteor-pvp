@@ -18,7 +18,6 @@ public class Msgs {
     public static String alreadySentRequest() { return "You have already sent a duel request."; }
     public static String cancelDuelHelp() { return "Do /cancelduel to cancel it."; }
     public static String duelRequest(String player, String arena) { return ChatColor.YELLOW + "" + ChatColor.BOLD + player + ChatColor.GRAY + " wants to duel you in " + arena + " arena."; }
-    public static String duelRequest2(String sender) { return ChatColor.GRAY + "Do " + ChatColor.GREEN + "/accept " + sender + ChatColor.GRAY + " or " + ChatColor.RED + "/decline " + sender + ChatColor.GRAY + "."; }
     public static String playerDeclinedDuel(String player) { return ChatColor.GRAY + player + ChatColor.WHITE + " declined your duel."; }
     public static String youDeclinedDuel(String player) { return "Declined duel from " + ChatColor.GRAY + player + ChatColor.WHITE + "."; }
     public static String yourDuelExpired() { return "Your duel request expired."; }
@@ -32,4 +31,5 @@ public class Msgs {
     public static String deletedKit(String name) { return "Kit with name " + ChatColor.GRAY + "'" + name + "' " + ChatColor.WHITE + "has been deleted."; }
     public static String kitDoesntExist(String name) { return "Kit with name " + ChatColor.GRAY + "'" + name + "' " + ChatColor.WHITE + "doesn't exist."; }
     public static String kitCreatorToggled(boolean on) { return "Kit creator is now " + ChatColor.GRAY + (on ? "on" : "off") + ChatColor.WHITE + "."; }
+    public static String dontOwnKit() { return "You don't own that kit."; }
 }

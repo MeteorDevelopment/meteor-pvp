@@ -90,7 +90,7 @@ public class AntiCheatListener implements Listener {
 
     @EventHandler
     private void onPlayerVelocity(PlayerVelocityEvent event) {
-        ignoreTicks.put(event.getPlayer(), 16);
+        ignoreTicks.put(event.getPlayer(), (int) Math.round(Math.max(event.getVelocity().length() * 15, 30)));
     }
 
     @EventHandler
