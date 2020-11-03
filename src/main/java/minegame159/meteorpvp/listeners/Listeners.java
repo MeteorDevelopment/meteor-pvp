@@ -9,7 +9,7 @@ public class Listeners {
     public static void register() {
         Bukkit.getPluginManager().registerEvents(MeteorPvp.INSTANCE, MeteorPvp.INSTANCE);
 
-        for (Class<? extends Listener> klass : new Reflections("minegame159.thebestplugin.listeners").getSubTypesOf(Listener.class)) {
+        for (Class<? extends Listener> klass : new Reflections("minegame159.meteorpvp.listeners").getSubTypesOf(Listener.class)) {
             try {
                 Listener listener = klass.newInstance();
                 Bukkit.getPluginManager().registerEvents(listener, MeteorPvp.INSTANCE);
