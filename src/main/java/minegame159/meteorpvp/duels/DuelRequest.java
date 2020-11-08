@@ -3,8 +3,8 @@ package minegame159.meteorpvp.duels;
 import org.bukkit.entity.HumanEntity;
 
 public class DuelRequest {
-    public DuelsMode mode;
-    public HumanEntity sender, receiver;
+    public final DuelsMode mode;
+    public final HumanEntity sender, receiver;
     public int timer;
 
     public DuelRequest(DuelsMode mode, HumanEntity sender, HumanEntity receiver) {

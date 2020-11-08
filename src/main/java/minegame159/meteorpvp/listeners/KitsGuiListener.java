@@ -25,7 +25,7 @@ public class KitsGuiListener implements Listener {
     private void onGui(InventoryClickEvent event, Consumer<InventoryClickEvent> handler) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem().getType() == Material.DIAMOND_SWORD) {
+        if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.DIAMOND_SWORD) {
             Kit kit = Kits.INSTANCE.get(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
 
             if (kit != null) {
@@ -58,6 +58,7 @@ public class KitsGuiListener implements Listener {
     }
 
     private void onGuiMain(InventoryClickEvent event) {
+        if (event.getCurrentItem() == null) return;
         String name = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
 
         if (name.equals(Kits.GUI_PRIVATE_KITS_TITLE)) {

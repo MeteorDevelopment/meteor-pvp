@@ -57,7 +57,7 @@ public class AntiCheatListener implements Listener {
                 highButLessYVelocityTicks.removeInt(player);
             }
 
-            if (speed > 1) {
+            if (speed > 0.5) {
                 Location pos = lastValidSpeedPositions.get(player);
                 if (pos != null) {
                     event.setTo(pos);
@@ -90,7 +90,7 @@ public class AntiCheatListener implements Listener {
 
     @EventHandler
     private void onPlayerVelocity(PlayerVelocityEvent event) {
-        ignoreTicks.put(event.getPlayer(), (int) Math.round(Math.max(event.getVelocity().length() * 15, 30)));
+        ignoreTicks.put(event.getPlayer(), (int) Math.round(Math.max(event.getVelocity().length() * 25, 60)));
     }
 
     @EventHandler
@@ -130,12 +130,14 @@ public class AntiCheatListener implements Listener {
     }
 
     private boolean isOnGround(Player player) {
-        Location pos = player.getLocation().subtract(0, 1, 0);
+        Location pos = player.getLocation();
 
-        for (int x = -1; x < 2; x++) {
-            for (int z = -1; z < 2; z++) {
-                if (!pos.add(x, 0, z).getBlock().isPassable()) return true;
-                pos.subtract(x, 0, z);
+        for (int y = 0; y >= -1; y--) {
+            for (int x = -1; x < 2; x++) {
+                for (int z = -1; z < 2; z++) {
+                    if (!pos.add(x, y, z).getBlock().isPassable()) return true;
+                    pos.subtract(x, y, z);
+                }
             }
         }
 
