@@ -57,7 +57,7 @@ public class AntiCheatListener implements Listener {
                 highButLessYVelocityTicks.removeInt(player);
             }
 
-            if (speed > 0.5) {
+            if (speed > 0.85) {
                 Location pos = lastValidSpeedPositions.get(player);
                 if (pos != null) {
                     event.setTo(pos);
