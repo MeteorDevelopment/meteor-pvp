@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class DuelsGuiListener implements Listener {
     @EventHandler
@@ -24,7 +25,10 @@ public class DuelsGuiListener implements Listener {
             return;
         }
 
-        String name = event.getCurrentItem().getItemMeta().getDisplayName();
+        ItemStack item = event.getCurrentItem();
+        if (item == null) return;
+
+        String name = item.getItemMeta().getDisplayName();
         if (name.equals(DuelsGui.OVERWORLD)) {
             onClick(event, Duels.INSTANCE.overworldNormal, event.getWhoClicked(), receiver);
         } else if (name.equals(DuelsGui.OVERWORLD_FLAT)) {

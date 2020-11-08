@@ -42,6 +42,8 @@ public class KitCreatorListener implements Listener {
             event.setCancelled(true);
 
             ItemStack frameItemStack = ((ItemFrame) entity).getItem();
+            if (frameItemStack.getType() == Material.AIR) return;
+
             Inventory gui = Bukkit.createInventory((Player) damager, 9, frameItemStack.getItemMeta().getDisplayName());
             Material item = frameItemStack.getType();
 
