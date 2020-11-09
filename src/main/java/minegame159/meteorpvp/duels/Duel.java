@@ -3,7 +3,6 @@ package minegame159.meteorpvp.duels;
 import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.util.TaskManager;
 import com.destroystokyo.paper.Title;
-import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -160,15 +159,6 @@ public class Duel implements Listener {
             if (deltaX != 0 || deltaZ != 0) {
                 event.getTo().setX(from.getX());
                 event.getTo().setZ(from.getZ());
-            }
-        }
-    }
-
-    @EventHandler
-    public void onEntityAddToWorld(EntityAddToWorldEvent event) {
-        if (preparing) {
-            if (isIn(event.getEntity())) {
-                event.getEntity().remove();
             }
         }
     }
