@@ -140,7 +140,7 @@ public class AntiCheatListener implements Listener {
     }
 
     private boolean isInBlock(Player player) {
-        return player.getLocation().getBlock().getType().isSolid();
+        return player.getLocation().getBlock().getType().isOccluding();
     }
 
     private boolean isOnGround(Player player) {
