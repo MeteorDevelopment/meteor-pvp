@@ -24,6 +24,7 @@ public class AntiCheatListener implements Listener {
     private final Object2DoubleMap<Player> lastVelocityY = new Object2DoubleOpenHashMap<>();
     private final Object2IntMap<Player> highYVelocityTicks = new Object2IntOpenHashMap<>();
     private final Object2IntMap<Player> highButLessYVelocityTicks = new Object2IntOpenHashMap<>();
+    private final Object2ObjectMap<Player, Location> lastValidPhasePositions = new Object2ObjectOpenHashMap<>();
 
     public AntiCheatListener() {
         INSTANCE = this;
@@ -86,6 +87,7 @@ public class AntiCheatListener implements Listener {
         lastVelocityY.removeDouble(player);
         highYVelocityTicks.removeInt(player);
         highButLessYVelocityTicks.removeInt(player);
+        lastValidPhasePositions.remove(player);
     }
 
     @EventHandler
@@ -126,7 +128,19 @@ public class AntiCheatListener implements Listener {
                 Location pos = lastOnGroundPositions.get(player);
                 if (pos != null) player.teleport(pos);
             }
+
+            // Phase
+            if (isInBlock(player)) {
+                Location pos = lastValidPhasePositions.get(player);
+                if (pos != null) player.teleport(pos);
+            } else {
+                lastValidPhasePositions.put(player, player.getLocation());
+            }
         }
+    }
+
+    private boolean isInBlock(Player player) {
+        return player.getLocation().getBlock().getType().isSolid();
     }
 
     private boolean isOnGround(Player player) {
