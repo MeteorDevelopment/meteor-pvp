@@ -43,21 +43,24 @@ public class AntiCheatListener implements Listener {
     private void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
+        Location from = event.getFrom();
+        Location to = event.getTo();
+
         int[] lastSecondTicks = lastSecondPerTickPlayerMoveTimes.get(player);
         if (lastSecondTicks == null) {
             lastSecondTicks = new int[20];
             lastSecondPerTickPlayerMoveTimes.put(player, lastSecondTicks);
         }
-        lastSecondTicks[lastSecondTickI] = lastSecondTicks[lastSecondTickI] + 1;
+
+        if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
+            lastSecondTicks[lastSecondTickI] = lastSecondTicks[lastSecondTickI] + 1;
+        }
 
         if (event.isCancelled() || player.isDead() || player.getGameMode() != GameMode.SURVIVAL) return;
 
         int totalMoveEventsLastSecond = 0;
         for (int x : lastSecondTicks) totalMoveEventsLastSecond += x;
         if (totalMoveEventsLastSecond > 25.0 * (20.0 / Bukkit.getTPS()[0])) event.setCancelled(true);
-
-        Location from = event.getFrom();
-        Location to = event.getTo();
 
         if (!ignore(player) && !ignoreSpeedNextTick.getBoolean(player)) {
             double y = 0;
