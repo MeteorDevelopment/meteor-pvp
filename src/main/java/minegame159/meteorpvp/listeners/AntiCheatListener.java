@@ -60,7 +60,7 @@ public class AntiCheatListener implements Listener {
 
         int totalMoveEventsLastSecond = 0;
         for (int x : lastSecondTicks) totalMoveEventsLastSecond += x;
-        if (totalMoveEventsLastSecond > 25.0 * (20.0 / Bukkit.getTPS()[0])) event.setCancelled(true);
+        if (totalMoveEventsLastSecond > 30.0 * (20.0 / Bukkit.getTPS()[0])) event.setCancelled(true);
 
         if (!ignore(player) && !ignoreSpeedNextTick.getBoolean(player)) {
             double y = 0;
