@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
 public class AntiCheatListener implements Listener {
@@ -60,7 +61,7 @@ public class AntiCheatListener implements Listener {
 
         int totalMoveEventsLastSecond = 0;
         for (int x : lastSecondTicks) totalMoveEventsLastSecond += x;
-        if (totalMoveEventsLastSecond > 30.0 * (20.0 / Bukkit.getTPS()[0])) event.setCancelled(true);
+        if (totalMoveEventsLastSecond > 35.0 * (20.0 / Bukkit.getTPS()[0])) event.setCancelled(true);
 
         if (!ignore(player) && !ignoreSpeedNextTick.getBoolean(player)) {
             double y = 0;
@@ -105,7 +106,7 @@ public class AntiCheatListener implements Listener {
         lastVelocityY.put(player, to.getY() - from.getY());
     }
 
-    /*@EventHandler
+    @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
@@ -125,7 +126,7 @@ public class AntiCheatListener implements Listener {
         lastSecondPerTickPlayerMoveTimes.remove(player);
         lastPositions.remove(player);
         ignoreSpeedNextTick.removeBoolean(player);
-    }*/
+    }
 
     @EventHandler
     private void onPlayerVelocity(PlayerVelocityEvent event) {
