@@ -1,7 +1,7 @@
 package minegame159.meteorpvp.kits;
 
 import minegame159.meteorpvp.utils.ISerializable;
-import minegame159.meteorpvp.utils.NBT;
+import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.Tag;
@@ -80,7 +80,7 @@ public class Kit implements ISerializable<CompoundTag> {
             CompoundTag t = new CompoundTag();
 
             t.putInt("slot", i);
-            t.put("items", NBT.fromBytes(itemStack.serializeAsBytes()));
+            t.put("items", new ByteArrayTag(itemStack.serializeAsBytes()));
 
             itemsTag.add(t);
         }
@@ -98,7 +98,7 @@ public class Kit implements ISerializable<CompoundTag> {
         items = new ItemStack[42];
         for (Tag<?> t : tag.getListTag("items")) {
             CompoundTag c = (CompoundTag) t;
-            items[c.getInt("slot")] = ItemStack.deserializeBytes(NBT.toBytes(c.getCompoundTag("items")));
+            items[c.getInt("slot")] = ItemStack.deserializeBytes(c.getByteArray("items"));
         }
     }
 }

@@ -54,6 +54,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
 
+        Kits.INSTANCE.save();
         WebServer.disable();
     }
 }

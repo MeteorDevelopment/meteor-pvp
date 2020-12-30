@@ -1,6 +1,8 @@
 package minegame159.meteorpvp.listeners;
 
+import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import minegame159.meteorpvp.MeteorPvp;
+import minegame159.meteorpvp.kits.Kits;
 import minegame159.meteorpvp.utils.Regions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,6 +27,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KitCreatorListener implements Listener {
+    // SAVE KITS
+
+    @EventHandler
+    private void onServerTickEnd(ServerTickEndEvent event) {
+        if (Kits.INSTANCE.lastModifiedTimestamp != 0) {
+            long time = System.currentTimeMillis() - Kits.INSTANCE.lastModifiedTimestamp;
+
+            if (time > 5 * 60 * 1000) Kits.INSTANCE.save();
+        }
+    }
+
     // RIGHT CLICK ITEM FRAMES
 
     @EventHandler

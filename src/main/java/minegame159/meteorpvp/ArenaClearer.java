@@ -12,6 +12,8 @@ import minegame159.meteorpvp.utils.Regions;
 import minegame159.meteorpvp.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.EnderCrystal;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.function.Consumer;
@@ -37,6 +39,10 @@ public class ArenaClearer {
     private static void clean(String worldName, ProtectedRegion clearRegion, ProtectedRegion barrierRegion) {
         World world = Bukkit.getWorld(worldName);
         forEachPlayer(world, Utils::resetToSpawn);
+
+        for (Entity entity : world.getEntitiesByClasses(EnderCrystal.class)) {
+            entity.remove();
+        }
 
         TaskManager.IMP.async(() -> {
             try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld(worldName)).fastmode(true).build()) {
