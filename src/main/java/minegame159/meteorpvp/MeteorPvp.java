@@ -57,6 +57,8 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
 
         Kits.INSTANCE.save();
         Ignores.save();
+
+        PrivateMsgs.stop();
         WebServer.disable();
     }
 }
