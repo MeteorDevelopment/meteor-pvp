@@ -29,7 +29,7 @@ public class KitCommand extends MyCommand {
             Kit kit = Kits.INSTANCE.get(args[0]);
             if (kit == null) player.sendMessage(Prefixes.KITS + Msgs.kitDoesntExist(args[0]));
             else {
-                if (player.hasPermission(Perms.ADMIN) || kit.author.equals(player.getUniqueId())) kit.apply(player);
+                if (kit.isPublic || player.hasPermission(Perms.ADMIN) || kit.author.equals(player.getUniqueId())) kit.apply(player);
                 else player.sendMessage(Prefixes.KITS + Msgs.dontOwnKit());
             }
             return true;

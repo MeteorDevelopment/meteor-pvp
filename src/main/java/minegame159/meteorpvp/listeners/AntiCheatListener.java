@@ -292,12 +292,10 @@ public class AntiCheatListener implements Listener {
     }
 
     private double getNormalSpeedLimit() {
-        if (Bukkit.getTPS()[0] < 18) return 0.65; // 12 BPS
-        return 0.85; // 16 BPS
+        return 0.55;
     }
 
     private double getElytraSpeedLimit() {
-        if (Bukkit.getTPS()[0] < 18) return 0.85 * 1.62; // 26 BPS
-        return 0.85 * 2.2; // 36 BPS
+        return 1;
     }
 }
