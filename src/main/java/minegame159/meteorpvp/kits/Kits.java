@@ -36,7 +36,7 @@ public enum Kits implements ISerializable<CompoundTag> {
     private final Map<UUID, List<Kit>> PLAYER_KITS = new HashMap<>();
     private final List<Kit> PUBLIC_KITS = new ArrayList<>();
 
-    public long lastModifiedTimestamp = 0;
+    public long modifiedTimestamp = 0;
 
     public void init() {
         FILE = new File(MeteorPvp.CONFIG_FOLDER, "kits.nbt");
@@ -53,7 +53,7 @@ public enum Kits implements ISerializable<CompoundTag> {
     public void save() {
         try {
             NBTUtil.write(toTag(), FILE);
-            lastModifiedTimestamp = 0;
+            modifiedTimestamp = 0;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public enum Kits implements ISerializable<CompoundTag> {
             PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
         }
 
-        if (save) lastModifiedTimestamp = System.currentTimeMillis();
+        if (save && modifiedTimestamp == 0) modifiedTimestamp = System.currentTimeMillis();
     }
 
     public void add(Kit kit) {

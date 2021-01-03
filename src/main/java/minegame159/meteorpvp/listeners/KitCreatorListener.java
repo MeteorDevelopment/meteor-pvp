@@ -31,8 +31,8 @@ public class KitCreatorListener implements Listener {
 
     @EventHandler
     private void onServerTickEnd(ServerTickEndEvent event) {
-        if (Kits.INSTANCE.lastModifiedTimestamp != 0) {
-            long time = System.currentTimeMillis() - Kits.INSTANCE.lastModifiedTimestamp;
+        if (Kits.INSTANCE.modifiedTimestamp != 0) {
+            long time = System.currentTimeMillis() - Kits.INSTANCE.modifiedTimestamp;
 
             if (time > 5 * 60 * 1000) Kits.INSTANCE.save();
         }
