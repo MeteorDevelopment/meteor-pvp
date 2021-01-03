@@ -46,6 +46,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
 
         Kits.INSTANCE.init();
         Duels.INSTANCE.init();
+        Ignores.load();
 
         WebServer.enable();
     }
@@ -55,6 +56,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
         Bukkit.getScheduler().cancelTasks(this);
 
         Kits.INSTANCE.save();
+        Ignores.save();
         WebServer.disable();
     }
 }
