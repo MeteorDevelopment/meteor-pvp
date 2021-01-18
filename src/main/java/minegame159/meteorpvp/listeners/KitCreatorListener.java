@@ -34,7 +34,7 @@ public class KitCreatorListener implements Listener {
         if (Kits.INSTANCE.modifiedTimestamp != 0) {
             long time = System.currentTimeMillis() - Kits.INSTANCE.modifiedTimestamp;
 
-            if (time > 5 * 60 * 1000) Kits.INSTANCE.save();
+            if (time > 10 * 60 * 1000) Kits.INSTANCE.save();
         }
     }
 

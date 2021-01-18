@@ -87,8 +87,6 @@ public class Duel implements Listener {
                 player1.teleport(player1Location);
                 player2.teleport(player2Location);
 
-                System.out.println(region.getMinimumPoint() + " - " + region.getMaximumPoint());
-
                 started = true;
                 starting = true;
                 startTimer = 20 * 5;

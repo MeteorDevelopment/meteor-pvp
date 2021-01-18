@@ -1,7 +1,9 @@
 package minegame159.meteorpvp.kits;
 
-import minegame159.meteorpvp.utils.ISerializable;
-import minegame159.meteorpvp.utils.NBT;
+import minegame159.meteorpvp.nbt.NbtTag;
+import minegame159.meteorpvp.nbt.NbtWriter;
+import minegame159.meteorpvp.nbt.ISerializable;
+import minegame159.meteorpvp.nbt.NBT;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.Tag;
@@ -20,6 +22,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Kit implements ISerializable<CompoundTag> {
@@ -74,28 +78,31 @@ public class Kit implements ISerializable<CompoundTag> {
     // Serialization
 
     @Override
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
+    public void toTag(NbtWriter nbt) {
+        nbt.writeCompoundStart();
 
-        tag.putString("name", name);
-        tag.putString("author", author.toString());
-        tag.putBoolean("isPublic", isPublic);
+        nbt.writeString("name", name);
+        nbt.writeString("author", author.toString());
+        nbt.writeBool("isPublic", isPublic);
 
-        ListTag<CompoundTag> itemsTag = new ListTag<>(CompoundTag.class);
+        int itemCount = 0;
+        for (ItemStack itemStack : items) {
+            if (itemStack != null) itemCount++;
+        }
+
+        nbt.writeList("items", NbtTag.Compound, itemCount);
         for (int i = 0; i < items.length; i++) {
             ItemStack itemStack = items[i];
             if (itemStack == null) continue;
 
-            CompoundTag t = new CompoundTag();
+            nbt.writeCompoundStart();
+            nbt.writeInt("slot", i);
+            itemStackToNbt(nbt, itemStack);
 
-            t.putInt("slot", i);
-            itemStackToNbt(t, itemStack);
-
-            itemsTag.add(t);
+            nbt.writeCompoundEnd();
         }
-        tag.put("items", itemsTag);
 
-        return tag;
+        nbt.writeCompoundEnd();
     }
 
     @Override
@@ -111,26 +118,25 @@ public class Kit implements ISerializable<CompoundTag> {
         }
     }
 
-    private void itemStackToNbt(CompoundTag tag, ItemStack itemStack) {
+    private void itemStackToNbt(NbtWriter nbt, ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        tag.putString("id", itemStack.getType().name());
-        tag.putInt("count", itemStack.getAmount());
+        nbt.writeString("id", itemStack.getType().name());
+        nbt.writeInt("count", itemStack.getAmount());
 
-        // Enchantements
-        if (itemStack.getEnchantments().size() > 0) {
-            ListTag<CompoundTag> e = new ListTag<>(CompoundTag.class);
+        // Enchantments
+        Map<Enchantment, Integer> enchantments = itemStack.getEnchantments();
+        if (enchantments.size() > 0) {
+            nbt.writeList("enchantemets", NbtTag.Compound, enchantments.size());
 
-            for (Enchantment en : itemStack.getEnchantments().keySet()) {
-                CompoundTag t = new CompoundTag();
+            for (Enchantment en : enchantments.keySet()) {
+                nbt.writeCompoundStart();
 
-                t.put("id", NBT.toTag(en.getKey()));
-                t.putInt("level", itemStack.getEnchantments().get(en));
+                NBT.toTag(nbt, "id", en.getKey());
+                nbt.writeInt("level", enchantments.get(en));
 
-                e.add(t);
+                nbt.writeCompoundEnd();
             }
-
-            tag.put("enchantemets", e);
         }
 
         // Tipped Arrows / Potions
@@ -138,24 +144,23 @@ public class Kit implements ISerializable<CompoundTag> {
             PotionMeta meta = (PotionMeta) itemMeta;
 
             PotionData data = meta.getBasePotionData();
-            tag.putString("potion", data.getType().name());
-            tag.putBoolean("extended", data.isExtended());
-            tag.putBoolean("upgraded", data.isUpgraded());
+            nbt.writeString("potion", data.getType().name());
+            nbt.writeBool("extended", data.isExtended());
+            nbt.writeBool("upgraded", data.isUpgraded());
 
-            if (meta.getCustomEffects().size() > 0) {
-                ListTag<CompoundTag> p = new ListTag<>(CompoundTag.class);
+            List<PotionEffect> effects = meta.getCustomEffects();
+            if (effects.size() > 0) {
+                nbt.writeList("effects", NbtTag.Compound, effects.size());
 
-                for (PotionEffect potionEffect : meta.getCustomEffects()) {
-                    CompoundTag t = new CompoundTag();
+                for (PotionEffect potionEffect : effects) {
+                    nbt.writeCompoundStart();
 
-                    t.putString("id", potionEffect.getType().getName());
-                    t.putInt("duration", potionEffect.getDuration());
-                    t.putInt("amplifier", potionEffect.getAmplifier());
+                    nbt.writeString("id", potionEffect.getType().getName());
+                    nbt.writeInt("duration", potionEffect.getDuration());
+                    nbt.writeInt("amplifier", potionEffect.getAmplifier());
 
-                    p.add(t);
+                    nbt.writeCompoundEnd();
                 }
-
-                tag.put("effects", p);
             }
         }
 
@@ -166,21 +171,25 @@ public class Kit implements ISerializable<CompoundTag> {
 
             if (blockState instanceof ShulkerBox) {
                 ShulkerBox state = (ShulkerBox) blockState;
-                ListTag<CompoundTag> l = new ListTag<>(CompoundTag.class);
+
+                int itemCount = 0;
+                for (ItemStack stack : state.getInventory()) {
+                    if (stack != null && stack.getType() != Material.AIR) itemCount++;
+                }
+
+                nbt.writeList("items", NbtTag.Compound, itemCount);
 
                 for (int i = 0; i < state.getInventory().getSize(); i++) {
                     ItemStack item = state.getInventory().getItem(i);
                     if (item == null || item.getType() == Material.AIR) continue;
 
-                    CompoundTag t = new CompoundTag();
+                    nbt.writeCompoundStart();
 
-                    t.putInt("slot", i);
-                    itemStackToNbt(t, item);
+                    nbt.writeInt("slot", i);
+                    itemStackToNbt(nbt, item);
 
-                    l.add(t);
+                    nbt.writeCompoundEnd();
                 }
-
-                tag.put("items", l);
             }
         }
     }

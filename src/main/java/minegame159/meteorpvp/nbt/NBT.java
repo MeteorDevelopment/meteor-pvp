@@ -1,17 +1,14 @@
-package minegame159.meteorpvp.utils;
+package minegame159.meteorpvp.nbt;
 
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.StringTag;
 import org.bukkit.NamespacedKey;
 
 public class NBT {
-    public static ListTag<StringTag> toTag(NamespacedKey key) {
-        ListTag<StringTag> tag = new ListTag<>(StringTag.class);
-
-        tag.add(new StringTag(key.getNamespace()));
-        tag.add(new StringTag(key.getKey()));
-
-        return tag;
+    public static void toTag(NbtWriter nbt, String name, NamespacedKey key) {
+        nbt.writeList(name, NbtTag.String, 2);
+            nbt.writeString(key.getNamespace());
+            nbt.writeString(key.getKey());
     }
 
     public static NamespacedKey toKey(ListTag<?> tag) {

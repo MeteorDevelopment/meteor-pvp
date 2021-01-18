@@ -61,7 +61,7 @@ public class AntiCheatListener implements Listener {
 
         int totalMoveEventsLastSecond = 0;
         for (int x : lastSecondTicks) totalMoveEventsLastSecond += x;
-        if (totalMoveEventsLastSecond > 35.0 * (20.0 / Bukkit.getTPS()[0])) event.setCancelled(true);
+        if (totalMoveEventsLastSecond > 37.5 * (20.0 / Bukkit.getTPS()[0])) event.setCancelled(true);
 
         if (!ignore(player) && !ignoreSpeedNextTick.getBoolean(player)) {
             double y = 0;
@@ -292,7 +292,7 @@ public class AntiCheatListener implements Listener {
     }
 
     private double getNormalSpeedLimit() {
-        return 0.55;
+        return 0.65;
     }
 
     private double getElytraSpeedLimit() {

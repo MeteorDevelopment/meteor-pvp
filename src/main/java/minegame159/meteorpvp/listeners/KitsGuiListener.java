@@ -46,7 +46,6 @@ public class KitsGuiListener implements Listener {
                     }
 
                     kit.isPublic = !kit.isPublic;
-                    Kits.INSTANCE.save();
                     event.getWhoClicked().openInventory(Kits.INSTANCE.guiPrivateKits(event.getWhoClicked()));
                 }
             }

@@ -1,11 +1,12 @@
 package minegame159.meteorpvp.kits;
 
 import minegame159.meteorpvp.MeteorPvp;
-import minegame159.meteorpvp.utils.ISerializable;
+import minegame159.meteorpvp.nbt.ISerializable;
+import minegame159.meteorpvp.nbt.NbtTag;
+import minegame159.meteorpvp.nbt.NbtWriter;
 import minegame159.meteorpvp.utils.Utils;
 import net.querz.nbt.io.NBTUtil;
 import net.querz.nbt.tag.CompoundTag;
-import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.Tag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,9 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.Collator;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 public enum Kits implements ISerializable<CompoundTag> {
     INSTANCE;
@@ -52,11 +55,23 @@ public enum Kits implements ISerializable<CompoundTag> {
 
     public void save() {
         try {
-            NBTUtil.write(toTag(), FILE);
+            long timestamp = System.nanoTime();
+
+            NbtWriter nbt = new NbtWriter(new GZIPOutputStream(new FileOutputStream(FILE), 4096, true));
+            toTag(nbt);
+
+            nbt.close();
             modifiedTimestamp = 0;
+
+            double msDelta = (System.nanoTime() - timestamp) / 1000000.0;
+            System.out.printf("Saved kits in %.3f milliseconds%n", msDelta);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void changed() {
+        if (modifiedTimestamp == 0) modifiedTimestamp = System.currentTimeMillis();
     }
 
     private void add(Kit kit, boolean save) {
@@ -68,7 +83,7 @@ public enum Kits implements ISerializable<CompoundTag> {
             PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
         }
 
-        if (save && modifiedTimestamp == 0) modifiedTimestamp = System.currentTimeMillis();
+        if (save) changed();
     }
 
     public void add(Kit kit) {
@@ -94,6 +109,8 @@ public enum Kits implements ISerializable<CompoundTag> {
             PLAYER_KITS.get(kit.author).remove(kit);
             PUBLIC_KITS.remove(kit);
             PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+
+            changed();
             return true;
         }
 
@@ -109,6 +126,8 @@ public enum Kits implements ISerializable<CompoundTag> {
                     KITS.remove(name);
                     PUBLIC_KITS.remove(kit);
                     PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+
+                    changed();
                     return true;
                 }
             }
@@ -120,11 +139,14 @@ public enum Kits implements ISerializable<CompoundTag> {
     public void addPublic(Kit kit) {
         PUBLIC_KITS.add(kit);
         PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+
+        changed();
     }
 
     public void removePublic(Kit kit) {
         if (PUBLIC_KITS.remove(kit)) {
             PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+            changed();
         }
     }
 
@@ -225,16 +247,9 @@ public enum Kits implements ISerializable<CompoundTag> {
     // Serialization
 
     @Override
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
-        ListTag<CompoundTag> kitsTag = new ListTag<>(CompoundTag.class);
-
-        for (Kit kit : KITS.values()) {
-            kitsTag.add(kit.toTag());
-        }
-
-        tag.put("kits", kitsTag);
-        return tag;
+    public void toTag(NbtWriter nbt) {
+        nbt.writeList("kits", NbtTag.Compound, KITS.size());
+        for (Kit kit : KITS.values()) kit.toTag(nbt);
     }
 
     @Override
