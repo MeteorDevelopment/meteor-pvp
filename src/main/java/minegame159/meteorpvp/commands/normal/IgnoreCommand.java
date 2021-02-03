@@ -24,7 +24,7 @@ public class IgnoreCommand extends MyCommand {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            sender.sendMessage(Prefixes.MPVP + "To add / remove people do " + ChatColor.WHITE + " /ignore <name>");
+            sender.sendMessage(Prefixes.MPVP + "To add/remove people do " + ChatColor.WHITE + " /ignore <name>");
 
             sb.append(Prefixes.MPVP).append("Currently ignoring: ").append(ChatColor.WHITE);
             int i = 0;
@@ -42,8 +42,8 @@ public class IgnoreCommand extends MyCommand {
             if (toIgnore.hasPlayedBefore()) {
                 boolean added = Ignores.toggleIgnore(player, toIgnore.getUniqueId());
 
-                if (added) player.sendMessage(Prefixes.MPVP + "Added " + ChatColor.WHITE + toIgnore.getName() + ChatColor.GRAY + " to ignore list");
-                else player.sendMessage(Prefixes.MPVP + "Removed " + ChatColor.WHITE + toIgnore.getName() + ChatColor.GRAY + " from ignore list");
+                if (added) player.sendMessage(Prefixes.MPVP + ChatColor.GRAY + "Added " + ChatColor.WHITE + toIgnore.getName() + ChatColor.GRAY + " to ignore list");
+                else player.sendMessage(Prefixes.MPVP + ChatColor.GRAY + "Removed " + ChatColor.WHITE + toIgnore.getName() + ChatColor.GRAY + " from ignore list");
             } else {
                 player.sendMessage(Prefixes.MPVP + ChatColor.WHITE + args[0] + ChatColor.GRAY + " never played here before");
             }
