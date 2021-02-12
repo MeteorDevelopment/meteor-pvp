@@ -20,7 +20,10 @@ public class PrivateMsgs {
         String receiverNick = ChatColor.translateAlternateColorCodes('&', receiver.getDisplayName());
 
         sender.sendMessage(getMsg("Me", receiverNick, message));
-        receiver.sendMessage(getMsg(senderNick, "Me", message));
+
+        if (!Ignores.hasReceiverIgnored(sender, receiver)) {
+            receiver.sendMessage(getMsg(senderNick, "Me", message));
+        }
 
         lastMessages.put(receiver.getUniqueId(), sender.getUniqueId());
     }
