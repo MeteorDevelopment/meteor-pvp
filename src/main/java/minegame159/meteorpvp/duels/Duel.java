@@ -12,7 +12,6 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import minegame159.meteorpvp.MeteorPvp;
-import minegame159.meteorpvp.listeners.AntiCheatListener;
 import minegame159.meteorpvp.utils.Prefixes;
 import minegame159.meteorpvp.utils.Utils;
 import org.bukkit.Bukkit;
@@ -81,9 +80,6 @@ public class Duel implements Listener {
             }
 
             TaskManager.IMP.sync(() -> {
-                AntiCheatListener.INSTANCE.ignoreTicks.put(player1, 20 * 5);
-                AntiCheatListener.INSTANCE.ignoreTicks.put(player2, 20 * 5);
-
                 player1.teleport(player1Location);
                 player2.teleport(player2Location);
 
