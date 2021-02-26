@@ -27,14 +27,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KitCreatorListener implements Listener {
+    private boolean saving = false;
+
     // SAVE KITS
 
     @EventHandler
     private void onServerTickEnd(ServerTickEndEvent event) {
-        if (Kits.INSTANCE.modifiedTimestamp != 0) {
+        if (!saving && Kits.INSTANCE.modifiedTimestamp != 0) {
             long time = System.currentTimeMillis() - Kits.INSTANCE.modifiedTimestamp;
 
-            if (time > 10 * 60 * 1000) Kits.INSTANCE.save();
+            if (time > 60 * 60 * 1000) {
+                saving = true;
+
+                Bukkit.getScheduler().runTaskAsynchronously(MeteorPvp.INSTANCE, () -> {
+                    Kits.INSTANCE.save();
+                    saving = false;
+                });
+            }
         }
     }
 

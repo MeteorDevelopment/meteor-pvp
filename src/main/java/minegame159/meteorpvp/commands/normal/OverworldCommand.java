@@ -8,9 +8,9 @@ import minegame159.meteorpvp.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class NetherCommand extends MyCommand {
-    public NetherCommand() {
-        super("nether", "Teleports you to nether.", null, null);
+public class OverworldCommand extends MyCommand {
+    public OverworldCommand() {
+        super("overworld", "Teleports you to the overworld.", null, null);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class NetherCommand extends MyCommand {
                 return true;
             }
 
-            ((Player) sender).teleport(Utils.NETHER.getSpawnLocation().add(0.5, 0, 0.5));
+            ((Player) sender).teleport(Utils.OVERWORLD.getSpawnLocation().add(0.5, 0, 0.5));
         }
 
         return true;

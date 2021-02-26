@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class SpawnCommand extends MyCommand {
     public SpawnCommand() {
-        super("spawn", "Teleports you to spawn.", null, null);
+        super("spawn", "Teleports you to the spawn.", null, null);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class SpawnCommand extends MyCommand {
                 return true;
             }
 
-            ((Player) sender).teleport(Utils.OVERWORLD.getSpawnLocation().add(0.5, 0, 0.5));
+            ((Player) sender).teleport(Utils.NETHER.getSpawnLocation().add(0.5, 0, 0.5));
         }
 
         return true;

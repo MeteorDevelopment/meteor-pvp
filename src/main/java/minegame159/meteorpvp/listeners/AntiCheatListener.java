@@ -3,6 +3,7 @@ package minegame159.meteorpvp.listeners;
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import it.unimi.dsi.fastutil.objects.*;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +15,7 @@ public class AntiCheatListener implements Listener {
     @EventHandler
     private void onServerTickEnd(ServerTickEndEvent event) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.isDead()) continue;
+            if (player.isDead() || player.getGameMode() == GameMode.SPECTATOR) continue;
 
             // Burrow
             if (isInBlock(player)) {

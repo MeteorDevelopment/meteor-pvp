@@ -75,15 +75,17 @@ public enum Kits implements ISerializable<CompoundTag> {
     }
 
     private void add(Kit kit, boolean save) {
-        KITS.put(kit.name, kit);
-        PLAYER_KITS.computeIfAbsent(kit.author, uuid -> new ArrayList<>(1)).add(kit);
+        synchronized (KITS) {
+            KITS.put(kit.name, kit);
+            PLAYER_KITS.computeIfAbsent(kit.author, uuid -> new ArrayList<>(1)).add(kit);
 
-        if (kit.isPublic) {
-            PUBLIC_KITS.add(kit);
-            PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+            if (kit.isPublic) {
+                PUBLIC_KITS.add(kit);
+                PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+            }
+
+            if (save) changed();
         }
-
-        if (save) changed();
     }
 
     public void add(Kit kit) {
@@ -104,31 +106,35 @@ public enum Kits implements ISerializable<CompoundTag> {
     }
 
     public boolean remove(String name) {
-        Kit kit = KITS.remove(name);
-        if (kit != null) {
-            PLAYER_KITS.get(kit.author).remove(kit);
-            PUBLIC_KITS.remove(kit);
-            PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+        synchronized (KITS) {
+            Kit kit = KITS.remove(name);
+            if (kit != null) {
+                PLAYER_KITS.get(kit.author).remove(kit);
+                PUBLIC_KITS.remove(kit);
+                PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
 
-            changed();
-            return true;
+                changed();
+                return true;
+            }
         }
 
         return false;
     }
 
     public boolean remove(Player player, String name) {
-        List<Kit> kits = PLAYER_KITS.get(player.getUniqueId());
-        if (kits != null) {
-            for (Kit kit : kits) {
-                if (kit.name.equals(name)) {
-                    kits.remove(kit);
-                    KITS.remove(name);
-                    PUBLIC_KITS.remove(kit);
-                    PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
+        synchronized (KITS) {
+            List<Kit> kits = PLAYER_KITS.get(player.getUniqueId());
+            if (kits != null) {
+                for (Kit kit : kits) {
+                    if (kit.name.equals(name)) {
+                        kits.remove(kit);
+                        KITS.remove(name);
+                        PUBLIC_KITS.remove(kit);
+                        PUBLIC_KITS.sort((o1, o2) -> Collator.getInstance().compare(o1.name, o2.name));
 
-                    changed();
-                    return true;
+                        changed();
+                        return true;
+                    }
                 }
             }
         }
@@ -248,18 +254,22 @@ public enum Kits implements ISerializable<CompoundTag> {
 
     @Override
     public void toTag(NbtWriter nbt) {
-        nbt.writeList("kits", NbtTag.Compound, KITS.size());
-        for (Kit kit : KITS.values()) kit.toTag(nbt);
+        synchronized (KITS) {
+            nbt.writeList("kits", NbtTag.Compound, KITS.size());
+            for (Kit kit : KITS.values()) kit.toTag(nbt);
+        }
     }
 
     @Override
     public void fromTag(CompoundTag tag) {
-        KITS.clear();
-        PLAYER_KITS.clear();
-        PUBLIC_KITS.clear();
+        synchronized (KITS) {
+            KITS.clear();
+            PLAYER_KITS.clear();
+            PUBLIC_KITS.clear();
 
-        for (Tag<?> t : tag.getListTag("kits")) {
-            add(new Kit((CompoundTag) t), false);
+            for (Tag<?> t : tag.getListTag("kits")) {
+                add(new Kit((CompoundTag) t), false);
+            }
         }
     }
 }
