@@ -31,7 +31,7 @@ public class KitCreatorListener implements Listener {
 
     // SAVE KITS
 
-    @EventHandler
+    /*@EventHandler
     private void onServerTickEnd(ServerTickEndEvent event) {
         if (!saving && Kits.INSTANCE.modifiedTimestamp != 0) {
             long time = System.currentTimeMillis() - Kits.INSTANCE.modifiedTimestamp;
@@ -45,7 +45,7 @@ public class KitCreatorListener implements Listener {
                 });
             }
         }
-    }
+    }*/
 
     // RIGHT CLICK ITEM FRAMES
 
