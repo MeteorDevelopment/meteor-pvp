@@ -1,8 +1,6 @@
 package minegame159.meteorpvp.listeners;
 
-import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import minegame159.meteorpvp.MeteorPvp;
-import minegame159.meteorpvp.kits.Kits;
 import minegame159.meteorpvp.utils.Regions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

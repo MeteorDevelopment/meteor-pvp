@@ -47,6 +47,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
         Kits.INSTANCE.init();
         Duels.INSTANCE.init();
         Ignores.load();
+        Mutes.load();
 
         WebServer.enable();
     }
@@ -57,6 +58,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
 
         Kits.INSTANCE.save();
         Ignores.save();
+        Mutes.save();
 
         PrivateMsgs.stop();
         WebServer.disable();

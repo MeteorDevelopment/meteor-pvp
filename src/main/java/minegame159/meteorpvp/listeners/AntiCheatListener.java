@@ -1,7 +1,8 @@
 package minegame159.meteorpvp.listeners;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
-import it.unimi.dsi.fastutil.objects.*;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

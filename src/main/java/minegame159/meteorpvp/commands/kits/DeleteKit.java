@@ -1,9 +1,9 @@
 package minegame159.meteorpvp.commands.kits;
 
-import minegame159.meteorpvp.kits.Kit;
-import minegame159.meteorpvp.kits.Kits;
 import minegame159.meteorpvp.Perms;
 import minegame159.meteorpvp.commands.MyCommand;
+import minegame159.meteorpvp.kits.Kit;
+import minegame159.meteorpvp.kits.Kits;
 import minegame159.meteorpvp.utils.Msgs;
 import minegame159.meteorpvp.utils.Prefixes;
 import org.bukkit.Location;

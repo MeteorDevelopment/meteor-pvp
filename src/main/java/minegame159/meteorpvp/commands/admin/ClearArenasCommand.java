@@ -12,8 +12,6 @@ public class ClearArenasCommand extends MyCommand {
 
     @Override
     protected boolean onCommand(CommandSender sender, String label, String[] args) {
-
-
         ArenaClearer.clear();
         return true;
     }
