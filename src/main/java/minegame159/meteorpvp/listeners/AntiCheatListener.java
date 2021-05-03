@@ -50,7 +50,7 @@ public class AntiCheatListener implements Listener {
     private boolean isInBlock(Location loc) {
         Material block = loc.getBlock().getType();
 
-        if (block == Material.SOUL_SAND || block == Material.ENDER_CHEST) return (loc.getY() - (int) loc.getY()) < 0.87;
+        if (block == Material.SOUL_SAND || block == Material.ENDER_CHEST) return (loc.getY() - (int) loc.getY()) < 0.8;
 
         return block.isOccluding();
     }
