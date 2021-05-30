@@ -50,7 +50,7 @@ public class Kit implements ISerializable<CompoundTag> {
                     }
                 }
 
-                if ((itemStack.getMaxStackSize() != -1 && itemStack.getAmount() > itemStack.getMaxStackSize()) || !enchantsOk) {
+                if ((itemStack.getMaxStackSize() != -1 && itemStack.getAmount() > itemStack.getMaxStackSize()) || !enchantsOk || !KITCREATOR_ITEMS.contains(itemStack.getType())) {
                     if (i == 41) player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
                     else player.getInventory().setItem(i, new ItemStack(Material.AIR));
                 } else {

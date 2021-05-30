@@ -34,7 +34,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
         CONFIG_FOLDER = getDataFolder();
         CONFIG_FOLDER.mkdirs();
 
-        KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000, 101, 100000);
+        KIT_CREATOR_LOCATION = new Location((Bukkit.getWorld("world")), 100000.5, 100, 99997.5);
 
         Perms.register();
         Commands.register();
