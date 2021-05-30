@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,6 +34,44 @@ public class Kit implements ISerializable<CompoundTag> {
 
     public ItemStack[] items;
 
+    public static final List<Material> KITCREATOR_ITEMS = Arrays.asList(
+            Material.TIPPED_ARROW,
+            Material.ARROW,
+
+            Material.NETHERITE_SWORD,
+            Material.NETHERITE_PICKAXE,
+            Material.BOW,
+            Material.END_CRYSTAL,
+            Material.PURPLE_BED,
+            Material.RESPAWN_ANCHOR,
+            Material.GLOWSTONE,
+
+            Material.NETHERITE_HELMET,
+            Material.NETHERITE_CHESTPLATE,
+            Material.NETHERITE_LEGGINGS,
+            Material.NETHERITE_BOOTS,
+
+            Material.EXPERIENCE_BOTTLE,
+            Material.TOTEM_OF_UNDYING,
+            Material.ENCHANTED_GOLDEN_APPLE,
+            Material.GOLDEN_APPLE,
+            Material.CHORUS_FRUIT,
+            Material.ENDER_PEARL,
+            Material.ENDER_CHEST,
+            Material.OBSIDIAN,
+
+            Material.ANVIL,
+            Material.CRAFTING_TABLE,
+            Material.POLISHED_BLACKSTONE_BUTTON,
+            Material.STRING,
+            Material.PURPLE_WOOL,
+            Material.OAK_PLANKS,
+            Material.COBWEB,
+
+            Material.POTION,
+            Material.SPLASH_POTION
+    );
+
     public Kit(String name, Player player) {
         this.name = name;
         this.author = player.getUniqueId();
@@ -41,23 +80,27 @@ public class Kit implements ISerializable<CompoundTag> {
         for (int i = 0; i < items.length; i++) {
             ItemStack itemStack = i == 41 ? player.getInventory().getItemInOffHand() : player.getInventory().getContents()[i];
 
-            if (itemStack != null && itemStack.getType() != Material.AIR) {
-                boolean enchantsOk = true;
-                for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
-                    if (itemStack.getEnchantments().get(enchantment) > enchantment.getMaxLevel()) {
-                        enchantsOk = false;
-                        break;
-                    }
-                }
-
-                if ((itemStack.getMaxStackSize() != -1 && itemStack.getAmount() > itemStack.getMaxStackSize()) || !enchantsOk || !KITCREATOR_ITEMS.contains(itemStack.getType())) {
-                    if (i == 41) player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
-                    else player.getInventory().setItem(i, new ItemStack(Material.AIR));
-                } else {
-                    items[i] = new ItemStack(itemStack);
-                }
+            if (validItem(itemStack)) {
+                items[i] = new ItemStack(itemStack);
+            } else {
+                if (i == 41) player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                else player.getInventory().setItem(i, new ItemStack(Material.AIR));
             }
         }
+    }
+
+
+    private boolean validItem(ItemStack itemStack) {
+        if (itemStack == null) return false;
+        if (!KITCREATOR_ITEMS.contains(itemStack.getType())) return false;
+
+        for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
+            if (itemStack.getEnchantments().get(enchantment) > enchantment.getMaxLevel()) {
+                return false;
+            }
+        }
+
+        return itemStack.getMaxStackSize() == -1 || itemStack.getAmount() <= itemStack.getMaxStackSize();
     }
 
     public Kit(CompoundTag tag) {
