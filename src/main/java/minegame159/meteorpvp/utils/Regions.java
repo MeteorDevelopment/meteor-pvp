@@ -18,11 +18,9 @@ public class Regions {
     public static ProtectedRegion KITCREATOR;
 
     public static ProtectedRegion OW_SPAWN;
-    public static ProtectedRegion OW_AC_BARRIER;
     public static ProtectedRegion OW_PVP;
 
     public static ProtectedRegion NETHER_SPAWN;
-    public static ProtectedRegion NETHER_AC_BARRIER;
     public static ProtectedRegion NETHER_PVP;
 
     public static void onEnable() {
@@ -33,11 +31,9 @@ public class Regions {
         KITCREATOR = OW.getRegion("kitcreator");
 
         OW_SPAWN = OW.getRegion("spawn");
-        OW_AC_BARRIER = OW.getRegion("ac_barrier");
         OW_PVP = OW.getRegion("pvp");
 
         NETHER_SPAWN = NETHER.getRegion("spawn");
-        NETHER_AC_BARRIER = NETHER.getRegion("ac_barrier");
         NETHER_PVP = NETHER.getRegion("pvp");
     }
 
@@ -63,7 +59,7 @@ public class Regions {
     }
 
     public static boolean isInAnyPvp(Player player) {
-        return isInAnyPvp(player, true) || player.hasPermission(Perms.ADMIN);
+        return isInAnyPvp(player, true) && !player.hasPermission(Perms.ADMIN);
     }
 
     public static boolean isInAnyOW(Player player) {

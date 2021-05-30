@@ -4,16 +4,14 @@ import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.util.TaskManager;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.function.mask.InverseSingleBlockTypeMask;
-import com.sk89q.worldedit.function.mask.SingleBlockTypeMask;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import minegame159.meteorpvp.utils.Prefixes;
 import minegame159.meteorpvp.utils.Regions;
-import minegame159.meteorpvp.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.function.Consumer;
@@ -30,31 +28,27 @@ public class ArenaClearer {
             forEachPlayer(player -> player.sendMessage(Prefixes.ARENA + "Clearing arenas in 5 seconds."));
 
             Bukkit.getScheduler().runTaskLater(MeteorPvp.INSTANCE, () -> {
-                clean("world", Regions.OW_PVP, Regions.OW_AC_BARRIER);
-                clean("world_nether", Regions.NETHER_PVP, Regions.NETHER_AC_BARRIER);
+                clean("world", Regions.OW_PVP);
+                clean("world_nether", Regions.NETHER_PVP);
             }, 20 * 5);
         }, 20 * 30);
     }
 
-    private static void clean(String worldName, ProtectedRegion clearRegion, ProtectedRegion barrierRegion) {
+    private static void clean(String worldName, ProtectedRegion clearRegion) {
         World world = Bukkit.getWorld(worldName);
-        forEachPlayer(world, Utils::resetToSpawn);
 
-        for (Entity entity : world.getEntitiesByClasses(EnderCrystal.class)) {
-            entity.remove();
+        for (Entity entity : world.getEntities()) {
+            if (entity.getType() != EntityType.PLAYER) entity.remove();
         }
 
         TaskManager.IMP.async(() -> {
             try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld(worldName)).fastmode(true).build()) {
-                barrierEnable(editSession, barrierRegion);
 
                 editSession.replaceBlocks(
                         Regions.toWERegion(clearRegion),
                         new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK),
                         BlockTypes.AIR
                 );
-
-                barrierDisable(editSession, barrierRegion);
             }
 
             forEachPlayer(world, player -> player.sendMessage(Prefixes.ARENA + "Arena cleared."));
@@ -71,21 +65,5 @@ public class ArenaClearer {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getWorld() == world) consumer.accept(player);
         }
-    }
-
-    private static void barrierEnable(EditSession editSession, ProtectedRegion region) {
-        editSession.replaceBlocks(
-                Regions.toWERegion(region),
-                new SingleBlockTypeMask(editSession, BlockTypes.AIR),
-                BlockTypes.BARRIER
-        );
-    }
-
-    private static void barrierDisable(EditSession editSession, ProtectedRegion region) {
-        editSession.replaceBlocks(
-                Regions.toWERegion(region),
-                new SingleBlockTypeMask(editSession, BlockTypes.BARRIER),
-                BlockTypes.AIR
-        );
     }
 }

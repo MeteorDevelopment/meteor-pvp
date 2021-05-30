@@ -1,5 +1,6 @@
 package minegame159.meteorpvp.listeners;
 
+import minegame159.meteorpvp.Perms;
 import minegame159.meteorpvp.utils.Regions;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,7 +10,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 public class PlayerDeathListener implements Listener {
     @EventHandler
     private void onPlayerDeath(PlayerDeathEvent event) {
-        if (!Regions.isInAnyPvp(event.getEntity())) {
+        if (!Regions.isInAnyPvp(event.getEntity()) || event.getEntity().hasPermission(Perms.ADMIN)) {
             event.getDrops().clear();
         }
 
