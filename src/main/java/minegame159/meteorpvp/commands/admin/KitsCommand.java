@@ -1,4 +1,4 @@
-package minegame159.meteorpvp.commands.kits;
+package minegame159.meteorpvp.commands.admin;
 
 import minegame159.meteorpvp.Perms;
 import minegame159.meteorpvp.commands.MyCommand;

@@ -10,7 +10,7 @@ public class ReplyCommand extends MyCommand {
     private final StringBuilder sb = new StringBuilder();
 
     public ReplyCommand() {
-        super("r", "Replies to the last message.", "/r <message>", null);
+        super("r", "Replies to the last message.", "/r <message>");
     }
 
     @Override

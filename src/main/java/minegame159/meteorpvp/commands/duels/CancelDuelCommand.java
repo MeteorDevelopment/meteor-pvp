@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class CancelDuelCommand extends MyCommand {
     public CancelDuelCommand() {
-        super("cancelduel", "Cancels your duel request.", null, null);
+        super("cancelduel", "Cancels your duel request.");
     }
 
     @Override

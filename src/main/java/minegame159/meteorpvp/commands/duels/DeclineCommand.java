@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class DeclineCommand extends MyCommand {
     public DeclineCommand() {
-        super("decline", "Declines a duel.", null, null);
+        super("decline", "Declines a duel.", "/decline <player>");
     }
 
     @Override

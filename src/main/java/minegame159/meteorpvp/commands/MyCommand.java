@@ -10,12 +10,26 @@ import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class MyCommand extends Command {
-    public MyCommand(String name, String description, String usage, Permission permission, String... aliases) {
-        super(name, description, usage, Arrays.asList(aliases));
+
+    public MyCommand(String name, String description) {
+        super(name, description, null, null);
+    }
+
+    public MyCommand(String name, String description, String usage) {
+        super(name, description, usage, null);
+    }
+
+    public MyCommand(String name, String description, Permission permission) {
+        super(name, description, null, null);
+
+        if (permission != null) setPermission(permission.getName());
+    }
+
+    public MyCommand(String name, String description, String usage, Permission permission) {
+        super(name, description, usage, null);
 
         if (permission != null) setPermission(permission.getName());
     }

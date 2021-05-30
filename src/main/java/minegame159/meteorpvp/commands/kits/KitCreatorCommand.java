@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class KitCreatorCommand extends MyCommand {
     public KitCreatorCommand() {
-        super("kitcreator", "Teleports you to kit creator.", null, null);
+        super("kitcreator", "Teleports you to kit creator.");
     }
 
     @Override

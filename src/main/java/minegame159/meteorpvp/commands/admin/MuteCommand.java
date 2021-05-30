@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class MuteCommand extends MyCommand {
 
     public MuteCommand() {
-        super("mute", "Mutes a player.", null, Perms.ADMIN);
+        super("mute", "Mutes a player.", "/mute <username>", Perms.MODERATOR);
     }
 
     @Override

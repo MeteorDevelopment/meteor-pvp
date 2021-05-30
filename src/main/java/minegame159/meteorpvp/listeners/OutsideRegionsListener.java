@@ -7,7 +7,6 @@ import minegame159.meteorpvp.duels.Duels;
 import minegame159.meteorpvp.utils.Regions;
 import minegame159.meteorpvp.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -31,7 +30,7 @@ public class OutsideRegionsListener implements Listener {
     @EventHandler
     private void onTick(ServerTickEndEvent event) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.isDead() || player.getGameMode() != GameMode.SURVIVAL || player.hasPermission(Perms.ALLOW_OUTSIDE)) continue;
+            if (player.isDead() || player.hasPermission(Perms.ADMIN)) continue;
 
             World world = player.getWorld();
             Duel duel = Duels.INSTANCE.get(player);

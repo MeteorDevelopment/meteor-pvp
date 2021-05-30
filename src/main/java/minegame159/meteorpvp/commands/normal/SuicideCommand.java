@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 public class SuicideCommand extends MyCommand {
     public SuicideCommand() {
-        super("suicide", "Kills you.", null, null);
+        super("suicide", "Kills you.");
     }
 
     @Override

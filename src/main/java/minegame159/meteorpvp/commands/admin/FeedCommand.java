@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public class FeedCommand extends MyCommand {
     public FeedCommand() {
-        super("feed", "Fills your hunger bar.", null, Perms.ADMIN);
+        super("feed", "Fills your hunger bar.", Perms.ADMIN);
     }
 
     @Override

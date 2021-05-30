@@ -12,7 +12,7 @@ public class MessageCommand extends MyCommand {
     private final StringBuilder sb = new StringBuilder();
 
     public MessageCommand() {
-        super("msg", "Messages a person.", "/msg <name> <message>", null);
+        super("msg", "Messages a person.", "/msg <name> <message>");
     }
 
     @Override

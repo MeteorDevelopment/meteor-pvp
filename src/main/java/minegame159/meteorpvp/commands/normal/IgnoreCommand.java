@@ -15,7 +15,7 @@ public class IgnoreCommand extends MyCommand {
     private final StringBuilder sb = new StringBuilder();
 
     public IgnoreCommand() {
-        super("ignore", "Ignore people.", null, null);
+        super("ignore", "Hides a players messages.", "/ignore <username>");
     }
 
     @Override

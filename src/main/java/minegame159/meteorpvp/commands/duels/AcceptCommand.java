@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class AcceptCommand extends MyCommand {
     public AcceptCommand() {
-        super("accept", "Accepts a duel.", "/accept <username>", null);
+        super("accept", "Accepts a duel.", "/accept <username>");
     }
 
     @Override

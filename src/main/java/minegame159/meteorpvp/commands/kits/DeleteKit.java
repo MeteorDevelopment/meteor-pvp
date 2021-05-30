@@ -19,7 +19,7 @@ public class DeleteKit extends MyCommand {
     private static final List<String> LIST = new ArrayList<>();
 
     public DeleteKit() {
-        super("deletekit", "Deletes a kit.", "/deletekit <name>", null);
+        super("deletekit", "Deletes a kit.", "/deletekit <name>");
     }
 
     @Override

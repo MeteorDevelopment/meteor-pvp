@@ -11,8 +11,9 @@ public class PlayerDeathListener implements Listener {
     private void onPlayerDeath(PlayerDeathEvent event) {
         if (!Regions.isInAnyPvp(event.getEntity())) {
             event.getDrops().clear();
-            event.setDroppedExp(0);
         }
+
+        event.setDroppedExp(0);
     }
 
     @EventHandler

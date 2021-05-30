@@ -7,6 +7,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import minegame159.meteorpvp.Perms;
 import minegame159.meteorpvp.duels.Duel;
 import minegame159.meteorpvp.duels.Duels;
 import org.bukkit.Location;
@@ -62,7 +63,7 @@ public class Regions {
     }
 
     public static boolean isInAnyPvp(Player player) {
-        return isInAnyPvp(player, true);
+        return isInAnyPvp(player, true) || player.hasPermission(Perms.ADMIN);
     }
 
     public static boolean isInAnyOW(Player player) {

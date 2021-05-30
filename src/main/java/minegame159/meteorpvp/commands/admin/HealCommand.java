@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class HealCommand extends MyCommand {
     public HealCommand() {
-        super("heal", "Heals you.", null, Perms.ADMIN);
+        super("heal", "Fully heals you.", Perms.ADMIN);
     }
 
     @Override

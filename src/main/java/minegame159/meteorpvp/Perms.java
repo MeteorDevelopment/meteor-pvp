@@ -10,10 +10,8 @@ public class Perms {
     private static final List<Permission> PERMS = new ArrayList<>();
 
     public static final Permission ADMIN = create("thebestplugin.admin");
+    public static final Permission MODERATOR = create("thebestplugin.moderator");
     public static final Permission DONATOR = create("thebestplugin.donator");
-
-    public static final Permission CHANGE_GAMEMODE = create("thebestplugin.change-gamemode");
-    public static final Permission ALLOW_OUTSIDE = create("thebestplugin.allow-outside");
 
     public static void register() {
         for (Permission perm : PERMS) {

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class CreateKitCommand extends MyCommand {
     public CreateKitCommand() {
-        super("createkit", "Creates a new private kit.", "/createkit <name>", null);
+        super("createkit", "Creates a new private kit.", "/createkit <name>");
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class DuelCommand extends MyCommand {
     public DuelCommand() {
-        super("duel", "Sends duel request to a player.", "/duel <player>", null);
+        super("duel", "Sends duel request to a player.", "/duel <player>");
     }
 
     @Override

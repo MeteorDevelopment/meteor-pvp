@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class OverworldCommand extends MyCommand {
     public OverworldCommand() {
-        super("overworld", "Teleports you to the overworld.", null, null);
+        super("overworld", "Teleports you to the overworld.");
     }
 
     @Override

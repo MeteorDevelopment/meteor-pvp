@@ -15,7 +15,7 @@ public class HelpCommand extends MyCommand {
     private static final List<String> TAB = Arrays.asList("1", "2");
 
     public HelpCommand() {
-        super("help", "This message.", null, null);
+        super("help", "This message.");
     }
 
     @Override

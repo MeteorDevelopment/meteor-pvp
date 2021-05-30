@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class KitCommand extends MyCommand {
     public KitCommand() {
-        super("kit", "Opens kit gui.", null, null);
+        super("kit", "Opens kit gui or equips named kit.", "/kit <name>");
     }
 
     @Override
