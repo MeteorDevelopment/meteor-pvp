@@ -38,7 +38,7 @@ public class ArenaClearer {
         World world = Bukkit.getWorld(worldName);
 
         for (Entity entity : world.getEntities()) {
-            if (entity.getType() != EntityType.PLAYER) entity.remove();
+            if (entity.getType() == EntityType.ENDER_CRYSTAL) entity.remove();
         }
 
         TaskManager.IMP.async(() -> {
