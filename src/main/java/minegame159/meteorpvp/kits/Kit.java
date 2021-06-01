@@ -69,7 +69,9 @@ public class Kit implements ISerializable<CompoundTag> {
             Material.COBWEB,
 
             Material.POTION,
-            Material.SPLASH_POTION
+            Material.SPLASH_POTION,
+
+            Material.IRON_PICKAXE
     );
 
     public Kit(String name, Player player) {

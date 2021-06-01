@@ -3,6 +3,7 @@ package minegame159.meteorpvp;
 import minegame159.meteorpvp.commands.Commands;
 import minegame159.meteorpvp.duels.Duels;
 import minegame159.meteorpvp.kits.Kits;
+import minegame159.meteorpvp.listeners.AntiCheatListener;
 import minegame159.meteorpvp.listeners.Listeners;
 import minegame159.meteorpvp.utils.Regions;
 import minegame159.meteorpvp.utils.Utils;
@@ -30,6 +31,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
 
         saveDefaultConfig();
         WEBSERVER_TOKEN = getConfig().getString("webserver_config");
+        AntiCheatListener.MIN_CRYSTAL_AGE = getConfig().getInt("min_crystal_age");
 
         CONFIG_FOLDER = getDataFolder();
         CONFIG_FOLDER.mkdirs();

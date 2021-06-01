@@ -7,12 +7,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class AntiCheatListener implements Listener {
     private final Object2ObjectMap<Player, Location> lastValidBurrowPositions = new Object2ObjectOpenHashMap<>();
+    public static int MIN_CRYSTAL_AGE;
+
+    @EventHandler
+    private void onEntityDamageEntity(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof EnderCrystal && event.getDamager() instanceof Player && event.getEntity().getTicksLived() <= MIN_CRYSTAL_AGE) {
+            event.setCancelled(true);
+        }
+    }
 
     @EventHandler
     private void onServerTickEnd(ServerTickEndEvent event) {
