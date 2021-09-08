@@ -1,7 +1,7 @@
 name: MeteorPvp
 version: @version@
 main: minegame159.meteorpvp.MeteorPvp
-api-version: 1.16
+api-version: 1.17
 
 depend:
   - WorldGuard

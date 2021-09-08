@@ -1,9 +1,9 @@
 package minegame159.meteorpvp.duels;
 
-import com.boydti.fawe.FaweAPI;
-import com.boydti.fawe.util.TaskManager;
 import com.destroystokyo.paper.Title;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
+import com.fastasyncworldedit.core.FaweAPI;
+import com.fastasyncworldedit.core.util.TaskManager;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.function.mask.InverseSingleBlockTypeMask;

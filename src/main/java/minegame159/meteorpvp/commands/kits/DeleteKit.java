@@ -9,8 +9,6 @@ import minegame159.meteorpvp.utils.Prefixes;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +42,8 @@ public class DeleteKit extends MyCommand {
         return true;
     }
 
-    @NotNull
     @Override
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args, @Nullable Location location) throws IllegalArgumentException {
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args, Location location) throws IllegalArgumentException {
         LIST.clear();
         if (sender instanceof Player) {
             for (Kit kit : Kits.INSTANCE.getKits((Player) sender)) LIST.add(kit.name);

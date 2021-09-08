@@ -22,15 +22,18 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven { url 'https://maven.enginehub.org/repo/' }
-    maven { url 'https://mvn.intellectualsites.com/content/repositories/releases/' }
+    maven {
+        name = "IntellectualSites"
+        url = uri("https://mvn.intellectualsites.com/content/groups/public/")
+    }
     maven { url 'https://jitpack.io/' }
 }
 
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.3'
-    compileOnly 'com.intellectualsites.fawe:FAWE-Bukkit:1.16-313'
-    compileOnly 'net.luckperms:api:5.2'
+    compileOnly 'com.fastasyncworldedit:FAWE-Bukkit:1.17-201'
+    compileOnly 'net.luckperms:api:5.3'
 
     compile 'org.reflections:reflections:0.9.12'
     compile 'org.openlabtesting.netty:netty-all:4.1.48.Final'
