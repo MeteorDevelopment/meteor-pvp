@@ -1,10 +1,10 @@
 package meteordevelopment.meteorpvp.listeners;
 
+import meteordevelopment.meteorpvp.chat.Msgs;
+import meteordevelopment.meteorpvp.chat.Prefixes;
 import meteordevelopment.meteorpvp.duels.Duels;
 import meteordevelopment.meteorpvp.duels.DuelsGui;
 import meteordevelopment.meteorpvp.duels.DuelsMode;
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;

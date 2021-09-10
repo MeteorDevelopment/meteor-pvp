@@ -69,9 +69,7 @@ public class HelpCommand extends MyCommand {
             header.append(")");
         }
         header.append(" ").append(ChatColor.YELLOW);
-        for (int i = header.length(); i < ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH; i++) {
-            header.append("-");
-        }
+        header.append("-".repeat(Math.max(0, ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH - header.length())));
 
         sender.sendMessage(header.toString());
         sender.sendMessage(page.getLines());

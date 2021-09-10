@@ -1,10 +1,9 @@
 package meteordevelopment.meteorpvp.listeners;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
-import meteordevelopment.meteorpvp.utils.Perms;
+import meteordevelopment.meteorpvp.arenas.Regions;
 import meteordevelopment.meteorpvp.duels.Duel;
 import meteordevelopment.meteorpvp.duels.Duels;
-import meteordevelopment.meteorpvp.arenas.Regions;
 import meteordevelopment.meteorpvp.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,7 +29,7 @@ public class OutsideRegionsListener implements Listener {
     @EventHandler
     private void onTick(ServerTickEndEvent event) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.isDead() || player.hasPermission(Perms.ADMIN)) continue;
+            if (player.isDead() || Utils.isAdmin(player)) continue;
 
             World world = player.getWorld();
             Duel duel = Duels.INSTANCE.get(player);
@@ -45,7 +44,8 @@ public class OutsideRegionsListener implements Listener {
 
             if (outside) {
                 Location pos = lastValidPositions.get(player.getUniqueId());
-                if (pos == null) pos = (world == Utils.OVERWORLD ? Utils.OVERWORLD : Utils.NETHER).getSpawnLocation().add(0.5, 0, 0.5);
+                if (pos == null)
+                    pos = (world == Utils.OVERWORLD ? Utils.OVERWORLD : Utils.NETHER).getSpawnLocation().add(0.5, 0, 0.5);
                 player.teleport(pos);
             } else {
                 lastValidPositions.put(player.getUniqueId(), player.getLocation());
@@ -55,6 +55,7 @@ public class OutsideRegionsListener implements Listener {
 
     @EventHandler
     private void onBlockPlace(BlockPlaceEvent event) {
-        if (!event.getPlayer().isOp() && event.canBuild() && !Regions.isInAnyBuildable(event.getBlock().getLocation())) event.setBuild(false);
+        if (!event.getPlayer().isOp() && event.canBuild() && !Regions.isInAnyBuildable(event.getBlock().getLocation()))
+            event.setBuild(false);
     }
 }

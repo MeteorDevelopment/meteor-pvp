@@ -34,8 +34,20 @@ public class Utils {
         }
     }
 
+    public static boolean isAdmin(HumanEntity player) {
+        return player.hasPermission(Perms.ADMIN);
+    }
+
+    public static boolean isMod(HumanEntity player) {
+        return isAdmin(player) || player.hasPermission(Perms.MODERATOR);
+    }
+
+    public static boolean isHelper(HumanEntity player) {
+        return isAdmin(player) || isMod(player) || player.hasPermission(Perms.HELPER);
+    }
+
     public static boolean isDonator(HumanEntity player) {
-        return player.hasPermission(Perms.DONATOR);
+        return isAdmin(player) || isMod(player) || player.hasPermission(Perms.DONATOR);
     }
 
     public static void setName(ItemStack itemStack, String name) {

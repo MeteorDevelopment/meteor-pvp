@@ -69,11 +69,11 @@ public class AntiCheatListener implements Listener {
 
     private void offset(Location loc, int i) {
         switch (i) {
-            case 0: loc.add(0, 1, 0);
-            case 1: loc.add(1, 0, 0);
-            case 2: loc.add(-1, 0, 0);
-            case 3: loc.add(0, 0, 1);
-            case 4: loc.add(0, 0, -1);
+            case 0 -> loc.add(0, 1, 0);
+            case 1 -> loc.add(1, 0, 0);
+            case 2 -> loc.add(-1, 0, 0);
+            case 3 -> loc.add(0, 0, 1);
+            case 4 -> loc.add(0, 0, -1);
         }
     }
 

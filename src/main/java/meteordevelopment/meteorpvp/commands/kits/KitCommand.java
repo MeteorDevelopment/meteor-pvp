@@ -1,12 +1,12 @@
 package meteordevelopment.meteorpvp.commands.kits;
 
-import meteordevelopment.meteorpvp.utils.Perms;
+import meteordevelopment.meteorpvp.arenas.Regions;
+import meteordevelopment.meteorpvp.chat.Msgs;
+import meteordevelopment.meteorpvp.chat.Prefixes;
 import meteordevelopment.meteorpvp.commands.MyCommand;
 import meteordevelopment.meteorpvp.kits.Kit;
 import meteordevelopment.meteorpvp.kits.Kits;
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
-import meteordevelopment.meteorpvp.arenas.Regions;
+import meteordevelopment.meteorpvp.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -28,7 +28,7 @@ public class KitCommand extends MyCommand {
             Kit kit = Kits.INSTANCE.get(args[0]);
             if (kit == null) player.sendMessage(Prefixes.KITS + Msgs.kitDoesntExist(args[0]));
             else {
-                if (kit.isPublic || player.hasPermission(Perms.ADMIN) || kit.author.equals(player.getUniqueId())) kit.apply(player);
+                if (kit.isPublic || Utils.isAdmin(player) || kit.author.equals(player.getUniqueId())) kit.apply(player);
                 else player.sendMessage(Prefixes.KITS + Msgs.dontOwnKit());
             }
             return true;

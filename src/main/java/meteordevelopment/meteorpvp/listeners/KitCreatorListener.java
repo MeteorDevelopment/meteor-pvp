@@ -29,21 +29,21 @@ public class KitCreatorListener implements Listener {
 
     // SAVE KITS
 
-    /*@EventHandler
-    private void onServerTickEnd(ServerTickEndEvent event) {
-        if (!saving && Kits.INSTANCE.modifiedTimestamp != 0) {
-            long time = System.currentTimeMillis() - Kits.INSTANCE.modifiedTimestamp;
-
-            if (time > 60 * 60 * 1000) {
-                saving = true;
-
-                Bukkit.getScheduler().runTaskAsynchronously(MeteorPvp.INSTANCE, () -> {
-                    Kits.INSTANCE.save();
-                    saving = false;
-                });
-            }
-        }
-    }*/
+//    @EventHandler
+//    private void onServerTickEnd(ServerTickEndEvent event) {
+//        if (!saving && Kits.INSTANCE.modifiedTimestamp != 0) {
+//            long time = System.currentTimeMillis() - Kits.INSTANCE.modifiedTimestamp;
+//
+//            if (time > 60 * 60 * 1000) {
+//                saving = true;
+//
+//                Bukkit.getScheduler().runTaskAsynchronously(MeteorPvp.INSTANCE, () -> {
+//                    Kits.INSTANCE.save();
+//                    saving = false;
+//                });
+//            }
+//        }
+//    }
 
     // RIGHT CLICK ITEM FRAMES
 
@@ -83,11 +83,10 @@ public class KitCreatorListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.hasItem() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.getItem() != null && event.getItem().getItemMeta() instanceof BlockStateMeta && ((BlockStateMeta) event.getItem().getItemMeta()).getBlockState() instanceof ShulkerBox && Regions.isIn(Regions.KITCREATOR, event.getPlayer())) {
+        if (event.hasItem() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.getItem() != null && event.getItem().getItemMeta() instanceof BlockStateMeta && ((BlockStateMeta) event.getItem().getItemMeta()).getBlockState() instanceof ShulkerBox shulkerBox && Regions.isIn(Regions.KITCREATOR, event.getPlayer())) {
             event.setCancelled(true);
 
             Inventory inv = Bukkit.createInventory(event.getPlayer(), 27, "Shulker Box");
-            ShulkerBox shulkerBox = ((ShulkerBox) ((BlockStateMeta) event.getItem().getItemMeta()).getBlockState());
             inv.setContents(shulkerBox.getInventory().getContents());
             event.getPlayer().openInventory(inv);
 
@@ -111,6 +110,6 @@ public class KitCreatorListener implements Listener {
             itemStack.setItemMeta(itemMeta);
         }
 
-        if (in.containsKey(event.getPlayer())) in.remove(event.getPlayer());
+        in.remove(event.getPlayer());
     }
 }

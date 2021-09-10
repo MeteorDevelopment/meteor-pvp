@@ -28,12 +28,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Kit implements ISerializable<CompoundTag> {
-    public String name;
-    public UUID author;
-    public boolean isPublic;
-
-    public ItemStack[] items;
-
     public static final List<Material> KITCREATOR_ITEMS = Arrays.asList(
             Material.TIPPED_ARROW,
             Material.ARROW,
@@ -74,6 +68,11 @@ public class Kit implements ISerializable<CompoundTag> {
             Material.IRON_PICKAXE
     );
 
+    public String name;
+    public UUID author;
+    public boolean isPublic;
+    public ItemStack[] items;
+
     public Kit(String name, Player player) {
         this.name = name;
         this.author = player.getUniqueId();
@@ -92,6 +91,10 @@ public class Kit implements ISerializable<CompoundTag> {
     }
 
 
+    public Kit(CompoundTag tag) {
+        fromTag(tag);
+    }
+
     private boolean validItem(ItemStack itemStack) {
         if (itemStack == null) return false;
         if (!KITCREATOR_ITEMS.contains(itemStack.getType())) return false;
@@ -103,10 +106,6 @@ public class Kit implements ISerializable<CompoundTag> {
         }
 
         return itemStack.getMaxStackSize() == -1 || itemStack.getAmount() <= itemStack.getMaxStackSize();
-    }
-
-    public Kit(CompoundTag tag) {
-        fromTag(tag);
     }
 
     public void apply(HumanEntity player) {
@@ -265,7 +264,8 @@ public class Kit implements ISerializable<CompoundTag> {
             try {
                 PotionType ptype = PotionType.valueOf(tag.getString("potion"));
                 meta.setBasePotionData(new PotionData(ptype, tag.getBoolean("extended"), tag.getBoolean("upgraded")));
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalArgumentException ignored) {
+            }
 
             ListTag<?> p = tag.getListTag("effects");
             if (p != null) {
@@ -281,12 +281,10 @@ public class Kit implements ISerializable<CompoundTag> {
         }
 
         // Shulker Boxes
-        else if (itemMeta instanceof BlockStateMeta) {
-            BlockStateMeta meta = (BlockStateMeta) itemMeta;
+        else if (itemMeta instanceof BlockStateMeta meta) {
             BlockState blockState = meta.getBlockState();
 
-            if (blockState instanceof ShulkerBox) {
-                ShulkerBox state = (ShulkerBox) blockState;
+            if (blockState instanceof ShulkerBox state) {
                 ListTag<?> l = tag.getListTag("items");
 
                 for (Tag<?> tt : l) {

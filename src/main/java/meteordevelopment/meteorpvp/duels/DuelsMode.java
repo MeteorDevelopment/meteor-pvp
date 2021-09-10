@@ -49,11 +49,11 @@ public class DuelsMode {
         return available.size();
     }
 
-    void moveToAvailable(Duel duel) {
+    void makeAvailable(Duel duel) {
         available.add(duel);
     }
 
-    void moveToUsed(Duel duel) {
+    void makeUnavailable(Duel duel) {
         available.remove(duel);
     }
 }

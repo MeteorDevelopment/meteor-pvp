@@ -20,7 +20,7 @@ public class DeathMessageListener implements Listener {
     private final Map<Player, EntityDamageEvent.DamageCause> lastDmgCause = new HashMap<>();
     private final Map<Player, Entity> lastAttacker = new HashMap<>();
     private final Map<EnderCrystal, Player> crystalExploder = new HashMap<>();
-    
+
     @EventHandler
     private void onTick(ServerTickEndEvent event) {
         crystalExploder.clear();
@@ -45,7 +45,7 @@ public class DeathMessageListener implements Listener {
         lastDmgCause.put(player, event.getCause());
         lastAttacker.put(player, event.getDamager());
     }
-    
+
     @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
         lastDmgCause.remove(event.getPlayer());
@@ -69,7 +69,9 @@ public class DeathMessageListener implements Listener {
                 with = ChatColor.GREEN + "End Crystal";
             }
 
-            if (exploder != null) event.setDeathMessage(String.format("%s%s %swas nuked by %s%s %swith %s", ChatColor.GREEN, player.getName(), ChatColor.RED, ChatColor.GREEN, exploder.getName(), ChatColor.RED, with));
+            if (exploder != null) {
+                event.setDeathMessage(String.format("%s%s %swas nuked by %s%s %swith %s", ChatColor.GREEN, player.getName(), ChatColor.RED, ChatColor.GREEN, exploder.getName(), ChatColor.RED, with));
+            }
         }
     }
 

@@ -1,11 +1,11 @@
 package meteordevelopment.meteorpvp.commands.kits;
 
-import meteordevelopment.meteorpvp.utils.Perms;
+import meteordevelopment.meteorpvp.chat.Msgs;
+import meteordevelopment.meteorpvp.chat.Prefixes;
 import meteordevelopment.meteorpvp.commands.MyCommand;
 import meteordevelopment.meteorpvp.kits.Kit;
 import meteordevelopment.meteorpvp.kits.Kits;
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,15 +27,17 @@ public class DeleteKit extends MyCommand {
         if (args.length != 1) return false;
 
         boolean deleted;
-        if (player.hasPermission(Perms.ADMIN)) {
+        if (Utils.isAdmin(player)) {
             deleted = Kits.INSTANCE.remove(args[0]);
-        } else {
+        }
+        else {
             deleted = Kits.INSTANCE.remove(player, args[0]);
         }
 
         if (deleted) {
             player.sendMessage(Prefixes.KITS + Msgs.deletedKit(args[0]));
-        } else {
+        }
+        else {
             player.sendMessage(Prefixes.KITS + Msgs.kitDoesntExist(args[0]));
         }
 

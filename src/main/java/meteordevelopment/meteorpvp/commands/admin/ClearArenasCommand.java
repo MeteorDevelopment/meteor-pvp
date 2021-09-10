@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 public class ClearArenasCommand extends MyCommand {
     public ClearArenasCommand() {
-        super("cleararenas", "Clears arenas.", Perms.ADMIN);
+        super("cleararenas", "Clears arenas.", Perms.MODERATOR);
     }
 
     @Override

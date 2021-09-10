@@ -7,7 +7,6 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import meteordevelopment.meteorpvp.utils.Perms;
 import meteordevelopment.meteorpvp.duels.Duel;
 import meteordevelopment.meteorpvp.duels.Duels;
 import meteordevelopment.meteorpvp.utils.Utils;
@@ -60,7 +59,7 @@ public class Regions {
     }
 
     public static boolean isInAnyPvp(Player player) {
-        return isInAnyPvp(player, true) && !player.hasPermission(Perms.ADMIN);
+        return isInAnyPvp(player, true) && !Utils.isAdmin(player);
     }
 
     public static boolean isInAnyOW(Player player) {

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class KitsCommand extends MyCommand {
     public KitsCommand() {
-        super("kits", "View kits of another person.", "/kits <username>", Perms.ADMIN);
+        super("kits", "View kits of another person.", "/kits <username>", Perms.MODERATOR);
     }
 
     @Override
