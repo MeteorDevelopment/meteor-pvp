@@ -1,1 +1,6 @@
-webserver_token: empty
+# Kit creator
+kit_creator:
+  enabled: true
+
+# Anti cheat
+min_crystal_age: 1

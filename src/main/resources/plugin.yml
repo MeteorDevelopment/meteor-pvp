@@ -1,6 +1,6 @@
 name: MeteorPvp
 version: @version@
-main: minegame159.meteorpvp.MeteorPvp
+main: meteordevelopment.meteorpvp.MeteorPvp
 api-version: 1.17
 
 depend:
