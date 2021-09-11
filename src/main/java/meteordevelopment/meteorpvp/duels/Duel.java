@@ -25,7 +25,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class Duel implements Listener {
     private static final int SIZE = 6 * 16;
@@ -49,10 +48,11 @@ public class Duel implements Listener {
         this.region = new CuboidRegion(BukkitAdapter.adapt(world), BlockVector3.at(x, 0, z), BlockVector3.at(x + SIZE, 119, z + SIZE));
 
         Bukkit.getPluginManager().registerEvents(this, MeteorPvp.INSTANCE);
+
     }
 
     public void start(Player player1, Player player2) {
-        if (finished) return;
+        if (finishing || finished) return;
 
         this.player1 = player1;
         this.player2 = player2;
@@ -65,7 +65,7 @@ public class Duel implements Listener {
         player2.sendMessage(Prefixes.DUELS + "Preparing arena.");
 
         TaskManager.IMP.async(() -> {
-            if (finished) return;
+            if (finishing || finished) return;
 
             try (EditSession editSession = FaweAPI.getEditSessionBuilder(BukkitAdapter.adapt(world)).fastmode(true).build()) {
                 editSession.replaceBlocks(region, new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK), BlockTypes.AIR);
@@ -105,15 +105,16 @@ public class Duel implements Listener {
         }
 
         if (finishing) {
-            if (timer >= 20 * 5)  {
+            if (timer >= 20 * 10)  {
                 Utils.resetToSpawn(winner);
 
                 mode.makeAvailable(this);
-                Duels.INSTANCE.duels.remove(player1, this);
-                Duels.INSTANCE.duels.remove(player2, this);
+                Duels.INSTANCE.duels.remove(winner, this);
 
                 finishing = false;
                 finished = true;
+
+                ServerTickStartEvent.getHandlerList().unregister(this);
 
                 return;
             }
@@ -124,8 +125,6 @@ public class Duel implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (finished) return;
-
         if (is(event.getEntity())) {
             win(getOther(event.getEntity()));
         }
@@ -133,17 +132,16 @@ public class Duel implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        if (finished) return;
-
         if (is(event.getPlayer())) {
             win(getOther(event.getPlayer()));
         }
     }
 
     private void win(Player winner) {
-        if (finished) return;
-
         this.winner = winner;
+
+        Duels.INSTANCE.duels.remove(getOther(winner), this);
+        Utils.resetToSpawn(getOther(winner));
 
         Bukkit.broadcastMessage(String.format("%s %s%s %swon duel against %s%s.", Prefixes.DUELS, ChatColor.GOLD, winner.getName(), ChatColor.GRAY, ChatColor.RED, getOther(winner).getName()));
 
@@ -151,20 +149,20 @@ public class Duel implements Listener {
             player1.resetTitle();
             player2.resetTitle();
         }
-        
-        finished = true;
-    }
 
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
-        if (finished && is(event.getPlayer()) && isIn(event.getPlayer()) && event.getPlayer() != winner) {
-            Utils.resetToSpawn(event.getPlayer());
-        }
+        PlayerQuitEvent.getHandlerList().unregister(this);
+        PlayerMoveEvent.getHandlerList().unregister(this);
+        PlayerDeathEvent.getHandlerList().unregister(this);
+
+        starting = false;
+        fighting = false;
+        finishing = true;
+        finished = false;
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (fighting || finishing || finished || !is(event.getPlayer()) || Utils.isAdmin(event.getPlayer())) return;
+        if (!starting || !is(event.getPlayer()) || Utils.isAdmin(event.getPlayer())) return;
 
         Location from = event.getFrom();
         Location to = event.getTo();

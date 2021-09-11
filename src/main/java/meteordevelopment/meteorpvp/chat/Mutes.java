@@ -1,6 +1,6 @@
 package meteordevelopment.meteorpvp.chat;
 
-import meteordevelopment.meteorpvp.MeteorPvp;
+import meteordevelopment.meteorpvp.Config;
 import net.querz.nbt.io.NBTUtil;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
@@ -16,13 +16,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class Mutes {
-
-    private static final List<UUID> mutes = new ArrayList<>();
+    private static final List<UUID> MUTES = new ArrayList<>();
 
     public static void load() {
-        mutes.clear();
+        MUTES.clear();
 
-        File file = new File(MeteorPvp.INSTANCE.getDataFolder(), "mutes.nbt");
+        File file = new File(Config.FOLDER, "mutes.nbt");
 
         if (file.exists()) {
             try {
@@ -34,7 +33,7 @@ public class Mutes {
     }
 
     public static void save() {
-        File file = new File(MeteorPvp.INSTANCE.getDataFolder(), "mutes.nbt");
+        File file = new File(Config.FOLDER, "mutes.nbt");
         file.getParentFile().mkdirs();
 
         try {
@@ -45,23 +44,23 @@ public class Mutes {
     }
 
     public static boolean addMute(OfflinePlayer player) {
-        if (mutes.contains(player.getUniqueId())) return false;
+        if (MUTES.contains(player.getUniqueId())) return false;
 
-        mutes.add(player.getUniqueId());
+        MUTES.add(player.getUniqueId());
         save();
         return true;
     }
 
     public static boolean removeMute(Player player) {
-        if (!mutes.contains(player.getUniqueId())) return false;
+        if (!MUTES.contains(player.getUniqueId())) return false;
 
-        mutes.remove(player.getUniqueId());
+        MUTES.remove(player.getUniqueId());
         save();
         return true;
     }
 
     public static boolean isMuted(Player player) {
-        return mutes.contains(player.getUniqueId());
+        return MUTES.contains(player.getUniqueId());
     }
 
     private static CompoundTag toTag() {
@@ -69,7 +68,7 @@ public class Mutes {
 
         ListTag<StringTag> list = new ListTag<>(StringTag.class);
 
-        for (UUID player : mutes) list.add(new StringTag(player.toString()));
+        for (UUID player : MUTES) list.add(new StringTag(player.toString()));
 
         tag.put("mutes", list);
 
@@ -78,7 +77,7 @@ public class Mutes {
 
     private static void fromTag(CompoundTag tag) {
         for (Tag<?> t : tag.getListTag("mutes")) {
-            mutes.add(UUID.fromString(((StringTag) t).getValue()));
+            MUTES.add(UUID.fromString(((StringTag) t).getValue()));
         }
     }
 }

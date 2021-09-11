@@ -187,7 +187,7 @@ public enum Kits implements ISerializable<CompoundTag> {
                 int max = MaxKits.get(player).count;
 
                 ItemStack itemStack = new ItemStack(i < max ? Material.LIGHT_GRAY_STAINED_GLASS_PANE : Material.GRAY_STAINED_GLASS_PANE);
-                if (i < max) Utils.setName(itemStack, ChatColor.GRAY.toString() + "Empty kit slot");
+                if (i < max) Utils.setName(itemStack, ChatColor.GRAY + "Empty kit slot");
                 else Utils.setName(itemStack, ChatColor.GRAY.toString() + kits.size() + " / " + max);
                 gui.setItem(i, itemStack);
             }
@@ -228,7 +228,7 @@ public enum Kits implements ISerializable<CompoundTag> {
         List<String> lore = new ArrayList<>(11);
         lore.add("");
         lore.add(ChatColor.WHITE + "Totems: " + ChatColor.GRAY + KitStats.totems);
-        lore.add(ChatColor.WHITE + "Egaps: " + ChatColor.GRAY + KitStats.egaps);
+        lore.add(ChatColor.WHITE + "EGaps: " + ChatColor.GRAY + KitStats.egaps);
         lore.add(ChatColor.WHITE + "Xp Bottles: " + ChatColor.GRAY + KitStats.xpBottles);
         lore.add(ChatColor.WHITE + "Obsidian: " + ChatColor.GRAY + KitStats.obsidian);
         lore.add(ChatColor.WHITE + "Crystals: " + ChatColor.GRAY + KitStats.crystals);

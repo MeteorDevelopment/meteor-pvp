@@ -1,6 +1,6 @@
 package meteordevelopment.meteorpvp.chat;
 
-import meteordevelopment.meteorpvp.MeteorPvp;
+import meteordevelopment.meteorpvp.Config;
 import net.querz.nbt.io.NBTUtil;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
@@ -14,12 +14,12 @@ import java.util.*;
 
 public class Ignores {
     private static final List<UUID> EMPTY = new ArrayList<>();
-    private static final Map<UUID, List<UUID>> ignores = new HashMap<>();
+    private static final Map<UUID, List<UUID>> IGNORES = new HashMap<>();
 
     public static void load() {
-        ignores.clear();
+        IGNORES.clear();
 
-        File file = new File(MeteorPvp.INSTANCE.getDataFolder(), "ignores.nbt");
+        File file = new File(Config.FOLDER, "ignores.nbt");
 
         if (file.exists()) {
             try {
@@ -31,7 +31,7 @@ public class Ignores {
     }
 
     public static void save() {
-        File file = new File(MeteorPvp.INSTANCE.getDataFolder(), "ignores.nbt");
+        File file = new File(Config.FOLDER, "ignores.nbt");
         file.getParentFile().mkdirs();
 
         try {
@@ -42,14 +42,14 @@ public class Ignores {
     }
 
     public static boolean hasReceiverIgnored(Player sender, Player receiver) {
-        List<UUID> list = ignores.get(receiver.getUniqueId());
+        List<UUID> list = IGNORES.get(receiver.getUniqueId());
         if (list == null) return false;
         return list.contains(sender.getUniqueId());
     }
 
     // Returns true if added to ignore list
     public static boolean toggleIgnore(Player player, UUID toIgnore) {
-        List<UUID> list = ignores.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
+        List<UUID> list = IGNORES.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
         if (!list.remove(toIgnore)) {
             list.add(toIgnore);
             return true;
@@ -58,16 +58,16 @@ public class Ignores {
     }
 
     public static List<UUID> getIgnores(Player player) {
-        return ignores.getOrDefault(player.getUniqueId(), EMPTY);
+        return IGNORES.getOrDefault(player.getUniqueId(), EMPTY);
     }
 
     private static CompoundTag toTag() {
         CompoundTag tag = new CompoundTag();
 
-        for (UUID player : ignores.keySet()) {
+        for (UUID player : IGNORES.keySet()) {
             ListTag<StringTag> list = new ListTag<>(StringTag.class);
 
-            for (UUID ignored : ignores.get(player)) {
+            for (UUID ignored : IGNORES.get(player)) {
                 list.add(new StringTag(ignored.toString()));
             }
 
@@ -86,7 +86,7 @@ public class Ignores {
                 list.add(UUID.fromString(((StringTag) t).getValue()));
             }
 
-            ignores.put(player, list);
+            IGNORES.put(player, list);
         }
     }
 }
