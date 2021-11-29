@@ -1,8 +1,8 @@
 package meteordevelopment.meteorpvp.commands.normal;
 
-import meteordevelopment.meteorpvp.chat.PrivateMsgs;
+import meteordevelopment.meteorpvp.chat.PrivateMessages;
 import meteordevelopment.meteorpvp.commands.MyCommand;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class MessageCommand extends MyCommand {
             sb.append(args[i]);
         }
 
-        PrivateMsgs.send(player, receiver, sb.toString());
+        PrivateMessages.send(player, receiver, sb.toString());
         sb.setLength(0);
 
         return true;

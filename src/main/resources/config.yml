@@ -3,4 +3,5 @@ kit_creator:
   enabled: true
 
 # Anti cheat
-min_crystal_age: 1
+anti_cheat:
+  min_crystal_age: 1

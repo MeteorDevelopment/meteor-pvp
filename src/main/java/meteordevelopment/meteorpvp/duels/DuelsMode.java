@@ -1,59 +1,70 @@
 package meteordevelopment.meteorpvp.duels;
 
+import meteordevelopment.meteorpvp.arenas.Arena;
+import meteordevelopment.meteorpvp.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class DuelsMode {
-    public final String arenaName;
+    public final World world;
+    public final TerrainType terrainType;
 
-    private final List<Duel> all = new ArrayList<>();
-    private final Queue<Duel> available = new ArrayDeque<>();
+    private final List<Arena> arenas = new ArrayList<>();
 
-    public DuelsMode(World world, String arenaName, int x1, int z1, int x2, int z2, int x3, int z3, int x4, int z4, int x5, int z5) {
-        this.arenaName = arenaName;
+    public DuelsMode(World world, TerrainType terrainType, int distance) {
+        this.world = world;
+        this.terrainType = terrainType;
 
-        add(new Duel(this, world, x1, z1));
-        add(new Duel(this, world, x2, z2));
-        add(new Duel(this, world, x3, z3));
-        add(new Duel(this, world, x4, z4));
-        add(new Duel(this, world, x5, z5));
+        add(new Arena(world, distance, distance));
+        add(new Arena(world, distance, -distance));
+        add(new Arena(world, -distance, distance));
+        add(new Arena(world, -distance, -distance));
     }
 
-    private void add(Duel duel) {
-        all.add(duel);
-        available.add(duel);
+    private void add(Arena duel) {
+        arenas.add(duel);
     }
 
-    public boolean isIn(Location pos) {
-        for (Duel duel : all) {
-            if (duel.isIn(pos)) return true;
+    public boolean anyArenasAvailable() {
+        return getAvailable() != null;
+    }
+
+    public int getAvailableCount() {
+        int count = 0;
+
+        for (Arena arena : arenas) {
+            if (arena.isAvailable()) count++;
+        }
+
+        return count;
+    }
+
+    public Arena getAvailable() {
+        for (Arena arena : arenas) {
+            if (arena.isAvailable()) return arena;
+        }
+
+        return null;
+    }
+
+    public boolean isIn(Location location) {
+        for (Arena arena : arenas) {
+            if (arena.isIn(location)) return true;
         }
 
         return false;
     }
 
-    public Duel get() {
-        return available.poll();
+    @Override
+    public String toString() {
+        return world == Utils.NETHER ? "nether" : "overworld" + (terrainType == TerrainType.Flat ? " flat" : "");
     }
 
-    public boolean isAvailable() {
-        return !available.isEmpty();
-    }
-
-    public int availableCount() {
-        return available.size();
-    }
-
-    void makeAvailable(Duel duel) {
-        available.add(duel);
-    }
-
-    void makeUnavailable(Duel duel) {
-        available.remove(duel);
+    public enum TerrainType {
+        Normal,
+        Flat
     }
 }

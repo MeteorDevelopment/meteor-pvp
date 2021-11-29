@@ -1,7 +1,8 @@
 package meteordevelopment.meteorpvp.duels;
 
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.arenas.Arena;
+import meteordevelopment.meteorpvp.utils.Msgs;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import meteordevelopment.meteorpvp.utils.Utils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -16,23 +17,20 @@ import java.util.*;
 public enum Duels {
     INSTANCE;
 
-    public DuelsMode overworldNormal;
-    public DuelsMode overworldFlat;
-    
-    public DuelsMode netherNormal;
-    public DuelsMode netherFlat;
+    public DuelsMode overworldNormal, overworldFlat;
+    public DuelsMode netherNormal, netherFlat;
 
-    final Map<HumanEntity, Duel> duels = new HashMap<>();
+    private final List<Duel> duels = new ArrayList<>();
 
     private final Map<HumanEntity, DuelRequest> sentRequests = new HashMap<>();
     private final Map<HumanEntity, List<DuelRequest>> pendingRequests = new HashMap<>();
 
     public void init() {
-        overworldNormal = new DuelsMode(Utils.OVERWORLD, "overworld", 1000000, 1000000, 1000192, 1000000, 1000384, 1000000, 1000576, 1000000, 1000768, 1000000);
-        overworldFlat = new DuelsMode(Utils.OVERWORLD, "flat overworld", 1000000, 1000192, 1000192, 1000192, 1000384, 1000192, 1000576, 1000192, 1000768, 1000192);
+        overworldNormal = new DuelsMode(Utils.OVERWORLD, DuelsMode.TerrainType.Normal, 1000);
+        overworldFlat = new DuelsMode(Utils.OVERWORLD, DuelsMode.TerrainType.Flat, 500);
 
-        netherNormal = new DuelsMode(Utils.NETHER, "nether", 1000000, 1000000, 1000192, 1000000, 1000384, 1000000, 1000576, 1000000, 1000768, 1000000);
-        netherFlat = new DuelsMode(Utils.NETHER, "flat nether", 1000000, 1000192, 1000192, 1000192, 1000384, 1000192, 1000576, 1000192, 1000768, 1000192);
+        netherNormal = new DuelsMode(Utils.NETHER, DuelsMode.TerrainType.Normal, 1000);
+        netherFlat = new DuelsMode(Utils.NETHER, DuelsMode.TerrainType.Flat, 500);
 
         duels.clear();
         sentRequests.clear();
@@ -40,18 +38,25 @@ public enum Duels {
     }
 
     public Duel get(Player player) {
-        return duels.get(player);
+        for (Duel duel : duels) {
+            if (duel.is(player)) return duel;
+        }
+
+        return null;
     }
 
-    public Iterator<DuelRequest> sentRequestsIterator() { return sentRequests.values().iterator(); }
-    public Iterable<List<DuelRequest>> pendingRequestsIterable() { return pendingRequests.values(); }
-
-    public void removeSentRequest(Player sender) {
-        sentRequests.remove(sender);
+    public Iterator<DuelRequest> sentRequestsIterator() {
+        return sentRequests.values().iterator();
+    }
+    public Iterable<List<DuelRequest>> pendingRequestsIterable() {
+        return pendingRequests.values();
     }
 
     public boolean hasSentRequest(Player sender) {
         return sentRequests.get(sender) != null;
+    }
+    public void removeSentRequest(Player sender) {
+        sentRequests.remove(sender);
     }
 
     public void sendRequest(DuelsMode mode, HumanEntity sender, Player receiver) {
@@ -59,7 +64,7 @@ public enum Duels {
         sentRequests.putIfAbsent(sender, request);
 
         sender.sendMessage(Prefixes.DUELS + Msgs.duelRequestSent());
-        receiver.sendMessage(Prefixes.DUELS + Msgs.duelRequest(sender.getName(), mode.arenaName));
+        receiver.sendMessage(Prefixes.DUELS + Msgs.duelRequest(sender.getName(), mode.toString()));
 
         TextComponent accept = new TextComponent(ChatColor.GREEN + "[Accept]");
         String acceptCmd = "/accept " + sender.getName();
@@ -80,12 +85,14 @@ public enum Duels {
         DuelRequest request = getPendingRequest(sender, receiver);
         if (request == null) return false;
 
-        if (!request.mode.isAvailable()) {
+        if (!request.mode.anyArenasAvailable()) {
             sender.sendMessage(Prefixes.DUELS + Msgs.noAvailableArenas());
             receiver.sendMessage(Prefixes.DUELS + Msgs.noAvailableArenas());
-        } else {
-            Duel arena = request.mode.get();
-            arena.start(sender, receiver);
+        }
+        else {
+            Arena arena = request.mode.getAvailable();
+            Duel duel = new Duel(arena, sender, receiver);
+            duel.start();
         }
 
         sentRequests.remove(sender);

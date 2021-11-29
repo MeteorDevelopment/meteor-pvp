@@ -2,7 +2,7 @@ package meteordevelopment.meteorpvp.commands.normal;
 
 import meteordevelopment.meteorpvp.chat.Ignores;
 import meteordevelopment.meteorpvp.commands.MyCommand;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

@@ -1,11 +1,13 @@
 package meteordevelopment.meteorpvp.chat;
 
 import meteordevelopment.meteorpvp.Config;
-import net.querz.nbt.io.NBTUtil;
-import net.querz.nbt.tag.CompoundTag;
-import net.querz.nbt.tag.ListTag;
-import net.querz.nbt.tag.StringTag;
-import net.querz.nbt.tag.Tag;
+import meteordevelopment.nbt.NBT;
+import meteordevelopment.nbt.NamedTag;
+import meteordevelopment.nbt.NbtFormatException;
+import meteordevelopment.nbt.tags.CompoundTag;
+import meteordevelopment.nbt.tags.ListTag;
+import meteordevelopment.nbt.tags.StringTag;
+import meteordevelopment.nbt.tags.TagId;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -17,31 +19,7 @@ import java.util.UUID;
 
 public class Mutes {
     private static final List<UUID> MUTES = new ArrayList<>();
-
-    public static void load() {
-        MUTES.clear();
-
-        File file = new File(Config.FOLDER, "mutes.nbt");
-
-        if (file.exists()) {
-            try {
-                fromTag((CompoundTag) NBTUtil.read(file).getTag());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void save() {
-        File file = new File(Config.FOLDER, "mutes.nbt");
-        file.getParentFile().mkdirs();
-
-        try {
-            NBTUtil.write(toTag(), file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static File FILE;
 
     public static boolean addMute(OfflinePlayer player) {
         if (MUTES.contains(player.getUniqueId())) return false;
@@ -63,21 +41,47 @@ public class Mutes {
         return MUTES.contains(player.getUniqueId());
     }
 
+    // Files
+
+    public static void load() {
+        FILE = new File(Config.FOLDER, "ignores.nbt");
+
+        if (FILE.exists()) {
+            try {
+                fromTag(NBT.read(FILE));
+            } catch (NbtFormatException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void fromTag(NamedTag namedTag) {
+        MUTES.clear();
+
+        for (StringTag tag : namedTag.tag.getList("mutes", StringTag.class)) {
+            MUTES.add(UUID.fromString(tag.toString()));
+        }
+    }
+
+    public static void save() {
+        try {
+            if (!FILE.exists()) {
+                FILE.getParentFile().mkdirs();
+                FILE.createNewFile();
+            }
+            NBT.write(toTag(), FILE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static CompoundTag toTag() {
         CompoundTag tag = new CompoundTag();
 
-        ListTag<StringTag> list = new ListTag<>(StringTag.class);
-
-        for (UUID player : MUTES) list.add(new StringTag(player.toString()));
-
+        ListTag<StringTag> list = new ListTag<>(TagId.String);
+        for (UUID uuid : MUTES) list.add(new StringTag(uuid.toString()));
         tag.put("mutes", list);
 
         return tag;
-    }
-
-    private static void fromTag(CompoundTag tag) {
-        for (Tag<?> t : tag.getListTag("mutes")) {
-            MUTES.add(UUID.fromString(((StringTag) t).getValue()));
-        }
     }
 }

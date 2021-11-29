@@ -7,37 +7,37 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import meteordevelopment.meteorpvp.duels.Duel;
 import meteordevelopment.meteorpvp.duels.Duels;
 import meteordevelopment.meteorpvp.utils.Utils;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class Regions {
-    public static ProtectedRegion KITCREATOR;
-
+    // Overworld
     public static ProtectedRegion OW_SPAWN;
     public static ProtectedRegion OW_PVP;
 
+    // Nether
+    public static ProtectedRegion KIT_CREATOR;
     public static ProtectedRegion NETHER_SPAWN;
     public static ProtectedRegion NETHER_PVP;
 
     public static void onEnable() {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+
         RegionManager OW = container.get(BukkitAdapter.adapt(Utils.OVERWORLD));
-        RegionManager NETHER = container.get(BukkitAdapter.adapt(Utils.NETHER));
-
-        KITCREATOR = OW.getRegion("kitcreator");
-
         OW_SPAWN = OW.getRegion("spawn");
         OW_PVP = OW.getRegion("pvp");
 
+        RegionManager NETHER = container.get(BukkitAdapter.adapt(Utils.NETHER));
+        KIT_CREATOR = OW.getRegion("kitcreator");
         NETHER_SPAWN = NETHER.getRegion("spawn");
         NETHER_PVP = NETHER.getRegion("pvp");
     }
 
-    public static boolean isIn(ProtectedRegion region,Location pos) {
+    public static boolean isIn(ProtectedRegion region, Location pos) {
         return region.contains(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
     }
 
@@ -45,25 +45,18 @@ public class Regions {
         return isIn(region, entity.getLocation());
     }
 
-    public static boolean isInAnyPvp(Player player, boolean duels) {
-        if (player.getWorld() == Utils.OVERWORLD) {
-            return isIn(OW_PVP, player) || Duels.INSTANCE.get(player) != null;
-        }
+    public static boolean isInAnyPvp(Player player) {
+        if (player.isOp()) return false;
 
-        if (duels) {
-            Duel duel = Duels.INSTANCE.get(player);
-            if (duel != null) return true;
-        }
-
-        return isIn(NETHER_PVP, player);
+        return isIn(NETHER_PVP, player) || isIn(OW_PVP, player) || Duels.INSTANCE.get(player) != null;
     }
 
-    public static boolean isInAnyPvp(Player player) {
-        return isInAnyPvp(player, true) && !Utils.isAdmin(player);
+    public static boolean isInAny(World world, Player player) {
+        return world == Utils.OVERWORLD ? isInAnyOW(player) : isInAnyNether(player);
     }
 
     public static boolean isInAnyOW(Player player) {
-        return isIn(OW_SPAWN, player) || isIn(OW_PVP, player) || isIn(KITCREATOR, player);
+        return isIn(OW_SPAWN, player) || isIn(OW_PVP, player) || isIn(KIT_CREATOR, player);
     }
 
     public static boolean isInAnyNether(Player player) {

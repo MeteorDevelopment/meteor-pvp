@@ -1,8 +1,8 @@
 package meteordevelopment.meteorpvp.listeners;
 
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Msgs;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import meteordevelopment.meteorpvp.duels.DuelRequest;
 import meteordevelopment.meteorpvp.duels.Duels;
 import org.bukkit.event.EventHandler;

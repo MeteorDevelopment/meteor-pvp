@@ -4,8 +4,8 @@ import meteordevelopment.meteorpvp.commands.MyCommand;
 import meteordevelopment.meteorpvp.duels.Duel;
 import meteordevelopment.meteorpvp.duels.Duels;
 import meteordevelopment.meteorpvp.duels.DuelsGui;
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Msgs;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import meteordevelopment.meteorpvp.arenas.Regions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -45,7 +45,6 @@ public class DuelCommand extends MyCommand {
 
         if (Duels.INSTANCE.hasSentRequest(player)) {
             player.sendMessage(Prefixes.DUELS + Msgs.alreadySentRequest());
-            player.sendMessage(Prefixes.DUELS + Msgs.cancelDuelHelp());
             return true;
         }
 

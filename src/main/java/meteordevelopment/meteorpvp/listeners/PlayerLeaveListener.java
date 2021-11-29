@@ -19,7 +19,7 @@ public class PlayerLeaveListener implements Listener {
 
     @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
-        if (Regions.isInAnyPvp(event.getPlayer(), false)) {
+        if (Regions.isInAnyPvp(event.getPlayer())) {
             event.getPlayer().setHealth(0);
         }
 

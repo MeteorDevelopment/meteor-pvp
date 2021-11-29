@@ -83,7 +83,7 @@ public class KitCreatorListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.hasItem() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.getItem() != null && event.getItem().getItemMeta() instanceof BlockStateMeta && ((BlockStateMeta) event.getItem().getItemMeta()).getBlockState() instanceof ShulkerBox shulkerBox && Regions.isIn(Regions.KITCREATOR, event.getPlayer())) {
+        if (event.hasItem() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.getItem() != null && event.getItem().getItemMeta() instanceof BlockStateMeta && ((BlockStateMeta) event.getItem().getItemMeta()).getBlockState() instanceof ShulkerBox shulkerBox && Regions.isIn(Regions.KIT_CREATOR, event.getPlayer())) {
             event.setCancelled(true);
 
             Inventory inv = Bukkit.createInventory(event.getPlayer(), 27, "Shulker Box");

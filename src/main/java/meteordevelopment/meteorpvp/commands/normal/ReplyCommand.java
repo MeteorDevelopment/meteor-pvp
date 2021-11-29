@@ -1,8 +1,8 @@
 package meteordevelopment.meteorpvp.commands.normal;
 
-import meteordevelopment.meteorpvp.chat.PrivateMsgs;
+import meteordevelopment.meteorpvp.chat.PrivateMessages;
 import meteordevelopment.meteorpvp.commands.MyCommand;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +22,7 @@ public class ReplyCommand extends MyCommand {
             sb.append(args[i]);
         }
 
-        if (!PrivateMsgs.reply(player, sb.toString())) {
+        if (!PrivateMessages.reply(player, sb.toString())) {
             player.sendMessage(Prefixes.MPVP + "Nobody sent you a message or is offline");
         }
         sb.setLength(0);

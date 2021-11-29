@@ -2,8 +2,8 @@ package meteordevelopment.meteorpvp.commands.duels;
 
 import meteordevelopment.meteorpvp.commands.MyCommand;
 import meteordevelopment.meteorpvp.duels.Duels;
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Msgs;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import meteordevelopment.meteorpvp.arenas.Regions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

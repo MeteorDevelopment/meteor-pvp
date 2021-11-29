@@ -15,10 +15,10 @@ import java.util.List;
 public class DuelsGui {
     public static final String TITLE = "Select duel mode, ";
 
-    public static final String OVERWORLD = ChatColor.GREEN + "Overworld normal";
+    public static final String OVERWORLD = ChatColor.GREEN + "Overworld";
     public static final String OVERWORLD_FLAT = ChatColor.GREEN + "Overworld flat";
 
-    public static final String NETHER = ChatColor.RED + "Nether normal";
+    public static final String NETHER = ChatColor.RED + "Nether";
     public static final String NETHER_FLAT = ChatColor.RED + "Nether flat";
 
     public static Inventory create(Player player, Player receiver) {
@@ -40,7 +40,7 @@ public class DuelsGui {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = new ArrayList<>(1);
-        lore.add(mode.availableCount() + " available arenas");
+        lore.add(mode.getAvailableCount() + " available arenas");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);

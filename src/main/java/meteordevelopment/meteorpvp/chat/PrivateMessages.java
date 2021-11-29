@@ -1,5 +1,7 @@
 package meteordevelopment.meteorpvp.chat;
 
+import meteordevelopment.meteorpvp.utils.Msgs;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,17 +10,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PrivateMsgs {
+public class PrivateMessages {
     private static final Map<UUID, UUID> lastMessages = new HashMap<>();
 
     public static void send(Player sender, Player receiver, String message) {
         String senderNick = ChatColor.translateAlternateColorCodes('&', sender.getDisplayName());
         String receiverNick = ChatColor.translateAlternateColorCodes('&', receiver.getDisplayName());
 
-        sender.sendMessage(getMsg("Me", receiverNick, message));
-
         if (!Ignores.hasReceiverIgnored(sender, receiver)) {
+            sender.sendMessage(getMsg("Me", receiverNick, message));
             receiver.sendMessage(getMsg(senderNick, "Me", message));
+        }
+        else {
+            sender.sendMessage(Prefixes.IGNORES + Msgs.beingIgnored());
         }
 
         lastMessages.put(receiver.getUniqueId(), sender.getUniqueId());

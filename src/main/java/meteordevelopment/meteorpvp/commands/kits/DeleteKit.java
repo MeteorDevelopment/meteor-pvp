@@ -1,7 +1,7 @@
 package meteordevelopment.meteorpvp.commands.kits;
 
-import meteordevelopment.meteorpvp.chat.Msgs;
-import meteordevelopment.meteorpvp.chat.Prefixes;
+import meteordevelopment.meteorpvp.utils.Msgs;
+import meteordevelopment.meteorpvp.utils.Prefixes;
 import meteordevelopment.meteorpvp.commands.MyCommand;
 import meteordevelopment.meteorpvp.kits.Kit;
 import meteordevelopment.meteorpvp.kits.Kits;
