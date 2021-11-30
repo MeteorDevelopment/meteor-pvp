@@ -36,7 +36,7 @@ public class Kit implements ISerializable<CompoundTag> {
             Material.NETHERITE_PICKAXE,
             Material.BOW,
             Material.END_CRYSTAL,
-            Material.PURPLE_BED,
+//            Material.PURPLE_BED,
             Material.RESPAWN_ANCHOR,
             Material.GLOWSTONE,
 
