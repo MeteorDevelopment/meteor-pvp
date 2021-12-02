@@ -29,7 +29,7 @@ public class OutsideRegionsListener implements Listener {
     @EventHandler
     private void onTick(ServerTickEndEvent event) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.isDead() || Utils.isAdmin(player)) continue;
+            if (player.isDead() || Utils.isAdmin(player) || player.isWhitelisted()) continue;
 
             World world = player.getWorld();
             Duel duel = Duels.INSTANCE.get(player);
