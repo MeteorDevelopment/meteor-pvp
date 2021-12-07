@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class AntiCheatListener implements Listener {
     private final Object2ObjectMap<Player, Location> lastValidBurrowPositions = new Object2ObjectOpenHashMap<>();
@@ -24,6 +25,11 @@ public class AntiCheatListener implements Listener {
                 && event.getEntity().getTicksLived() <= Config.MIN_CRYSTAL_AGE) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    private void onPlayerQuit(PlayerQuitEvent event) {
+        lastValidBurrowPositions.remove(event.getPlayer());
     }
 
     @EventHandler
