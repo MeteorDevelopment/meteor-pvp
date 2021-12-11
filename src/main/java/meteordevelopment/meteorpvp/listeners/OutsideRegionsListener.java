@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import meteordevelopment.meteorpvp.arenas.Regions;
 import meteordevelopment.meteorpvp.duels.Duel;
 import meteordevelopment.meteorpvp.duels.Duels;
+import meteordevelopment.meteorpvp.utils.Perms;
 import meteordevelopment.meteorpvp.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,7 +30,7 @@ public class OutsideRegionsListener implements Listener {
     @EventHandler
     private void onTick(ServerTickEndEvent event) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.isDead() || Utils.isAdmin(player) || player.isWhitelisted()) continue;
+            if (player.isDead() || Utils.isAdmin(player) || player.hasPermission(Perms.ALLOWED_OUTSIDE)) continue;
 
             World world = player.getWorld();
             Duel duel = Duels.INSTANCE.get(player);
