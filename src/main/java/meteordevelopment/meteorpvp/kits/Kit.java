@@ -77,7 +77,7 @@ public class Kit implements ISerializable<CompoundTag> {
             Material.PURPLE_BED,
             Material.PISTON,
             Material.LEVER,
-            Material.PURPLE_BED,
+            Material.PURPLE_WOOL,
             Material.OAK_PLANKS,
             Material.CRAFTING_TABLE,
             Material.REDSTONE_BLOCK,
