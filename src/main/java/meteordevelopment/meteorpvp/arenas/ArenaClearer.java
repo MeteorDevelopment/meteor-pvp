@@ -1,8 +1,8 @@
 package meteordevelopment.meteorpvp.arenas;
 
 import com.fastasyncworldedit.core.FaweAPI;
-import com.fastasyncworldedit.core.util.TaskManager;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.function.mask.InverseSingleBlockTypeMask;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -50,9 +50,8 @@ public class ArenaClearer {
             if (entity.getType() == EntityType.ENDER_CRYSTAL) entity.remove();
         }
 
-        TaskManager.IMP.async(() -> {
-            try (EditSession editSession = FaweAPI.getEditSessionBuilder(FaweAPI.getWorld(worldName)).fastmode(true).build()) {
-
+        FaweAPI.getTaskManager().async(() -> {
+            try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(FaweAPI.getWorld(worldName)).fastMode(true).build()) {
                 editSession.replaceBlocks(
                         Regions.toWERegion(clearRegion),
                         new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK),

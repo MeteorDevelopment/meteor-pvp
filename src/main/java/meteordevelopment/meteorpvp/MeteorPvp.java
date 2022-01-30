@@ -17,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class MeteorPvp extends JavaPlugin implements Listener {
     public static MeteorPvp INSTANCE;
 
+    private boolean initialized;
+
     @Override
     public void onEnable() {
         INSTANCE = this;
@@ -40,6 +42,8 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
         Ignores.load();
         Mutes.load();
 
+        initialized = true;
+
         System.out.printf("Meteor PvP loaded in %sms.", System.currentTimeMillis() - start);
         System.out.println();
     }
@@ -48,10 +52,12 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
 
-        Kits.INSTANCE.save();
-        Ignores.save();
-        Mutes.save();
+        if (initialized) {
+            Kits.INSTANCE.save();
+            Ignores.save();
+            Mutes.save();
 
-        Config.save();
+            Config.save();
+        }
     }
 }

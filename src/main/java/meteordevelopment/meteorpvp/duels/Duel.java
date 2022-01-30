@@ -3,8 +3,8 @@ package meteordevelopment.meteorpvp.duels;
 import com.destroystokyo.paper.Title;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import com.fastasyncworldedit.core.FaweAPI;
-import com.fastasyncworldedit.core.util.TaskManager;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.function.mask.InverseSingleBlockTypeMask;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -68,8 +68,8 @@ public class Duel implements Listener {
         player1.sendMessage(Prefixes.DUELS + "Preparing arena.");
         player2.sendMessage(Prefixes.DUELS + "Preparing arena.");
 
-        TaskManager.IMP.async(() -> {
-            try (EditSession editSession = FaweAPI.getEditSessionBuilder(BukkitAdapter.adapt(world)).fastmode(true).build()) {
+        FaweAPI.getTaskManager().async(() -> {
+            try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(BukkitAdapter.adapt(world)).fastMode(true).build()) {
                 editSession.replaceBlocks(region, new InverseSingleBlockTypeMask(editSession, BlockTypes.BEDROCK), BlockTypes.AIR);
             }
 
@@ -79,15 +79,13 @@ public class Duel implements Listener {
                 return;
             }
 
-            TaskManager.IMP.sync(() -> {
+            FaweAPI.getTaskManager().async(() -> {
                 player1.teleport(player1Location);
                 player2.teleport(player2Location);
 
                 started = true;
                 starting = true;
                 startTimer = 20 * 5;
-
-                return null;
             });
         });
     }

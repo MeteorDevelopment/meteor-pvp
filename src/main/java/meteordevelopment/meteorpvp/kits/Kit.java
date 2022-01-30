@@ -22,50 +22,72 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class Kit implements ISerializable<CompoundTag> {
-    public static final List<Material> KITCREATOR_ITEMS = Arrays.asList(
-            Material.TIPPED_ARROW,
-            Material.ARROW,
-
-            Material.NETHERITE_SWORD,
-            Material.NETHERITE_PICKAXE,
-            Material.BOW,
-            Material.END_CRYSTAL,
-//            Material.PURPLE_BED,
-//            Material.RESPAWN_ANCHOR,
-//            Material.GLOWSTONE,
-
+    public static final List<Material> KITCREATOR_ITEMS = List.of(
             Material.NETHERITE_HELMET,
+            Material.NETHERITE_CHESTPLATE,
             Material.NETHERITE_CHESTPLATE,
             Material.NETHERITE_LEGGINGS,
             Material.NETHERITE_BOOTS,
 
-            Material.EXPERIENCE_BOTTLE,
-            Material.TOTEM_OF_UNDYING,
+            Material.DIAMOND_HELMET,
+            Material.DIAMOND_CHESTPLATE,
+            Material.DIAMOND_LEGGINGS,
+            Material.DIAMOND_BOOTS,
+
+            Material.NETHERITE_SWORD,
+            Material.NETHERITE_PICKAXE,
+            Material.NETHERITE_AXE,
+
+            Material.DIAMOND_SWORD,
+            Material.DIAMOND_PICKAXE,
+            Material.DIAMOND_AXE,
+
+            Material.SHIELD,
+            Material.TRIDENT,
+
             Material.ENCHANTED_GOLDEN_APPLE,
             Material.GOLDEN_APPLE,
+            Material.END_CRYSTAL,
+            Material.TOTEM_OF_UNDYING,
             Material.CHORUS_FRUIT,
             Material.ENDER_PEARL,
-            Material.ENDER_CHEST,
-            Material.OBSIDIAN,
-
             Material.ANVIL,
-            Material.CRAFTING_TABLE,
-            Material.POLISHED_BLACKSTONE_BUTTON,
+            Material.OAK_TRAPDOOR,
+            Material.GOLDEN_CARROT,
+            Material.BREAD,
+            Material.EXPERIENCE_BOTTLE,
+            Material.OBSIDIAN,
             Material.STRING,
-            Material.PURPLE_WOOL,
-            Material.OAK_PLANKS,
-            Material.COBWEB,
+            Material.ENDER_CHEST,
+            Material.CRIMSON_PRESSURE_PLATE,
+            Material.CRIMSON_BUTTON,
 
+            Material.BOW,
+            Material.CROSSBOW,
             Material.POTION,
-            Material.SPLASH_POTION,
+            Material.ARROW,
+            Material.TIPPED_ARROW,
+            Material.GLOWSTONE,
+            Material.RESPAWN_ANCHOR,
+            Material.PURPLE_BED,
+            Material.PISTON,
+            Material.LEVER,
+            Material.PURPLE_BED,
+            Material.OAK_PLANKS,
+            Material.CRAFTING_TABLE,
+            Material.REDSTONE_BLOCK,
 
-            Material.IRON_PICKAXE
+            Material.CRYING_OBSIDIAN,
+            Material.NETHERITE_BLOCK,
+            Material.CAKE,
+            Material.FISHING_ROD,
+            Material.WOODEN_HOE,
+            Material.STICK
     );
 
     public String name;
@@ -89,7 +111,6 @@ public class Kit implements ISerializable<CompoundTag> {
             }
         }
     }
-
 
     public Kit(CompoundTag tag) {
         fromTag(tag);
