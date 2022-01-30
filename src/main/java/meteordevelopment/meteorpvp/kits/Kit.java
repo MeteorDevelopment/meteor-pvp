@@ -272,7 +272,7 @@ public class Kit implements ISerializable<CompoundTag> {
                 CompoundTag t = (CompoundTag) tt;
 
                 Enchantment en = Enchantment.getByKey(NBT.toKey(t.getListTag("id")));
-                if (en != null) itemStack.addEnchantment(en, t.getInt("level"));
+                if (en != null) itemStack.addUnsafeEnchantment(en, t.getInt("level"));
             }
         }
 
