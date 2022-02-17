@@ -56,7 +56,7 @@ public class OutsideRegionsListener implements Listener {
 
     @EventHandler
     private void onBlockPlace(BlockPlaceEvent event) {
-        if (!event.getPlayer().isOp() && event.canBuild() && !Regions.isInAnyBuildable(event.getBlock().getLocation()))
+        if (!event.getPlayer().isOp() && event.canBuild() && !Regions.isInAnyBuildable(event.getBlock().getLocation()) && !event.getPlayer().hasPermission(Perms.ALLOWED_OUTSIDE))
             event.setBuild(false);
     }
 }
