@@ -37,7 +37,7 @@ public class AntiBotListener implements Listener {
     @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
         wLock.lock();
-        connections.removeInt(event.getPlayer().getAddress());
+        connections.removeInt(event.getPlayer().getAddress().getAddress());
         wLock.unlock();
     }
 }
