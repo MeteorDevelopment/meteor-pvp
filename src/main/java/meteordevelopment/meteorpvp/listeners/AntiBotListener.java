@@ -26,7 +26,7 @@ public class AntiBotListener implements Listener {
         int count = connections.getInt(event.getAddress());
         rLock.unlock();
 
-        if (count >= 2) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text(""));
+        if (count >= 2) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text("Maximum number of connections reached"));
         else {
             wLock.lock();
             connections.put(event.getAddress(), count + 1);
