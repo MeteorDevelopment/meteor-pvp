@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class ArenaClearer {
     public static void onEnable() {
         clear(true);
-        Bukkit.getScheduler().runTaskTimer(MeteorPvp.INSTANCE, () -> clear(false), 20 * 60 * 60 * 2, 20 * 60 * 60 * 2);
+        Bukkit.getScheduler().runTaskTimer(MeteorPvp.INSTANCE, () -> clear(false), 20 * 60 * 60 * 6, 20 * 60 * 60 * 6);
     }
 
     public static void clear(boolean instant) {
