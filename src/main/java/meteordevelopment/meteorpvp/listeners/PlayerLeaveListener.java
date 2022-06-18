@@ -24,5 +24,7 @@ public class PlayerLeaveListener implements Listener {
         }
 
         event.setQuitMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GRAY + " left");
+
+        event.getPlayer().getEnderChest().clear();
     }
 }

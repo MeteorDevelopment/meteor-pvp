@@ -24,70 +24,19 @@ import org.bukkit.potion.PotionType;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class Kit implements ISerializable<CompoundTag> {
-    public static final List<Material> KITCREATOR_ITEMS = List.of(
-            Material.NETHERITE_HELMET,
-            Material.NETHERITE_CHESTPLATE,
-            Material.NETHERITE_CHESTPLATE,
-            Material.NETHERITE_LEGGINGS,
-            Material.NETHERITE_BOOTS,
-
-            Material.DIAMOND_HELMET,
-            Material.DIAMOND_CHESTPLATE,
-            Material.DIAMOND_LEGGINGS,
-            Material.DIAMOND_BOOTS,
-
-            Material.NETHERITE_SWORD,
-            Material.NETHERITE_PICKAXE,
-            Material.NETHERITE_AXE,
-
-            Material.DIAMOND_SWORD,
-            Material.DIAMOND_PICKAXE,
-            Material.DIAMOND_AXE,
-
+    private static final Set<Material> BANNED_ITEMS = Set.of(
+            Material.ELYTRA,
             Material.SHIELD,
-            Material.TRIDENT,
 
-            Material.ENCHANTED_GOLDEN_APPLE,
-            Material.GOLDEN_APPLE,
-            Material.END_CRYSTAL,
-            Material.TOTEM_OF_UNDYING,
-            Material.CHORUS_FRUIT,
-            Material.ENDER_PEARL,
-            Material.ANVIL,
-            Material.OAK_TRAPDOOR,
-            Material.GOLDEN_CARROT,
-            Material.BREAD,
-            Material.EXPERIENCE_BOTTLE,
-            Material.OBSIDIAN,
-            Material.STRING,
-            Material.ENDER_CHEST,
-            Material.CRIMSON_PRESSURE_PLATE,
-            Material.CRIMSON_BUTTON,
-
-            Material.BOW,
-            Material.CROSSBOW,
-            Material.POTION,
-            Material.ARROW,
-            Material.TIPPED_ARROW,
-            Material.GLOWSTONE,
-            Material.RESPAWN_ANCHOR,
-            Material.PURPLE_BED,
-            Material.PISTON,
-            Material.LEVER,
-            Material.PURPLE_WOOL,
-            Material.OAK_PLANKS,
-            Material.CRAFTING_TABLE,
             Material.REDSTONE_BLOCK,
+            Material.PISTON,
+            Material.STICKY_PISTON,
 
-            Material.CRYING_OBSIDIAN,
-            Material.NETHERITE_BLOCK,
-            Material.CAKE,
-            Material.FISHING_ROD,
-            Material.WOODEN_HOE,
-            Material.STICK
+            Material.TNT
     );
 
     public String name;
@@ -103,11 +52,12 @@ public class Kit implements ISerializable<CompoundTag> {
         for (int i = 0; i < items.length; i++) {
             ItemStack itemStack = i == 41 ? player.getInventory().getItemInOffHand() : player.getInventory().getContents()[i];
 
-            if (validItem(itemStack)) {
-                items[i] = new ItemStack(itemStack);
-            } else {
+            if (isBanned(itemStack)) {
                 if (i == 41) player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
                 else player.getInventory().setItem(i, new ItemStack(Material.AIR));
+            }
+            else {
+                items[i] = new ItemStack(itemStack);
             }
         }
     }
@@ -116,27 +66,31 @@ public class Kit implements ISerializable<CompoundTag> {
         fromTag(tag);
     }
 
-    private boolean validItem(ItemStack itemStack) {
-        if (itemStack == null) return false;
-        if (!KITCREATOR_ITEMS.contains(itemStack.getType())) return false;
+    private boolean isBanned(ItemStack itemStack) {
+        if (itemStack == null) return true;
 
+        // Banned item list
+        if (BANNED_ITEMS.contains(itemStack.getType())) return true;
+
+        // Stack size
+        if (itemStack.getMaxStackSize() != -1 && itemStack.getAmount() > itemStack.getMaxStackSize()) return true;
+
+        // Enchantment level
         for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
-            if (itemStack.getEnchantments().get(enchantment) > enchantment.getMaxLevel()) {
-                return false;
-            }
+            if (itemStack.getEnchantments().get(enchantment) > enchantment.getMaxLevel()) return true;
         }
 
-        return itemStack.getMaxStackSize() == -1 || itemStack.getAmount() <= itemStack.getMaxStackSize();
+        return false;
     }
 
     public void apply(HumanEntity player) {
         player.getInventory().clear();
 
         for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                if (i == 41) player.getInventory().setItemInOffHand(new ItemStack(items[i]));
-                else player.getInventory().setItem(i, new ItemStack(items[i]));
-            }
+            if (items[i] == null) continue;
+
+            if (i == 41) player.getInventory().setItemInOffHand(new ItemStack(items[i]));
+            else player.getInventory().setItem(i, new ItemStack(items[i]));
         }
     }
 
@@ -205,9 +159,7 @@ public class Kit implements ISerializable<CompoundTag> {
         }
 
         // Tipped Arrows / Potions
-        if (itemMeta instanceof PotionMeta) {
-            PotionMeta meta = (PotionMeta) itemMeta;
-
+        if (itemMeta instanceof PotionMeta meta) {
             PotionData data = meta.getBasePotionData();
             nbt.writeString("potion", data.getType().name());
             nbt.writeBool("extended", data.isExtended());
@@ -230,13 +182,10 @@ public class Kit implements ISerializable<CompoundTag> {
         }
 
         // Shulker Boxes
-        if (itemMeta instanceof BlockStateMeta) {
-            BlockStateMeta meta = (BlockStateMeta) itemMeta;
+        if (itemMeta instanceof BlockStateMeta meta) {
             BlockState blockState = meta.getBlockState();
 
-            if (blockState instanceof ShulkerBox) {
-                ShulkerBox state = (ShulkerBox) blockState;
-
+            if (blockState instanceof ShulkerBox state) {
                 int itemCount = 0;
                 for (ItemStack stack : state.getInventory()) {
                     if (stack != null && stack.getType() != Material.AIR) itemCount++;
@@ -279,14 +228,11 @@ public class Kit implements ISerializable<CompoundTag> {
         // Tipped Arrows / Potions
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if (itemMeta instanceof PotionMeta) {
-            PotionMeta meta = (PotionMeta) itemMeta;
-
+        if (itemMeta instanceof PotionMeta meta) {
             try {
                 PotionType ptype = PotionType.valueOf(tag.getString("potion"));
                 meta.setBasePotionData(new PotionData(ptype, tag.getBoolean("extended"), tag.getBoolean("upgraded")));
-            } catch (IllegalArgumentException ignored) {
-            }
+            } catch (IllegalArgumentException ignored) {}
 
             ListTag<?> p = tag.getListTag("effects");
             if (p != null) {
