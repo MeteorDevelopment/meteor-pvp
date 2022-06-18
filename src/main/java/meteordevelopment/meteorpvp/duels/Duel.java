@@ -79,7 +79,7 @@ public class Duel implements Listener {
                 return;
             }
 
-            FaweAPI.getTaskManager().async(() -> {
+            Bukkit.getScheduler().runTask(MeteorPvp.INSTANCE, () -> {
                 player1.teleport(player1Location);
                 player2.teleport(player2Location);
 
