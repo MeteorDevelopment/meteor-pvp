@@ -4,3 +4,6 @@ kit_creator:
 
 # Anti cheat
 min_crystal_age: 1
+
+# Other
+server_token: token

@@ -29,8 +29,8 @@ repositories {
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT"
     compileOnly "com.sk89q.worldguard:worldguard-bukkit:7.0.5"
-    compileOnly "com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.0.1"
-    compileOnly "net.luckperms:api:5.3"
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.3.0") { transitive = false }
+    compileOnly 'net.luckperms:api:5.4'
 
     implementation 'org.reflections:reflections:0.10.2'
     implementation "org.openlabtesting.netty:netty-all:4.1.48.Final"

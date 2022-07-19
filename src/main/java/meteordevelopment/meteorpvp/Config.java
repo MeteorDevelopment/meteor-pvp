@@ -18,6 +18,9 @@ public class Config {
     // Anti cheat
     public static int MIN_CRYSTAL_AGE;
 
+    // Other
+    public static String SERVER_TOKEN;
+
     public static void init() {
         MeteorPvp.INSTANCE.saveDefaultConfig();
 
@@ -31,6 +34,9 @@ public class Config {
 
         // Anti cheat
         MIN_CRYSTAL_AGE = CONFIG.getInt("min_crystal_age");
+
+        // Other
+        SERVER_TOKEN = CONFIG.getString("server_token");
     }
 
     public static void save() {
