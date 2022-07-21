@@ -9,16 +9,24 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class RedirectCommandListener implements Listener {
     @EventHandler
     private void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (isPrivateMessage(event.getMessage()) && Mutes.isMuted(event.getPlayer())) {
+        String msg = event.getMessage().toLowerCase();
+
+        if (msg.startsWith("/me ")) {
+            event.getPlayer().sendMessage(String.format("%sYou cannot use this command.", ChatColor.RED));
+            event.setCancelled(true);
+            return;
+        }
+
+        if (isPrivateMessage(msg) && Mutes.isMuted(event.getPlayer())) {
             event.getPlayer().sendMessage(String.format("%sYou cannot talk whilst muted.", ChatColor.RED));
             event.setCancelled(true);
             return;
         }
 
-        if (event.getMessage().startsWith("/w ")) {
+        if (msg.startsWith("/w ")) {
             event.setMessage("/msg " + event.getMessage().substring(3));
         }
-        else if (event.getMessage().startsWith("/tell ")) {
+        else if (msg.startsWith("/tell ")) {
             event.setMessage("/msg " + event.getMessage().substring(6));
         }
     }
