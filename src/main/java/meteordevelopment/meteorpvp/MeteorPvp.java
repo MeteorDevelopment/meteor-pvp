@@ -14,8 +14,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.net.http.HttpClient;
+
 public final class MeteorPvp extends JavaPlugin implements Listener {
     public static MeteorPvp INSTANCE;
+
+    public static final HttpClient HTTP = HttpClient.newHttpClient();
 
     private boolean initialized;
 
@@ -35,6 +39,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
 
         Regions.onEnable();
         ArenaClearer.onEnable();
+        Uptime.onEnable();
 
         Kits.INSTANCE.init();
         Duels.INSTANCE.init();

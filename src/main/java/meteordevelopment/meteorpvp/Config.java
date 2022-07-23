@@ -20,6 +20,7 @@ public class Config {
 
     // Other
     public static String SERVER_TOKEN;
+    public static String UPTIME_URL;
 
     public static void init() {
         MeteorPvp.INSTANCE.saveDefaultConfig();
@@ -37,6 +38,7 @@ public class Config {
 
         // Other
         SERVER_TOKEN = CONFIG.getString("server_token");
+        UPTIME_URL = CONFIG.getString("uptime_url");
     }
 
     public static void save() {

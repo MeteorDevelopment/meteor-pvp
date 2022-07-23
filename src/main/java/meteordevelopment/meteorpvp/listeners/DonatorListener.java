@@ -3,6 +3,7 @@ package meteordevelopment.meteorpvp.listeners;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import meteordevelopment.meteorpvp.Config;
+import meteordevelopment.meteorpvp.MeteorPvp;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
@@ -17,14 +18,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Objects;
 
 public class DonatorListener implements Listener {
-    private final HttpClient client = HttpClient.newHttpClient();
-
     private Node donatorGroup;
 
     @EventHandler
@@ -36,7 +34,7 @@ public class DonatorListener implements Listener {
                     .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
 
-            client.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream()).thenAcceptAsync(http -> {
+            MeteorPvp.HTTP.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream()).thenAcceptAsync(http -> {
                 JsonObject res = JsonParser.parseReader(new InputStreamReader(http.body())).getAsJsonObject();
                 boolean donator = res.get("donator").getAsBoolean();
 
