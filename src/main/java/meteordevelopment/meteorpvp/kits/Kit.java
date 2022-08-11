@@ -4,6 +4,7 @@ import meteordevelopment.meteorpvp.nbt.ISerializable;
 import meteordevelopment.meteorpvp.nbt.NBT;
 import meteordevelopment.meteorpvp.nbt.NbtTag;
 import meteordevelopment.meteorpvp.nbt.NbtWriter;
+import meteordevelopment.meteorpvp.utils.Perms;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.Tag;
@@ -41,13 +42,14 @@ public class Kit implements ISerializable<CompoundTag> {
 
     public String name;
     public UUID author;
-    public boolean isPublic;
+    public boolean isPublic, bypassesBans;
     public ItemStack[] items;
 
     public Kit(String name, Player player) {
         this.name = name;
         this.author = player.getUniqueId();
         this.items = new ItemStack[42];
+        this.bypassesBans = player.hasPermission(Perms.ALLOWED_OUTSIDE);
 
         for (int i = 0; i < items.length; i++) {
             ItemStack itemStack = i == 41 ? player.getInventory().getItemInOffHand() : player.getInventory().getContents()[i];
@@ -80,7 +82,7 @@ public class Kit implements ISerializable<CompoundTag> {
             if (itemStack.getEnchantments().get(enchantment) > enchantment.getMaxLevel()) return true;
         }
 
-        return false;
+        return !bypassesBans;
     }
 
     public void apply(HumanEntity player) {
