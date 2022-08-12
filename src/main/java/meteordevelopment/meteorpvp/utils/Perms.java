@@ -14,7 +14,6 @@ public class Perms {
     public static final Permission HELPER = create("meteorpvp.helper");
     public static final Permission DONATOR = create("meteorpvp.donator");
     public static final Permission ALLOWED_OUTSIDE = create("meteorpvp.allowed_outside");
-    public static final Permission BYPASSES_KITS = create("meteorpvp.bypasses_kits");
     public static final Permission TEST = create("meteorpvp.test");
 
     public static void register() {
