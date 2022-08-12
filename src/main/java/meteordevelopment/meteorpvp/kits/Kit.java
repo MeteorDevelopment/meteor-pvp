@@ -49,7 +49,7 @@ public class Kit implements ISerializable<CompoundTag> {
         this.name = name;
         this.author = player.getUniqueId();
         this.items = new ItemStack[42];
-        this.bypassesBans = player.hasPermission(Perms.ALLOWED_OUTSIDE);
+        this.bypassesBans = player.hasPermission(Perms.BYPASSES_KITS);
 
         for (int i = 0; i < items.length; i++) {
             ItemStack itemStack = i == 41 ? player.getInventory().getItemInOffHand() : player.getInventory().getContents()[i];
