@@ -36,7 +36,8 @@ public class Kit implements ISerializable<CompoundTag> {
             Material.PISTON,
             Material.STICKY_PISTON,
 
-            Material.TNT
+            Material.TNT,
+            Material.WEB
     );
 
     public String name;
