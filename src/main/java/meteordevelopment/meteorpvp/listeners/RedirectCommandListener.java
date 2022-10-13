@@ -10,6 +10,7 @@ public class RedirectCommandListener implements Listener {
     @EventHandler
     private void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         String msg = event.getMessage().toLowerCase();
+        if (msg.startsWith("/minecraft:")) msg = "/" + msg.substring(11);
 
         if (msg.startsWith("/me ")) {
             event.getPlayer().sendMessage(String.format("%sYou cannot use this command.", ChatColor.RED));
