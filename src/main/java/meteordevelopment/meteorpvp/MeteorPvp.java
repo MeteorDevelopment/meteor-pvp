@@ -46,6 +46,7 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
 
         Ignores.load();
         Mutes.load();
+        Metrics.start();
 
         initialized = true;
 
@@ -58,6 +59,8 @@ public final class MeteorPvp extends JavaPlugin implements Listener {
         Bukkit.getScheduler().cancelTasks(this);
 
         if (initialized) {
+            Metrics.stop();
+
             Kits.INSTANCE.save();
             Ignores.save();
             Mutes.save();
