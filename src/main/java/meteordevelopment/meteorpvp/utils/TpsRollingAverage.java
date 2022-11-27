@@ -30,7 +30,7 @@ public class TpsRollingAverage {
         }
     }
 
-    public void add(BigDecimal x, long t, BigDecimal total) {
+    public synchronized void add(BigDecimal x, long t, BigDecimal total) {
         this.time -= this.times[this.index];
         this.total = this.total.subtract(this.samples[this.index].multiply(new BigDecimal(this.times[this.index])));
         this.samples[this.index] = x;
@@ -42,7 +42,7 @@ public class TpsRollingAverage {
         }
     }
 
-    public double mean() {
+    public synchronized double mean() {
         return this.total.divide(new BigDecimal(this.time), 30, RoundingMode.HALF_UP).doubleValue();
     }
 }

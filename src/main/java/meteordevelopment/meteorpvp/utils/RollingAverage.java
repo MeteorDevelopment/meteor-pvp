@@ -16,23 +16,19 @@ public class RollingAverage {
         this.samples = new ArrayDeque<>(this.windowSize + 1);
     }
 
-    public void add(BigDecimal num) {
-        synchronized (this) {
-            this.total = this.total.add(num);
-            this.samples.add(num);
+    public synchronized void add(BigDecimal num) {
+        this.total = this.total.add(num);
+        this.samples.add(num);
 
-            if (this.samples.size() > this.windowSize) {
-                this.total = this.total.subtract(this.samples.remove());
-            }
+        if (this.samples.size() > this.windowSize) {
+            this.total = this.total.subtract(this.samples.remove());
         }
     }
 
-    public double mean() {
-        synchronized (this) {
-            if (this.samples.isEmpty())  return 0;
+    public synchronized double mean() {
+        if (this.samples.isEmpty())  return 0;
 
-            BigDecimal divisor = BigDecimal.valueOf(this.samples.size());
-            return this.total.divide(divisor, 30, RoundingMode.HALF_UP).doubleValue();
-        }
+        BigDecimal divisor = BigDecimal.valueOf(this.samples.size());
+        return this.total.divide(divisor, 30, RoundingMode.HALF_UP).doubleValue();
     }
 }
