@@ -20,7 +20,6 @@ public class BamCommand extends MyCommand {
 
         player.banPlayerFull("").save();
 
-
         return true;
     }
 }
